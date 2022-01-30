@@ -14,21 +14,6 @@ import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
-  static BlendModes = {
-    NORMAL: 1,
-    ADD: 2,
-    SUBSTRACT: 3,
-    MULTIPLY: 4,
-    ADDSUB: 5,
-    LIGHTEN: 6,
-    DARKEN: 7,
-    SWITCH: 8,
-    DIVIDE: 9,
-    OVERLAY: 10,
-    SCREEN: 11,
-    SOFTLIGHT: 12,
-  }
-
   constructor(props: any) {
     super(props)
 
@@ -84,6 +69,7 @@ class LayerMaterial extends ShaderMaterial {
       `
 
       shader.uniforms = uniforms
+      console.log(shader.fragmentShader)
 
       return shader
     }
@@ -101,7 +87,5 @@ declare global {
     }
   }
 }
-
-extend({ LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer })
 
 export { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer }

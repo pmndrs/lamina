@@ -17,7 +17,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "@react-three/lamina": ["../src/index.tsx"]
+      "lamina": ["../src/index.tsx"]
     }
   },
   "include": ["./src"]

@@ -1,8 +1,11 @@
 import React from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, extend } from '@react-three/fiber'
 import { OrbitControls, Sphere } from '@react-three/drei'
 
-import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from '@react-three/lamina'
+import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
+import { Color } from 'three'
+
+extend({ LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer })
 
 export default function App() {
   return (
@@ -10,7 +13,7 @@ export default function App() {
       <Sphere>
         <layerMaterial>
           <baseLayer
-            color={'#ff00ff'} //
+            color={new Color('#ff00ff')} //
             alpha={1}
             mode="NORMAL"
           />

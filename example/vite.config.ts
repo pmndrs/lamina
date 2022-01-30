@@ -7,7 +7,7 @@ export default defineConfig({
     alias: {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
-      '@react-three/lamina': path.resolve('../src/index.tsx'),
+      lamina: path.resolve('../src/index.tsx'),
     },
   },
   plugins: [reactRefresh()],
