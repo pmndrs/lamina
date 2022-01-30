@@ -1,24 +1,23 @@
-import { IUniform, MathUtils } from "three";
-import { LayerBlendMode } from "../types";
+import { IUniform, MathUtils } from 'three'
 
 export default abstract class AbstractLayer {
-  protected abstract uuid: string;
-  protected name: string;
+  protected abstract uuid: string
+  protected abstract name: string
   abstract uniforms: {
-    [key: string]: IUniform<any>;
-  };
+    [key: string]: IUniform<any>
+  }
 
   getVertexVariables(): string {
-    return "";
+    return ''
   }
   getVertexBody(e: string): string {
-    return "";
+    return ''
   }
 
-  abstract getFragmentVariables(): string;
-  abstract getFragmentBody(e: string): string;
+  abstract getFragmentVariables(): string
+  abstract getFragmentBody(e: string): string
 
   static genID() {
-    return MathUtils.generateUUID().replaceAll("-", "_");
+    return MathUtils.generateUUID().replaceAll('-', '_')
   }
 }

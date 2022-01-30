@@ -4,7 +4,7 @@ import { LayerBlendMode, SC_BLEND_MODES } from '../types'
 
 export default class BaseLayer extends AbstractLayer {
   name: string = 'Base'
-  protected uuid: string = AbstractLayer.genID()
+  protected uuid: string
 
   uniforms: {
     [key: string]: IUniform<any>
@@ -12,6 +12,7 @@ export default class BaseLayer extends AbstractLayer {
 
   constructor() {
     super()
+    this.uuid = AbstractLayer.genID()
 
     this.uniforms = {
       [`u_${this.uuid}_color`]: {

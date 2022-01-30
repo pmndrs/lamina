@@ -3,6 +3,7 @@
     "module": "esnext",
     "target": "es2018",
     "allowSyntheticDefaultImports": true,
+    "lib": ["ESNext"],
     "jsx": "react",
     "strict": true,
     "preserveSymlinks": true,

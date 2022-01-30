@@ -15,11 +15,11 @@ import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
   constructor(props: any) {
-    super(props)
+    super({ transparent: true })
 
     this.onBeforeCompile = (shader) => {
       // @ts-ignore
-      const layers: AbstractLayer[] = this.__r3f.objects
+      const layers: AbstractLayer[] = [...this.__r3f.objects]
 
       const variables = {
         vert: '',
@@ -42,8 +42,6 @@ class LayerMaterial extends ShaderMaterial {
         body.frag += layer.getFragmentBody('sc_finalColor') + ' \n'
         body.vert += layer.getVertexBody('') + ' \n'
       })
-
-      console.log(uniforms)
 
       shader.vertexShader = `
       ${variables.vert}
@@ -69,7 +67,6 @@ class LayerMaterial extends ShaderMaterial {
       `
 
       shader.uniforms = uniforms
-      console.log(shader.fragmentShader)
 
       return shader
     }

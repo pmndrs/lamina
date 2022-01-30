@@ -12,5 +12,7 @@ body,
 }
 
 body {
-  background: rgb(230, 230, 230);
+  background: #ffffff;
+  padding: 16px;
+  box-sizing: border-box;
 }
