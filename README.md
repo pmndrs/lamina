@@ -5,10 +5,20 @@
 
 <br>
 
-[![Version](https://img.shields.io/npm/v/lamina?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/lamina)
-[![Downloads](https://img.shields.io/npm/dt/lamina.svg?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/lamina)
-[![Twitter](https://img.shields.io/twitter/follow/pmndrs?label=%40pmndrs&style=flat&colorA=000000&colorB=000000&logo=twitter&logoColor=000000)](https://twitter.com/pmndrs)
-[![Discord](https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=000000)](https://discord.gg/ZZjjNvJ)
+<p align="center">
+  <a href="https://www.npmjs.com/package/lamina" target="_blank">
+    <img src="https://img.shields.io/npm/v/lamina.svg?style=flat&colorA=000000&colorB=000000" />
+  </a>
+  <a href="https://www.npmjs.com/package/lamina" target="_blank">
+    <img src="https://img.shields.io/npm/dm/lamina.svg?style=flat&colorA=000000&colorB=000000" />
+  </a>
+  <a href="https://twitter.com/pmndrs" target="_blank">
+    <img src="https://img.shields.io/twitter/follow/pmndrs?label=%40pmndrs&style=flat&colorA=000000&colorB=000000&logo=twitter&logoColor=000000" alt="Chat on Twitter">
+  </a>
+  <a href="https://discord.gg/ZZjjNvJ" target="_blank">
+    <img src="https://img.shields.io/discord/740090768164651008?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=000000" alt="Chat on Twitter">
+  </a>
+</p>
 
 <br />
 
