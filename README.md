@@ -1,7 +1,7 @@
 <br />
 
 <h1 align="center">lamina</h1>
-<h3 align="center">🍰 An extensable, layer based shader material for ThreeJS</h3>
+<h3 align="center">🍰 An extensible, layer based shader material for ThreeJS</h3>
 
 <br>
 
