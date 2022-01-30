@@ -1,5 +1,5 @@
-import { FresnalLayerProps, LayerBlendMode } from '../types'
-import { Color, ColorRepresentation, IUniform } from 'three'
+import { FresnalLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { Color, IUniform } from 'three'
 import AbstractLayer from './AbstractLayer'
 
 export default class FresnelLayer extends AbstractLayer {
@@ -87,12 +87,12 @@ export default class FresnelLayer extends AbstractLayer {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
   set mode(v: LayerBlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = v
+    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
   }
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value
   }
-  set color(v: ColorRepresentation) {
+  set color(v: Color) {
     this.uniforms[`u_${this.uuid}_color`].value = v
   }
   get color() {
