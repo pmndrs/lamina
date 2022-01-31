@@ -110,19 +110,19 @@ class CustomLayer extends AbstractLayer {
   // Give it an ID
   protected uuid: string = AbstractLayer.genID()
 
-  // Define your own unifroms
+  // Define your own uniforms
   uniforms: {
     [key: string]: IUniform<any>
   }
   constructor(props?: CustomLayerProps) {
     super()
-    const { customUnifrom } = props || {}
+    const { customUniform } = props || {}
 
-    // Make your unifroms unique in the layer
+    // Make your uniforms unique in the layer
     // stack by appending the ID of the layer to it.
     this.uniforms = {
-      [`u_${this.uuid}_customUnifrom`]: {
-        value: customUnifrom ?? defaultValue,
+      [`u_${this.uuid}_customUniform`]: {
+        value: customUniform ?? defaultValue,
       },
 
       // We recomend having an alpha and a blend mode defined
@@ -140,7 +140,7 @@ class CustomLayer extends AbstractLayer {
   getFragmentVariables() {
     return /* glsl */ `    
     // Lets assume this is a color
-    uniform vec3 u_${this.uuid}_customUnifrom;
+    uniform vec3 u_${this.uuid}_customUniform;
 
     uniform float u_${this.uuid}_alpha;
     uniform int u_${this.uuid}_mode;
@@ -163,7 +163,7 @@ class CustomLayer extends AbstractLayer {
     return /* glsl */ `    
       // Make sure to create unique local variables
       // by appending the UUID to them
-      vec3 f_${this.uuid}_color = u_${this.uuid}_customUnifrom;
+      vec3 f_${this.uuid}_color = u_${this.uuid}_customUniform;
 
       ${e} = sc_blend(vec4(f_${this.uuid}_color, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
   `
@@ -188,13 +188,13 @@ class CustomLayer extends AbstractLayer {
     `
   }
 
-  // Setters and getters for unifroms
-  set customUnifrom(v) {
-    this.uniforms[`u_${this.uuid}_customUnifrom`].value = v
+  // Setters and getters for uniforms
+  set customUniform(v) {
+    this.uniforms[`u_${this.uuid}_customUniform`].value = v
   }
 
-  get customUnifrom() {
-    return this.uniforms[`u_${this.uuid}_customUnifrom`].value
+  get customUniform() {
+    return this.uniforms[`u_${this.uuid}_customUniform`].value
   }
   // ...
 }
