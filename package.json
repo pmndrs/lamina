@@ -2,7 +2,23 @@
   "name": "lamina",
   "version": "0.0.1",
   "description": "🍰 An extensable, layer based shader material for ThreeJS.",
-  "main": "index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "shaders",
+    "layers",
+    "materials",
+    "threejs",
+    "webgl",
+    "3d"
+  ],
   "scripts": {
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly",
@@ -23,12 +39,6 @@
     "type": "git",
     "url": "git+https://github.com/pmndrs/lamina.git"
   },
-  "keywords": [
-    "react",
-    "scissor",
-    "webgl",
-    "three"
-  ],
   "author": "Faraz Shaikh <farazzshaikh@gmail.com>",
   "license": "MIT",
   "bugs": {
