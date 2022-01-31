@@ -14,11 +14,13 @@ function Spheres() {
   const RandomProps = useMemo<
     (GroupProps & {
       xDist: number
+      color: Color
     })[]
   >(
     () =>
-      new Array(100).fill(0).map(() => {
+      new Array(50).fill(0).map(() => {
         return {
+          color: new Color(Math.random() * 255, Math.random() * 255, Math.random() * 255),
           position: [
             MathUtils.randFloat(-viewport.width, viewport.width), //
             MathUtils.randFloat(-viewport.height, viewport.height),
@@ -30,7 +32,6 @@ function Spheres() {
             MathUtils.randFloat(-20, 10),
           ],
           scale: MathUtils.randFloat(0.05, 1),
-
           xDist: MathUtils.randFloat(0, 1),
         }
       }),
@@ -39,42 +40,32 @@ function Spheres() {
 
   return (
     <>
-      {RandomProps.map((props, i) => (
-        <group {...props}>
-          <Sphere args={[1, 128, 64]} key={'Sphere-' + i}>
-            <layerMaterial>
-              <baseLayer
-                color={new Color('#ffffff')} //
-                alpha={1}
-                mode="NORMAL"
-              />
-              <depthLayer
-                colorA={new Color('#002f4b')}
-                colorB={new Color('#f2fdff')}
-                alpha={1}
-                mode="MULTIPLY"
-                near={0}
-                far={2}
-                origin={[1, 1, 1]}
-              />
-              <fresnelLayer
-                colorA={new Color('#bffbff')}
-                alpha={1}
-                mode="SOFTLIGHT"
-                intensity={1}
-                factor={1}
-                scale={1}
-                bias={0.1}
-              />
-              <noiseLayer
-                color={new Color('#a3a3a3')} //
-                alpha={0.2}
-                mode="NORMAL"
-                scale={1}
-              />
-            </layerMaterial>
-          </Sphere>
-        </group>
+      {RandomProps.map(({ color, ...props }, i) => (
+        <Sphere args={[1, 128, 64]} key={i} {...props}>
+          <layerMaterial>
+            <baseLayer
+              color={'#' + color.getHexString()} //
+              alpha={1}
+              mode="NORMAL"
+            />
+            <depthLayer
+              colorA="#001f3b"
+              colorB="#e2edef"
+              alpha={1}
+              mode="MULTIPLY"
+              near={0}
+              far={2}
+              origin={[1, 1, 1]}
+            />
+            <fresnelLayer colorA="#bffbff" alpha={1} mode="SOFTLIGHT" intensity={1} factor={1} scale={1} bias={0.1} />
+            <noiseLayer
+              color="#a3a3a3" //
+              alpha={0.2}
+              mode="NORMAL"
+              scale={1}
+            />
+          </layerMaterial>
+        </Sphere>
       ))}
     </>
   )
@@ -82,7 +73,7 @@ function Spheres() {
 
 export default function App() {
   return (
-    <Canvas linear flat dpr={[1, 2]} camera={{ fov: 50 }}>
+    <Canvas dpr={[1, 2]} camera={{ fov: 50 }}>
       <color attach="background" args={['#ebebeb']} />
       <Spheres />
       <Rig />

@@ -15,7 +15,8 @@ import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
   constructor(props: any) {
-    super({ transparent: true })
+    // TODO: spoof an individual fragment a little better than this ...
+    super({ transparent: true, fragmentShader: AbstractLayer.genID() })
 
     this.onBeforeCompile = (shader) => {
       // @ts-ignore
@@ -34,10 +35,9 @@ class LayerMaterial extends ShaderMaterial {
         variables.frag += layer.getFragmentVariables() + ' \n'
         variables.vert += layer.getVertexVariables() + ' \n'
 
-        uniforms = {
-          ...layer.uniforms,
-          ...uniforms,
-        }
+        Object.keys(layer.uniforms).forEach((key) => {
+          shader.uniforms[key] = layer.uniforms[key]
+        })
 
         body.frag += layer.getFragmentBody('sc_finalColor') + ' \n'
         body.vert += layer.getVertexBody('') + ' \n'
@@ -63,10 +63,10 @@ class LayerMaterial extends ShaderMaterial {
         ${body.frag}
         gl_FragColor = sc_finalColor;
 
+        #include <tonemapping_fragment>
+        #include <encodings_fragment>
       }
       `
-
-      shader.uniforms = uniforms
 
       return shader
     }
