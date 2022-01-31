@@ -1,10 +1,7 @@
-/* eslint-disable */
-
-import { extend, ReactThreeFiber } from '@react-three/fiber'
-import { ShaderMaterial } from 'three'
+import { ShaderMaterial, ShaderMaterialParameters } from 'three'
 import AbstractLayer from './core/AbstractLayer'
 
-import BaseLayer from './core/ColorLayer'
+import BaseLayer from './core/BaseLayer'
 import DepthLayer from './core/DepthLayer'
 import FresnelLayer from './core/FresnelLayer'
 import NoiseLayer from './core/NoiseLayer'
@@ -14,13 +11,18 @@ import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
+<<<<<<< HEAD:src/index.tsx
   constructor(props: any) {
     // TODO: spoof an individual fragment a little better than this ...
     super({ transparent: true, fragmentShader: AbstractLayer.genID() })
+=======
+  constructor(props: ShaderMaterialParameters) {
+    super(props)
+>>>>>>> f041ca8f221d3009c86546dc69fa2b3e3e0b666d:src/index.ts
 
     this.onBeforeCompile = (shader) => {
       // @ts-ignore
-      const layers: AbstractLayer[] = [...this.__r3f.objects]
+      const layers: AbstractLayer[] = this.layers || this.__r3f.objects
 
       const variables = {
         vert: '',
@@ -68,6 +70,7 @@ class LayerMaterial extends ShaderMaterial {
       }
       `
 
+<<<<<<< HEAD:src/index.tsx
       return shader
     }
   }
@@ -81,6 +84,12 @@ declare global {
       depthLayer: ReactThreeFiber.Node<DepthLayer, typeof DepthLayer>
       fresnelLayer: ReactThreeFiber.Node<FresnelLayer, typeof FresnelLayer>
       noiseLayer: ReactThreeFiber.Node<NoiseLayer, typeof NoiseLayer>
+=======
+      shader.uniforms = uniforms
+
+      this.uniformsNeedUpdate = true
+      this.needsUpdate = true
+>>>>>>> f041ca8f221d3009c86546dc69fa2b3e3e0b666d:src/index.ts
     }
   }
 }

@@ -1,5 +1,5 @@
 import AbstractLayer from './AbstractLayer'
-import { Color, IUniform } from 'three'
+import { Color, ColorRepresentation, IUniform } from 'three'
 import { LayerBlendMode, SC_BLEND_MODES } from '../types'
 
 export default class BaseLayer extends AbstractLayer {
@@ -45,8 +45,8 @@ export default class BaseLayer extends AbstractLayer {
   `
   }
 
-  set color(v: Color) {
-    this.uniforms[`u_${this.uuid}_color`].value = v
+  set color(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
   }
   get color() {
     return this.uniforms[`u_${this.uuid}_color`].value
