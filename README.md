@@ -34,13 +34,13 @@ function GradientSphere() {
     <Sphere>
       <layerMaterial>
         <baseLayer
-          color={new Color('#ffffff')} //
+          color={'#ffffff'} //
           alpha={1}
           mode="NORMAL"
         />
         <depthLayer
-          colorA={new Color('#810000')}
-          colorB={new Color('#ffd0d0')}
+          colorA={'#810000'}
+          colorB={'#ffd0d0'}
           alpha={1}
           mode="MULTIPLY"
           near={0}
