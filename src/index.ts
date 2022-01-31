@@ -10,8 +10,12 @@ import HelperChunk from './core/ShaderChunks/Helpers'
 import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
+interface LayerMaterialProps {
+  layers?: AbstractLayer[]
+}
+
 class LayerMaterial extends ShaderMaterial {
-  constructor(props: any) {
+  constructor(props: ShaderMaterialParameters & LayerMaterialProps) {
     // TODO: spoof an individual fragment a little better than this ...
     super({ transparent: true, fragmentShader: AbstractLayer.genID(), ...props })
 
