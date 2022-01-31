@@ -9,32 +9,35 @@ export default class DepthLayer extends AbstractLayer {
     [key: string]: IUniform<any>
   }
 
-  constructor() {
+  constructor(props?: DepthLayerProps) {
     super()
+
+    const { alpha, mode, colorA, colorB, near, far, origin, isVector } = props || {}
+
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
-        value: 1,
+        value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: 1,
+        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
       },
       [`u_${this.uuid}_near`]: {
-        value: 700,
+        value: near ?? 700,
       },
       [`u_${this.uuid}_far`]: {
-        value: 1e7,
+        value: far ?? 1e7,
       },
       [`u_${this.uuid}_origin`]: {
-        value: [0, 0, 0],
+        value: origin ?? [0, 0, 0],
       },
       [`u_${this.uuid}_colorA`]: {
-        value: new Color('#ffffff'),
+        value: new Color(colorA ?? '#ffffff'),
       },
       [`u_${this.uuid}_colorB`]: {
-        value: new Color('#000000'),
+        value: new Color(colorB ?? '#ffffff'),
       },
       [`u_${this.uuid}_isVector`]: {
-        value: true,
+        value: isVector ?? true,
       },
     }
   }

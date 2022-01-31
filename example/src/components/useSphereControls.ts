@@ -33,10 +33,10 @@ export default function useSphereControls() {
       value: 0.5,
     },
     ColorA: {
-      value: '#002f4b',
+      value: '#005182',
     },
     ColorB: {
-      value: '#f2fdff',
+      value: '#d4f8ff',
     },
     BlendMode: {
       options: Object.keys(SC_BLEND_MODES),
@@ -70,7 +70,7 @@ export default function useSphereControls() {
     Strength: {
       min: 0,
       max: 1,
-      value: 0.2,
+      value: 0.5,
     },
     Color: {
       value: '#a3a3a3',

@@ -1,5 +1,5 @@
 import { Color, ColorRepresentation, IUniform } from 'three'
-import { LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { LayerBlendMode, NoiseLayerProps, SC_BLEND_MODES } from '../types'
 import AbstractLayer from './AbstractLayer'
 
 export default class NoiseLayer extends AbstractLayer {
@@ -9,21 +9,22 @@ export default class NoiseLayer extends AbstractLayer {
     [key: string]: IUniform<any>
   }
 
-  constructor() {
+  constructor(props?: NoiseLayerProps) {
     super()
+    const { alpha, mode, scale, color } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
-        value: 1,
+        value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: 1,
+        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
       },
       [`u_${this.uuid}_scale`]: {
-        value: 1,
+        value: scale ?? 1,
       },
       [`u_${this.uuid}_color`]: {
-        value: new Color('#ffffff'),
+        value: new Color(color ?? '#ffffff'),
       },
     }
   }

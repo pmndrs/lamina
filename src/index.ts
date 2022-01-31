@@ -11,24 +11,18 @@ import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
-<<<<<<< HEAD:src/index.tsx
   constructor(props: any) {
     // TODO: spoof an individual fragment a little better than this ...
-    super({ transparent: true, fragmentShader: AbstractLayer.genID() })
-=======
-  constructor(props: ShaderMaterialParameters) {
-    super(props)
->>>>>>> f041ca8f221d3009c86546dc69fa2b3e3e0b666d:src/index.ts
+    super({ transparent: true, fragmentShader: AbstractLayer.genID(), ...props })
 
     this.onBeforeCompile = (shader) => {
       // @ts-ignore
-      const layers: AbstractLayer[] = this.layers || this.__r3f.objects
+      const layers: AbstractLayer[] = props?.layers || this.__r3f.objects
 
       const variables = {
         vert: '',
         frag: '',
       }
-      let uniforms = {}
       const body = {
         vert: '',
         frag: '',
@@ -70,26 +64,8 @@ class LayerMaterial extends ShaderMaterial {
       }
       `
 
-<<<<<<< HEAD:src/index.tsx
-      return shader
-    }
-  }
-}
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      layerMaterial: ReactThreeFiber.Node<LayerMaterial, typeof LayerMaterial>
-      baseLayer: ReactThreeFiber.Node<BaseLayer, typeof BaseLayer>
-      depthLayer: ReactThreeFiber.Node<DepthLayer, typeof DepthLayer>
-      fresnelLayer: ReactThreeFiber.Node<FresnelLayer, typeof FresnelLayer>
-      noiseLayer: ReactThreeFiber.Node<NoiseLayer, typeof NoiseLayer>
-=======
-      shader.uniforms = uniforms
-
       this.uniformsNeedUpdate = true
       this.needsUpdate = true
->>>>>>> f041ca8f221d3009c86546dc69fa2b3e3e0b666d:src/index.ts
     }
   }
 }

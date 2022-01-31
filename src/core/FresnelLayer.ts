@@ -9,30 +9,31 @@ export default class FresnelLayer extends AbstractLayer {
     [key: string]: IUniform<any>
   }
 
-  constructor() {
+  constructor(props?: FresnalLayerProps) {
     super()
+    const { alpha, mode, color, bias, scale, intensity, factor } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
-        value: 1,
+        value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: 1,
+        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
       },
       [`u_${this.uuid}_color`]: {
-        value: new Color('#ffffff'),
+        value: new Color(color ?? '#ffffff'),
       },
       [`u_${this.uuid}_bias`]: {
-        value: 0.1,
+        value: bias ?? 0.1,
       },
       [`u_${this.uuid}_scale`]: {
-        value: 1,
+        value: scale ?? 1,
       },
       [`u_${this.uuid}_intensity`]: {
-        value: 2,
+        value: intensity ?? 2,
       },
       [`u_${this.uuid}_factor`]: {
-        value: 1,
+        value: factor ?? 1,
       },
     }
   }

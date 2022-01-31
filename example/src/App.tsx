@@ -11,7 +11,7 @@ export default function App() {
     <>
       <Leva collapsed titleBar={{ title: 'Layers' }} />
 
-      <Canvas linear flat dpr={[1, 2]} camera={{ fov: 50 }}>
+      <Canvas dpr={[1, 2]} camera={{ fov: 50 }}>
         <color attach="background" args={['#ebebeb']} />
         <Spheres />
         <Rig />

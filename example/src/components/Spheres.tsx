@@ -12,13 +12,9 @@ extend({ LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer })
 export default function Spheres() {
   const viewport = useThree((s) => s.viewport)
 
-  const RandomProps = useMemo<
-    (GroupProps & {
-      xDist: number
-    })[]
-  >(
+  const RandomProps = useMemo<GroupProps[]>(
     () =>
-      new Array(100).fill(0).map(() => {
+      new Array(30).fill(0).map(() => {
         return {
           position: [
             MathUtils.randFloat(-viewport.width, viewport.width), //
@@ -31,8 +27,6 @@ export default function Spheres() {
             MathUtils.randFloat(-20, 10),
           ],
           scale: MathUtils.randFloat(0.05, 1),
-
-          xDist: MathUtils.randFloat(0, 1),
         }
       }),
     [viewport]
@@ -64,13 +58,13 @@ export default function Spheres() {
           <Sphere args={[1, 128, 64]}>
             <layerMaterial>
               <baseLayer
-                color={new Color(BaseColor)} //
+                color={BaseColor} //
                 alpha={BaseStrength}
                 mode={BaseBlendMode as LayerBlendMode}
               />
               <depthLayer
-                colorA={new Color(GradientColorA)}
-                colorB={new Color(GradientColorB)}
+                colorA={GradientColorA}
+                colorB={GradientColorB}
                 alpha={GradientStrength}
                 mode={GradientBlendMode as LayerBlendMode}
                 near={0}
@@ -78,7 +72,7 @@ export default function Spheres() {
                 origin={[1, 1, 1]}
               />
               <fresnelLayer
-                color={new Color(FresnalColor)}
+                color={FresnalColor}
                 alpha={1}
                 mode={FresnalBlendMode as LayerBlendMode}
                 intensity={FresnalStrength * 2}
@@ -87,7 +81,7 @@ export default function Spheres() {
                 bias={0.1}
               />
               <noiseLayer
-                color={new Color(GrainColor)} //
+                color={GrainColor} //
                 alpha={GrainStrength}
                 mode={GrainBlendMode as LayerBlendMode}
                 scale={1}

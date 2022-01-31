@@ -19,8 +19,8 @@ export default function TextMesh() {
           mode="NORMAL"
         />
         <depthLayer
-          colorA={new Color('#4b0000')}
-          colorB={new Color('#fff2f2')}
+          colorA={new Color('#810000')}
+          colorB={new Color('#ffd0d0')}
           alpha={1}
           mode="MULTIPLY"
           near={0}
@@ -38,7 +38,7 @@ export default function TextMesh() {
         />
         <noiseLayer
           color={new Color('#a3a3a3')} //
-          alpha={0.2}
+          alpha={0.5}
           mode="NORMAL"
           scale={1}
         />

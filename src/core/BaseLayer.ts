@@ -1,28 +1,28 @@
 import AbstractLayer from './AbstractLayer'
 import { Color, ColorRepresentation, IUniform } from 'three'
-import { LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { BaseLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
 
 export default class BaseLayer extends AbstractLayer {
   name: string = 'Base'
-  protected uuid: string
+  protected uuid: string = AbstractLayer.genID()
 
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor() {
+  constructor(props?: BaseLayerProps) {
     super()
-    this.uuid = AbstractLayer.genID()
+    const { color, alpha, mode } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_color`]: {
-        value: new Color('#ffffff'),
+        value: new Color(color ?? '#ffffff'),
       },
       [`u_${this.uuid}_alpha`]: {
-        value: 1,
+        value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: 1,
+        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
       },
     }
   }
