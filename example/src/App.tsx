@@ -1,10 +1,10 @@
 import React from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Text } from '@react-three/drei'
 
 import Rig from './components/Rig'
 import Spheres from './components/Spheres'
 import { Leva } from 'leva'
+import TextMesh from './components/TextMesh'
 
 export default function App() {
   return (
@@ -16,12 +16,7 @@ export default function App() {
         <Spheres />
         <Rig />
 
-        {/* <Text scale={30}>
-          ABCD
-          <meshBasicMaterial />
-        </Text>
-
-        <gridHelper /> */}
+        <TextMesh />
       </Canvas>
     </>
   )
