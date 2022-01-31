@@ -1,4 +1,4 @@
-import { FresnalLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { FresnelLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
 import { Color, ColorRepresentation, IUniform } from 'three'
 import AbstractLayer from './AbstractLayer'
 
@@ -9,7 +9,7 @@ export default class FresnelLayer extends AbstractLayer {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: FresnalLayerProps) {
+  constructor(props?: FresnelLayerProps) {
     super()
     const { alpha, mode, color, bias, scale, intensity, factor } = props || {}
 
@@ -54,7 +54,7 @@ export default class FresnelLayer extends AbstractLayer {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnal layer variables **********
+    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform int u_${this.uuid}_mode;
     uniform vec3 u_${this.uuid}_color;
@@ -71,7 +71,7 @@ export default class FresnelLayer extends AbstractLayer {
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnal layer frag-shader-code ***************************************************
+      // SC: Fresnel layer frag-shader-code ***************************************************
       vec3 f_${this.uuid}_worldViewDirection = normalize(cameraPosition - v_${this.uuid}_worldPosiiton);
       float f_${this.uuid}_fresnel = dot(f_${this.uuid}_worldViewDirection, v_${this.uuid}_worldNormal);
       f_${this.uuid}_fresnel = clamp((1.0 - f_${this.uuid}_fresnel) * u_${this.uuid}_intensity, 0., 1.);

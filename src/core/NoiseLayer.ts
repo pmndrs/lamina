@@ -43,7 +43,7 @@ export default class NoiseLayer extends AbstractLayer {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnal layer variables **********
+    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform int u_${this.uuid}_mode;
     uniform vec3 u_${this.uuid}_color;
@@ -56,7 +56,7 @@ export default class NoiseLayer extends AbstractLayer {
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnal layer frag-shader-code ***************************************************
+      // SC: Fresnel layer frag-shader-code ***************************************************
       float f_${this.uuid}_noise = sc_rand(v_${this.uuid}_uv * u_${this.uuid}_scale);
 
       ${e} = sc_blend( vec4(u_${this.uuid}_color * f_${this.uuid}_noise, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );

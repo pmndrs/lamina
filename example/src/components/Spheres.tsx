@@ -42,9 +42,9 @@ export default function Spheres() {
     GrainColor,
     GrainStrength,
 
-    FresnalBlendMode,
-    FresnalColor,
-    FresnalStrength,
+    FresnelBlendMode,
+    FresnelColor,
+    FresnelStrength,
 
     BaseStrength,
     BaseColor,
@@ -72,10 +72,10 @@ export default function Spheres() {
                 origin={[1, 1, 1]}
               />
               <fresnelLayer
-                color={FresnalColor}
+                color={FresnelColor}
                 alpha={1}
-                mode={FresnalBlendMode as LayerBlendMode}
-                intensity={FresnalStrength * 2}
+                mode={FresnelBlendMode as LayerBlendMode}
+                intensity={FresnelStrength * 2}
                 factor={1}
                 scale={1}
                 bias={0.1}

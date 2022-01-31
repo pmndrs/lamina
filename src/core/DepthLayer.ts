@@ -56,7 +56,7 @@ export default class DepthLayer extends AbstractLayer {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnal layer variables **********
+    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform int u_${this.uuid}_mode;
     uniform float u_${this.uuid}_near;

@@ -44,10 +44,10 @@ export default function useSphereControls() {
     },
   })
   const {
-    Strength: FresnalStrength,
-    Color: FresnalColor,
-    BlendMode: FresnalBlendMode,
-  } = useControls('Fresnal', {
+    Strength: FresnelStrength,
+    Color: FresnelColor,
+    BlendMode: FresnelBlendMode,
+  } = useControls('Fresnel', {
     Strength: {
       min: 0,
       max: 1,
@@ -91,9 +91,9 @@ export default function useSphereControls() {
     GrainColor,
     GrainStrength,
 
-    FresnalBlendMode,
-    FresnalColor,
-    FresnalStrength,
+    FresnelBlendMode,
+    FresnelColor,
+    FresnelStrength,
 
     BaseStrength,
     BaseColor,

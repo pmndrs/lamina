@@ -34,7 +34,7 @@ export interface DepthLayerProps {
   isVector?: boolean
 }
 
-export interface FresnalLayerProps {
+export interface FresnelLayerProps {
   color?: ColorRepresentation
   alpha?: number
   mode?: LayerBlendMode
