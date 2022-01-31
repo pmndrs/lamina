@@ -1,5 +1,5 @@
 import { DepthLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
-import { Color, IUniform } from 'three'
+import { Color, ColorRepresentation, IUniform } from 'three'
 import AbstractLayer from './AbstractLayer'
 
 export default class DepthLayer extends AbstractLayer {
@@ -114,14 +114,14 @@ export default class DepthLayer extends AbstractLayer {
   get origin() {
     return this.uniforms[`u_${this.uuid}_origin`].value
   }
-  set colorA(v: Color) {
-    this.uniforms[`u_${this.uuid}_colorA`].value = v
+  set colorA(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_colorA`].value = new Color(v)
   }
   get colorA() {
     return this.uniforms[`u_${this.uuid}_colorA`].value
   }
-  set colorB(v: Color) {
-    this.uniforms[`u_${this.uuid}_colorB`].value = v
+  set colorB(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_colorB`].value = new Color(v)
   }
   get colorB() {
     return this.uniforms[`u_${this.uuid}_colorB`].value

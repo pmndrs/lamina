@@ -1,10 +1,10 @@
 /* eslint-disable */
 
 import { extend, ReactThreeFiber } from '@react-three/fiber'
-import { ShaderMaterial } from 'three'
+import { ShaderMaterial, ShaderMaterialParameters } from 'three'
 import AbstractLayer from './core/AbstractLayer'
 
-import BaseLayer from './core/ColorLayer'
+import BaseLayer from './core/BaseLayer'
 import DepthLayer from './core/DepthLayer'
 import FresnelLayer from './core/FresnelLayer'
 import NoiseLayer from './core/NoiseLayer'
@@ -14,12 +14,12 @@ import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
 class LayerMaterial extends ShaderMaterial {
-  constructor(props: any) {
-    super({ transparent: true })
+  constructor(props: ShaderMaterialParameters) {
+    super(props)
 
     this.onBeforeCompile = (shader) => {
       // @ts-ignore
-      const layers: AbstractLayer[] = [...this.__r3f.objects]
+      const layers: AbstractLayer[] = this.layers || this.__r3f.objects
 
       const variables = {
         vert: '',
@@ -68,7 +68,8 @@ class LayerMaterial extends ShaderMaterial {
 
       shader.uniforms = uniforms
 
-      return shader
+      this.uniformsNeedUpdate = true
+      this.needsUpdate = true
     }
   }
 }

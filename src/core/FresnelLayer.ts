@@ -1,5 +1,5 @@
 import { FresnalLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
-import { Color, IUniform } from 'three'
+import { Color, ColorRepresentation, IUniform } from 'three'
 import AbstractLayer from './AbstractLayer'
 
 export default class FresnelLayer extends AbstractLayer {
@@ -73,7 +73,7 @@ export default class FresnelLayer extends AbstractLayer {
       // SC: Fresnal layer frag-shader-code ***************************************************
       vec3 f_${this.uuid}_worldViewDirection = normalize(cameraPosition - v_${this.uuid}_worldPosiiton);
       float f_${this.uuid}_fresnel = dot(f_${this.uuid}_worldViewDirection, v_${this.uuid}_worldNormal);
-      f_${this.uuid}_fresnel = clamp(1.0 - f_${this.uuid}_fresnel, 0., 1.);
+      f_${this.uuid}_fresnel = clamp((1.0 - f_${this.uuid}_fresnel) * u_${this.uuid}_intensity, 0., 1.);
 
       ${e} = sc_blend( vec4(u_${this.uuid}_color * f_${this.uuid}_fresnel, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
       // *************************************************************************************
@@ -92,8 +92,8 @@ export default class FresnelLayer extends AbstractLayer {
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value
   }
-  set color(v: Color) {
-    this.uniforms[`u_${this.uuid}_color`].value = v
+  set color(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
   }
   get color() {
     return this.uniforms[`u_${this.uuid}_color`].value
