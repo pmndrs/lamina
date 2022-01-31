@@ -99,9 +99,9 @@ Here are the layers that laminia currently provides
 | `FresnelLayer` | Fresnel shading      |
 | `NoiseLayer`   | White noise          |
 
-### Writinig your own layers
+### Writing your own layers
 
-You can write your won layers by extendign the `AbstractLayer` class.
+You can write your won layers by extending the `AbstractLayer` class.
 
 ```ts
 class CustomLayer extends AbstractLayer {
@@ -125,7 +125,7 @@ class CustomLayer extends AbstractLayer {
         value: customUniform ?? defaultValue,
       },
 
-      // We recomend having an alpha and a blend mode defined
+      // We recommend having an alpha and a blend mode defined
       [`u_${this.uuid}_alpha`]: {
         value: 1,
       },
@@ -147,7 +147,7 @@ class CustomLayer extends AbstractLayer {
 `
   }
 
-  // Return an shader chunk with your layer's implimnetation.
+  // Return an shader chunk with your layer's implementation.
   // Parameter `e` is the result of the previous layer.
   // `sc_blend` is a blending function.
   //

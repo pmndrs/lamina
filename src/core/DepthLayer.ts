@@ -44,13 +44,13 @@ export default class DepthLayer extends AbstractLayer {
 
   getVertexVariables(): string {
     return /* glsl */ `
-    varying vec3 v_${this.uuid}_worldPosiiton;
+    varying vec3 v_${this.uuid}_worldPosition;
     `
   }
 
   getVertexBody(e: string): string {
     return /* glsl */ `
-    v_${this.uuid}_worldPosiiton = vec3(vec4(position, 1.0) * modelMatrix);
+    v_${this.uuid}_worldPosition = vec3(vec4(position, 1.0) * modelMatrix);
     `
   }
 
@@ -66,7 +66,7 @@ export default class DepthLayer extends AbstractLayer {
     uniform vec3 u_${this.uuid}_colorA;
     uniform vec3 u_${this.uuid}_colorB;
 
-    varying vec3 v_${this.uuid}_worldPosiiton;
+    varying vec3 v_${this.uuid}_worldPosition;
     // ************************************
 `
   }
@@ -76,7 +76,7 @@ export default class DepthLayer extends AbstractLayer {
       // SC: Depth layer frag-shader-code ***************************************************
      
       vec3 f_${this.uuid}_base = ( u_${this.uuid}_isVector > 0.5 ) ?  u_${this.uuid}_origin : cameraPosition;
-      float f_${this.uuid}_dist = length( v_${this.uuid}_worldPosiiton.xyz - f_${this.uuid}_base );
+      float f_${this.uuid}_dist = length( v_${this.uuid}_worldPosition.xyz - f_${this.uuid}_base );
       float f_${this.uuid}_dep = ( f_${this.uuid}_dist - u_${this.uuid}_near ) / ( u_${this.uuid}_far - u_${this.uuid}_near );
 
       vec3 f_${this.uuid}_depth =  mix( u_${this.uuid}_colorB, u_${this.uuid}_colorA, 1.0 - clamp( f_${this.uuid}_dep, 0., 1. ) );

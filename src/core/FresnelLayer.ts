@@ -40,14 +40,14 @@ export default class FresnelLayer extends AbstractLayer {
 
   getVertexVariables(): string {
     return /* glsl */ `
-    varying vec3 v_${this.uuid}_worldPosiiton;
+    varying vec3 v_${this.uuid}_worldPosition;
     varying vec3 v_${this.uuid}_worldNormal;
     `
   }
 
   getVertexBody(e: string): string {
     return /* glsl */ `
-    v_${this.uuid}_worldPosiiton = vec3(vec4(position, 1.0) * modelMatrix);
+    v_${this.uuid}_worldPosition = vec3(vec4(position, 1.0) * modelMatrix);
     v_${this.uuid}_worldNormal = normalize(vec3(vec4(normal, 0.0) * modelMatrix));
     `
   }
@@ -63,7 +63,7 @@ export default class FresnelLayer extends AbstractLayer {
     uniform float u_${this.uuid}_intensity;
     uniform float u_${this.uuid}_factor;
 
-    varying vec3 v_${this.uuid}_worldPosiiton;
+    varying vec3 v_${this.uuid}_worldPosition;
     varying vec3 v_${this.uuid}_worldNormal;
     // ************************************
 `
@@ -72,7 +72,7 @@ export default class FresnelLayer extends AbstractLayer {
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // SC: Fresnel layer frag-shader-code ***************************************************
-      vec3 f_${this.uuid}_worldViewDirection = normalize(cameraPosition - v_${this.uuid}_worldPosiiton);
+      vec3 f_${this.uuid}_worldViewDirection = normalize(cameraPosition - v_${this.uuid}_worldPosition);
       float f_${this.uuid}_fresnel = dot(f_${this.uuid}_worldViewDirection, v_${this.uuid}_worldNormal);
       f_${this.uuid}_fresnel = clamp((1.0 - f_${this.uuid}_fresnel) * u_${this.uuid}_intensity, 0., 1.);
 

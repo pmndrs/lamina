@@ -3,7 +3,7 @@ import { Color, ColorRepresentation } from 'three'
 export const SC_BLEND_MODES = {
   NORMAL: 1,
   ADD: 2,
-  SUBSTRACT: 3,
+  SUBTRACT: 3,
   MULTIPLY: 4,
   ADDSUB: 5,
   LIGHTEN: 6,

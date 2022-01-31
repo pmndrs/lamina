@@ -3,7 +3,7 @@ export default /* glsl */ `
 
 #define sc_COPY 1
 #define sc_ADD 2
-#define sc_SUBSTRACT 3
+#define sc_SUBTRACT 3
 #define sc_MULTIPLY 4
 #define sc_ADDSUB 5
 #define sc_LIGHTEN 6
@@ -141,7 +141,7 @@ vec4 sc_blend(vec4 f, vec4 b, int type) {
     n = sc_copy(f, b);
   } else if (type == sc_ADD) {
     n = sc_add(f, b);
-  } else if (type == sc_SUBSTRACT) {
+  } else if (type == sc_SUBTRACT) {
     n = sc_subtract(f, b);
   } else if (type == sc_MULTIPLY) {
     n = sc_multiply(f, b);
@@ -163,5 +163,5 @@ vec4 sc_blend(vec4 f, vec4 b, int type) {
 
   return n;
 }
-`;
+`
 // ************************************
