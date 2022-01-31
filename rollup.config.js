@@ -4,7 +4,7 @@ import resolve from '@rollup/plugin-node-resolve'
 
 const root = process.platform === 'win32' ? path.resolve('/') : '/'
 const external = (id) => !id.startsWith('.') && !id.startsWith(root)
-const extensions = ['.js', '.jsx', '.ts', '.tsx', '.json']
+const extensions = ['.js', '.ts', '.json']
 
 const getBabelOptions = ({ useESModules }) => ({
   babelrc: false,
@@ -27,7 +27,6 @@ const getBabelOptions = ({ useESModules }) => ({
         targets: '> 1%, not dead, not ie 11, not op_mini all',
       },
     ],
-    '@babel/preset-react',
     '@babel/preset-typescript',
   ],
   plugins: [['@babel/transform-runtime', { regenerator: false, useESModules }]],
