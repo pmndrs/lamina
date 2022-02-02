@@ -9,7 +9,7 @@ export default function useLayerControls() {
     [key: string]: any
   }>(InitialMaterial)
 
-  const [i, setI] = useState(0)
+  const [i, setI] = useState(Object.keys(InitialMaterial).length + 1)
 
   useControls(
     {
@@ -54,7 +54,7 @@ export default function useLayerControls() {
         value: 'Color',
       },
       Add: button((get) => {
-        const key = get('Type')
+        const key = get('Layers.Type')
         // @ts-ignore
         const value = LayerProperties[key]
 

@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 import { Leva } from 'leva'
-import Duck from './components/Duck'
+import Bunny from './components/Bunny'
 import { Bounds, OrbitControls } from '@react-three/drei'
 import Primitives from './components/Primitives'
 
@@ -14,7 +14,7 @@ export default function App() {
       <Canvas dpr={[1, 2]} camera={{ fov: 50, position: [5, 5, 5] }}>
         <color attach="background" args={['#111111']} />
         <Suspense fallback={null}>
-          <Duck />
+          <Bunny />
           {/* <Primitives /> */}
           <OrbitControls />
         </Suspense>

@@ -1,22 +1,8 @@
 {
   "Depth$1": [
-    {
-      "label": "Color A",
-      "value": "#ff0000",
-      "__constructorKey": "colorA"
-    },
-    {
-      "label": "Color B",
-      "value": "#002dff",
-      "__constructorKey": "colorB"
-    },
-    {
-      "label": "Alpha",
-      "value": 1,
-      "min": 0,
-      "max": 1,
-      "__constructorKey": "alpha"
-    },
+    { "label": "Color A", "value": "#ff9d00", "__constructorKey": "colorA" },
+    { "label": "Color B", "value": "#002dff", "__constructorKey": "colorB" },
+    { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
@@ -36,35 +22,36 @@
       "value": "NORMAL",
       "__constructorKey": "mode"
     },
+    { "label": "Origin", "value": [0, 0, 0], "__constructorKey": "origin" },
+    { "label": "Near", "value": 0, "__constructorKey": "near" },
+    { "label": "Far", "value": 5.5, "__constructorKey": "far" }
+  ],
+  "Color$3": [
+    { "label": "Color", "value": "#000000", "__constructorKey": "color" },
+    { "label": "Alpha", "value": 0.17999999999999994, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
-      "label": "Origin",
-      "value": [0, 0, 0],
-      "__constructorKey": "origin"
-    },
-    {
-      "label": "Near",
-      "value": 0,
-      "__constructorKey": "near"
-    },
-    {
-      "label": "Far",
-      "value": 2,
-      "__constructorKey": "far"
+      "label": "Blend Mode",
+      "options": [
+        "NORMAL",
+        "ADD",
+        "SUBTRACT",
+        "MULTIPLY",
+        "ADDSUB",
+        "LIGHTEN",
+        "DARKEN",
+        "SWITCH",
+        "DIVIDE",
+        "OVERLAY",
+        "SCREEN",
+        "SOFTLIGHT"
+      ],
+      "value": "NORMAL",
+      "__constructorKey": "mode"
     }
   ],
-  "Fresnel$2": [
-    {
-      "label": "Color",
-      "value": "#ffffff",
-      "__constructorKey": "color"
-    },
-    {
-      "label": "Alpha",
-      "value": 1,
-      "min": 0,
-      "max": 1,
-      "__constructorKey": "alpha"
-    },
+  "Fresnel$4": [
+    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
+    { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
@@ -84,26 +71,8 @@
       "value": "SOFTLIGHT",
       "__constructorKey": "mode"
     },
-    {
-      "label": "Intensity",
-      "value": 2.8,
-      "min": 0,
-      "max": 10,
-      "__constructorKey": "intensity"
-    },
-    {
-      "label": "Scale",
-      "value": 3.25,
-      "min": 0,
-      "max": 5,
-      "__constructorKey": "scale"
-    },
-    {
-      "label": "Bias",
-      "value": 0,
-      "min": 0,
-      "max": 2,
-      "__constructorKey": "bias"
-    }
+    { "label": "Intensity", "value": 3.3, "min": 0, "max": 10, "__constructorKey": "intensity" },
+    { "label": "Scale", "value": 3.0500000000000003, "min": 0, "max": 5, "__constructorKey": "scale" },
+    { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
   ]
 }
