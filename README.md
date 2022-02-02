@@ -43,13 +43,13 @@ function GradientSphere() {
     <Sphere>
       <layerMaterial>
         <baseLayer
-          color={'#ffffff'} //
+          color="#ffffff"
           alpha={1}
           mode="NORMAL"
         />
         <depthLayer
-          colorA={'#810000'}
-          colorB={'#ffd0d0'}
+          colorA="#810000"
+          colorB="#ffd0d0"
           alpha={1}
           mode="MULTIPLY"
           near={0}
@@ -74,7 +74,7 @@ const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
   layers: [
     new BaseLayer({
-      color: '#d9d9d9', //
+      color: '#d9d9d9',
       alpha: 1,
       mode: 'NORMAL',
     }),
