@@ -22,6 +22,15 @@
 
 <br />
 
+<p align="center">
+  <a href="https://codesandbox.io/s/lamina-configurator-4tdfb" target="_blank"><img  src="./Assets/configurator.png"  /></a>
+  <a href="https://codesandbox.io/s/lamina-example-r3f-02x0c" target="_blank"><img src="./Assets/lamina.png"  /></a>
+</p>
+<p align="middle">
+  <i>These demos are real, you can click them! They contain the full code, too. 📦</i>
+</p>
+<br />
+
 `lamina` let's you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
