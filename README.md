@@ -110,7 +110,7 @@ Here are the layers that laminia currently provides
 
 ### Writing your own layers
 
-You can write your won layers by extending the `AbstractLayer` class.
+You can write your own layers by extending the `AbstractLayer` class.
 
 ```ts
 class CustomLayer extends AbstractLayer {
