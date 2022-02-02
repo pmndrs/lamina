@@ -11,7 +11,7 @@ export default class FresnelLayer extends AbstractLayer {
 
   constructor(props?: FresnelLayerProps) {
     super()
-    const { alpha, mode, color, bias, scale, intensity, factor } = props || {}
+    const { alpha, mode, color, bias, scale, intensity } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
@@ -24,16 +24,13 @@ export default class FresnelLayer extends AbstractLayer {
         value: new Color(color ?? '#ffffff'),
       },
       [`u_${this.uuid}_bias`]: {
-        value: bias ?? 0.1,
+        value: bias ?? 0,
       },
       [`u_${this.uuid}_scale`]: {
         value: scale ?? 1,
       },
       [`u_${this.uuid}_intensity`]: {
         value: intensity ?? 2,
-      },
-      [`u_${this.uuid}_factor`]: {
-        value: factor ?? 1,
       },
     }
   }
@@ -47,8 +44,8 @@ export default class FresnelLayer extends AbstractLayer {
 
   getVertexBody(e: string): string {
     return /* glsl */ `
-    v_${this.uuid}_worldPosition = vec3(vec4(position, 1.0) * modelMatrix);
-    v_${this.uuid}_worldNormal = normalize(vec3(vec4(normal, 0.0) * modelMatrix));
+    v_${this.uuid}_worldPosition = normalize(vec3(modelViewMatrix * vec4(position, 1.0)).xyz);
+    v_${this.uuid}_worldNormal = normalize(normalMatrix * normal);
     `
   }
 
@@ -72,9 +69,8 @@ export default class FresnelLayer extends AbstractLayer {
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // SC: Fresnel layer frag-shader-code ***************************************************
-      vec3 f_${this.uuid}_worldViewDirection = normalize(cameraPosition - v_${this.uuid}_worldPosition);
-      float f_${this.uuid}_fresnel = dot(f_${this.uuid}_worldViewDirection, v_${this.uuid}_worldNormal);
-      f_${this.uuid}_fresnel = clamp((1.0 - f_${this.uuid}_fresnel) * u_${this.uuid}_intensity, 0., 1.);
+      float f_${this.uuid}_a = ( 1.0 - -min(dot(v_${this.uuid}_worldPosition, normalize(v_${this.uuid}_worldNormal) ), 0.0) );
+      float f_${this.uuid}_fresnel = u_${this.uuid}_bias + (u_${this.uuid}_scale * pow(f_${this.uuid}_a, u_${this.uuid}_intensity));
 
       ${e} = sc_blend( vec4(u_${this.uuid}_color * f_${this.uuid}_fresnel, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
       // *************************************************************************************
@@ -116,11 +112,5 @@ export default class FresnelLayer extends AbstractLayer {
   }
   get intensity() {
     return this.uniforms[`u_${this.uuid}_intensity`].value
-  }
-  set factor(v: number) {
-    this.uniforms[`u_${this.uuid}_factor`].value = v
-  }
-  get factor() {
-    return this.uniforms[`u_${this.uuid}_factor`].value
   }
 }

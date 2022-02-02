@@ -51,7 +51,6 @@ randomProps.forEach((prop) => {
         alpha: 1,
         mode: 'SOFTLIGHT',
         intensity: 2,
-        factor: 1,
         scale: 1,
         bias: 0.1,
       }),

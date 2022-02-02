@@ -2,10 +2,10 @@ import React, { useMemo } from 'react'
 import { extend, GroupProps, useThree } from '@react-three/fiber'
 import { Color, MathUtils } from 'three'
 import { Sphere } from '@react-three/drei'
-import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
 import { useControls } from 'leva'
 import { LayerBlendMode, SC_BLEND_MODES } from '../../../src/types'
 import useSphereControls from './useSphereControls'
+import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
 
 extend({ LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer })
 
@@ -76,7 +76,6 @@ export default function Spheres() {
                 alpha={1}
                 mode={FresnelBlendMode as LayerBlendMode}
                 intensity={FresnelStrength * 2}
-                factor={1}
                 scale={1}
                 bias={0.1}
               />

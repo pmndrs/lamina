@@ -74,4 +74,4 @@ class LayerMaterial extends ShaderMaterial {
   }
 }
 
-export { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer }
+export { AbstractLayer, LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer }

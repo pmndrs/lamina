@@ -39,7 +39,6 @@ export interface FresnelLayerProps {
   alpha?: number
   mode?: LayerBlendMode
   intensity?: number
-  factor?: number
   scale?: number
   bias?: number
 }

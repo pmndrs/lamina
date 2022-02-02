@@ -73,6 +73,9 @@
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^7.0.2",
     "three": "^0.137.5",
-    "typescript": "^4.4.4"
-  }
+    "typescript": "^4.4.4",
+    "@react-three/drei": "^8.8.1",
+    "@react-three/fiber": "^7.0.26"
+  },
+  "dependencies": {}
 }
