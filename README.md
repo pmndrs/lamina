@@ -23,8 +23,8 @@
 <br />
 
 <p align="center">
-  <a href="https://codesandbox.io/s/lamina-configurator-4tdfb" target="_blank"><img width="500" src="https://github.com/pmndrs/lamina/blob/main/assets/configurator.png?raw=true"  /></a>
-  <a href="https://codesandbox.io/s/lamina-example-r3f-02x0c" target="_blank"><img width="500" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
+  <a href="https://codesandbox.io/s/lamina-configurator-4tdfb" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/configurator.png?raw=true"  /></a>
+  <a href="https://codesandbox.io/s/lamina-example-r3f-02x0c" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
 </p>
 <p align="middle">
   <i>These demos are real, you can click them! They contain the full code, too. 📦</i>
@@ -43,13 +43,13 @@ function GradientSphere() {
     <Sphere>
       <layerMaterial>
         <baseLayer
-          color={'#ffffff'} //
+          color="#ffffff"
           alpha={1}
           mode="NORMAL"
         />
         <depthLayer
-          colorA={'#810000'}
-          colorB={'#ffd0d0'}
+          colorA="#810000"
+          colorB="#ffd0d0"
           alpha={1}
           mode="MULTIPLY"
           near={0}
@@ -74,7 +74,7 @@ const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
   layers: [
     new BaseLayer({
-      color: '#d9d9d9', //
+      color: '#d9d9d9',
       alpha: 1,
       mode: 'NORMAL',
     }),
@@ -110,7 +110,7 @@ Here are the layers that laminia currently provides
 
 ### Writing your own layers
 
-You can write your won layers by extending the `AbstractLayer` class.
+You can write your own layers by extending the `AbstractLayer` class.
 
 ```ts
 class CustomLayer extends AbstractLayer {
