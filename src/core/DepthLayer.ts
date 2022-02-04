@@ -1,5 +1,5 @@
 import { DepthLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
-import { Color, ColorRepresentation, IUniform } from 'three'
+import { Vector3, Color, ColorRepresentation, IUniform } from 'three'
 import AbstractLayer from './AbstractLayer'
 
 export default class DepthLayer extends AbstractLayer {
@@ -19,7 +19,7 @@ export default class DepthLayer extends AbstractLayer {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
+        value: SC_BLEND_MODES[mode ?? 'normal'],
       },
       [`u_${this.uuid}_near`]: {
         value: near ?? 700,
@@ -28,7 +28,7 @@ export default class DepthLayer extends AbstractLayer {
         value: far ?? 1e7,
       },
       [`u_${this.uuid}_origin`]: {
-        value: origin ?? [0, 0, 0],
+        value: origin ?? new Vector3(),
       },
       [`u_${this.uuid}_colorA`]: {
         value: new Color(colorA ?? '#ffffff'),

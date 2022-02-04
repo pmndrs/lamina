@@ -22,7 +22,7 @@ export default class BaseLayer extends AbstractLayer {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
+        value: SC_BLEND_MODES[mode ?? 'normal'],
       },
     }
   }

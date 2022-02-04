@@ -1,18 +1,18 @@
-import { Color, ColorRepresentation } from 'three'
+import { ColorRepresentation } from 'three'
 
 export const SC_BLEND_MODES = {
-  NORMAL: 1,
-  ADD: 2,
-  SUBTRACT: 3,
-  MULTIPLY: 4,
-  ADDSUB: 5,
-  LIGHTEN: 6,
-  DARKEN: 7,
-  SWITCH: 8,
-  DIVIDE: 9,
-  OVERLAY: 10,
-  SCREEN: 11,
-  SOFTLIGHT: 12,
+  normal: 1,
+  add: 2,
+  subtract: 3,
+  multiply: 4,
+  addsub: 5,
+  lighten: 6,
+  darken: 7,
+  switch: 8,
+  divide: 9,
+  overlay: 10,
+  screen: 11,
+  softlight: 12,
 }
 
 export type LayerBlendMode = keyof typeof SC_BLEND_MODES
