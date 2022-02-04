@@ -20,7 +20,6 @@ export default function LayerStack() {
           layer.forEach((v: any) => {
             props[v.__constructorKey] = v.value
           })
-          console.log(key, props)
           return <Component key={name} {...props} />
         })}
       </LAYERS.LayerMaterial>
