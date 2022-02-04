@@ -1,6 +1,6 @@
 import './style.css'
 import * as THREE from 'three'
-import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
+import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina/vanilla'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -35,13 +35,13 @@ randomProps.forEach((prop) => {
       new BaseLayer({
         color: '#d9d9d9', //
         alpha: 1,
-        mode: 'NORMAL',
+        mode: 'normal',
       }),
       new DepthLayer({
         colorA: '#002f4b',
         colorB: '#f2fdff',
         alpha: 1,
-        mode: 'MULTIPLY',
+        mode: 'multiply',
         near: 0,
         far: 2,
         origin: [1, 1, 1],
@@ -49,7 +49,7 @@ randomProps.forEach((prop) => {
       new FresnelLayer({
         color: '#bffbff',
         alpha: 1,
-        mode: 'SOFTLIGHT',
+        mode: 'softlight',
         intensity: 2,
         scale: 1,
         bias: 0.1,
@@ -57,7 +57,7 @@ randomProps.forEach((prop) => {
       new NoiseLayer({
         color: '#a3a3a3',
         alpha: 0.1,
-        mode: 'NORMAL',
+        mode: 'normal',
         scale: 1,
       }),
     ],
@@ -76,7 +76,6 @@ randomProps.forEach((prop) => {
 
 function animate() {
   requestAnimationFrame(animate)
-
   renderer.render(scene, camera)
 }
 

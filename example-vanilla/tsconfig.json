@@ -15,7 +15,7 @@
     "noImplicitReturns": true,
     "baseUrl": ".",
     "paths": {
-      "lamina": ["../src/index.ts"]
+      "lamina/vanilla": ["../src/vanilla.ts"]
     }
   },
   "include": ["./src"]

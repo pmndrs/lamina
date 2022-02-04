@@ -17,7 +17,7 @@ export const LayerProperties = {
     {
       label: 'Blend Mode',
       options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      value: 'normal',
       __constructorKey: 'mode',
     },
   ],
@@ -42,7 +42,7 @@ export const LayerProperties = {
     {
       label: 'Blend Mode',
       options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {
@@ -77,7 +77,7 @@ export const LayerProperties = {
     {
       label: 'Blend Mode',
       options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {
@@ -118,7 +118,7 @@ export const LayerProperties = {
     {
       label: 'Blend Mode',
       options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {

@@ -7,7 +7,7 @@ export default defineConfig({
     alias: {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
-      lamina: path.resolve('../src/index.ts'),
+      'lamina/vanilla': path.resolve('../src/vanilla.ts'),
     },
   },
   plugins: [reactRefresh()],
