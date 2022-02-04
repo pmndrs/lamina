@@ -104,6 +104,23 @@ Here are the layers that laminia currently provides
 | `Normals`   | Visualize vertex normals          |
 | `Texture`   | Image texture          |
 
+### Blendmodes
+
+| Name      | Function             |
+| --------- | -------------------- |
+| `normal`    | opaque |
+| `add`   | prev layer + current |
+| `subtract` | prev layer - current |
+| `multiply`   | prev layer * current |
+| `addsub`   | ... |
+| `lighten`   | lighter pixels only |
+| `darken`   | darker pixels only |
+| `switch`   | skip layer |
+| `divide`   | ... |
+| `overlay`   | ... |
+| `screen`   | ... |
+| `softlight`   | ... |
+
 ### Writing your own layers
 
 You can write your own layers by extending the `Abstract` class.
