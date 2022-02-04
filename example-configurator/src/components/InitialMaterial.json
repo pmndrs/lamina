@@ -1,7 +1,6 @@
 {
-  "Depth$1": [
-    { "label": "Color A", "value": "#ff9d00", "__constructorKey": "colorA" },
-    { "label": "Color B", "value": "#002dff", "__constructorKey": "colorB" },
+  "Base$4": [
+    { "label": "Color", "value": "#3d00ff", "__constructorKey": "color" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
@@ -19,38 +18,12 @@
         "screen",
         "softlight"
       ],
-      "value": "normal",
-      "__constructorKey": "mode"
-    },
-    { "label": "Origin", "value": [0, 0, 0], "__constructorKey": "origin" },
-    { "label": "Near", "value": 0, "__constructorKey": "near" },
-    { "label": "Far", "value": 5.5, "__constructorKey": "far" }
-  ],
-  "Base$3": [
-    { "label": "Color", "value": "#000000", "__constructorKey": "color" },
-    { "label": "Alpha", "value": 0.17999999999999994, "min": 0, "max": 1, "__constructorKey": "alpha" },
-    {
-      "label": "Blend Mode",
-      "options": [
-        "normal",
-        "add",
-        "subtract",
-        "multiply",
-        "addsub",
-        "lighten",
-        "darken",
-        "switch",
-        "divide",
-        "overlay",
-        "screen",
-        "softlight"
-      ],
-      "value": "normal",
+      "value": "multiply",
       "__constructorKey": "mode"
     }
   ],
-  "Fresnel$4": [
-    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
+  "Base$5": [
+    { "label": "Color", "value": "#3d00ff", "__constructorKey": "color" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
@@ -68,11 +41,8 @@
         "screen",
         "softlight"
       ],
-      "value": "softlight",
+      "value": "multiply",
       "__constructorKey": "mode"
-    },
-    { "label": "Intensity", "value": 3.3, "min": 0, "max": 10, "__constructorKey": "intensity" },
-    { "label": "Scale", "value": 3.0500000000000003, "min": 0, "max": 5, "__constructorKey": "scale" },
-    { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
+    }
   ]
 }
