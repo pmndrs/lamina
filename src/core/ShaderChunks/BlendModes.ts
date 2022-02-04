@@ -9,7 +9,7 @@ float sc_softLight(float f, float b) {
                    : b + (2.0 * f - 1.0) * (sqrt(b) - b);
 }
 
-vec4 sc_softLight(vec4 f, vec4 b) {
+vec4 sc_softLight(vec4 b, vec4 f) {
   vec4 result;
   result.x = sc_softLight(f.x, b.x);
   result.y = sc_softLight(f.y, b.y);
