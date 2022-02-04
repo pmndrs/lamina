@@ -26,7 +26,7 @@ export default class Depth extends Abstract {
         value: far ?? 1e7,
       },
       [`u_${this.uuid}_origin`]: {
-        value: origin ?? new Vector3(),
+        value: origin ?? new Vector3(0, 0, 0),
       },
       [`u_${this.uuid}_colorA`]: {
         value: new Color(colorA ?? '#ffffff'),

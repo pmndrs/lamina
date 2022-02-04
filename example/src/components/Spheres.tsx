@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { MathUtils } from 'three'
+import { MathUtils, Vector3 } from 'three'
 import { GroupProps, useThree } from '@react-three/fiber'
 import { Sphere } from '@react-three/drei'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
@@ -61,7 +61,7 @@ export default function Spheres() {
                 mode={GradientBlendMode as BlendMode}
                 near={0}
                 far={2}
-                origin={[1, 1, 1]}
+                origin={new Vector3(1, 1, 1)}
               />
               <Fresnel
                 color={FresnelColor}

@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/vanilla'
+import { Vector3 } from 'three'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -44,7 +45,7 @@ randomProps.forEach((prop) => {
         mode: 'multiply',
         near: 0,
         far: 2,
-        origin: [1, 1, 1],
+        origin: new Vector3(1, 1, 1),
       }),
       new Fresnel({
         color: '#bffbff',

@@ -32,7 +32,7 @@ export interface DepthProps {
   mode?: BlendMode
   near?: number
   far?: number
-  origin?: number[]
+  origin?: Vector3
   isVector?: boolean
 }
 
