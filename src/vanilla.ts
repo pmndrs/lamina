@@ -47,7 +47,7 @@ class LayerMaterial extends ShaderMaterial {
     ${BlendModesChunk}
     ${variables.frag}
     void main() {
-      vec4 sc_finalColor = vec4(0.);
+      vec4 sc_finalColor = vec4(vec3(1.), 1.);
       ${body.frag}
       gl_FragColor = sc_finalColor;
       #include <tonemapping_fragment>
