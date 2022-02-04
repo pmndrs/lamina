@@ -1,28 +1,25 @@
-import { Color, ColorRepresentation, IUniform } from 'three'
-import { BlendMode, NoiseProps, BlendModes } from '../types'
+import { Color, ColorRepresentation, IUniform, Vector3 } from 'three'
+import { BlendMode, NoiseProps, BlendModes, NormalsProps } from '../types'
 import Abstract from './Abstract'
 
 export default class Noise extends Abstract {
-  name: string = 'Noise'
+  name: string = 'Normals'
   mode: BlendMode = 'normal'
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: NoiseProps) {
+  constructor(props?: NormalsProps) {
     super()
-    const { alpha, mode, scale, color } = props || {}
+    const { alpha, mode, direction } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
         value: alpha ?? 1,
       },
-      [`u_${this.uuid}_scale`]: {
-        value: scale ?? 1,
-      },
-      [`u_${this.uuid}_color`]: {
-        value: new Color(color ?? '#ffffff'),
+      [`u_${this.uuid}_direction`]: {
+        value: direction,
       },
     }
     this.mode = BlendModes[mode || 'normal']
@@ -30,13 +27,13 @@ export default class Noise extends Abstract {
 
   getVertexVariables(): string {
     return /* glsl */ `
-    varying vec2 v_${this.uuid}_uv;
+    varying vec3 v_${this.uuid}_normals;
     `
   }
 
   getVertexBody(e: string): string {
     return /* glsl */ `
-    v_${this.uuid}_uv = uv;
+    v_${this.uuid}_normals = normal;
     `
   }
 
@@ -45,9 +42,9 @@ export default class Noise extends Abstract {
     // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform vec3 u_${this.uuid}_color;
-    uniform float u_${this.uuid}_scale;
+    uniform vec3 u_${this.uuid}_direction;
 
-    varying vec2 v_${this.uuid}_uv;
+    varying vec3 v_${this.uuid}_normals;
     // ************************************
 `
   }
@@ -55,12 +52,15 @@ export default class Noise extends Abstract {
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // SC: Fresnel layer frag-shader-code ***************************************************
-      float f_${this.uuid}_noise = sc_rand(v_${this.uuid}_uv * u_${this.uuid}_scale);
+      vec3 f_${this.uuid}_normalColor = vec3(1.);
+      f_${this.uuid}_normalColor.x = v_${this.uuid}_normals.x * u_${this.uuid}_direction.x;
+      f_${this.uuid}_normalColor.y = v_${this.uuid}_normals.y * u_${this.uuid}_direction.y;
+      f_${this.uuid}_normalColor.z = v_${this.uuid}_normals.z * u_${this.uuid}_direction.z;
 
       ${e} = ${this.getBlendMode(
       BlendModes[this.mode] as number,
       e,
-      `vec4(u_${this.uuid}_color * f_${this.uuid}_noise, u_${this.uuid}_alpha)`
+      `vec4(f_${this.uuid}_normalColor, u_${this.uuid}_alpha)`
     )};
       // *************************************************************************************
   `
@@ -72,17 +72,16 @@ export default class Noise extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-
   set color(v: ColorRepresentation) {
     this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
   }
   get color() {
     return this.uniforms[`u_${this.uuid}_color`].value
   }
-  set scale(v: number) {
-    this.uniforms[`u_${this.uuid}_scale`].value = v
+  set direction(v: Vector3) {
+    this.uniforms[`u_${this.uuid}_direction`].value = v
   }
-  get scale() {
-    return this.uniforms[`u_${this.uuid}_scale`].value
+  get direction() {
+    return this.uniforms[`u_${this.uuid}_direction`].value
   }
 }

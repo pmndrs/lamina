@@ -1,19 +1,6 @@
 export default /* glsl */ `
 // SC: Blend modes definitions **********
 
-#define sc_COPY 1
-#define sc_ADD 2
-#define sc_SUBTRACT 3
-#define sc_MULTIPLY 4
-#define sc_ADDSUB 5
-#define sc_LIGHTEN 6
-#define sc_DARKEN 7
-#define sc_SWITCH 8
-#define sc_DIVIDE 9
-#define sc_OVERLAY 10
-#define sc_SCREEN 11
-#define sc_SOFTLIGHT 12
-
 float sc_softLight(float f, float b) {
   return (f < 0.5)
              ? b - (1.0 - 2.0 * f) * b * (1.0 - b)
@@ -36,7 +23,6 @@ vec4 sc_screen(vec4 f, vec4 b) {
   vec4 result;
 
   result = 1.0 - (1.0 - f) * (1.0 - b);
-
   result = mix(f, result, b.a);
 
   return result;
@@ -59,40 +45,31 @@ vec4 sc_overlay(vec4 b, vec4 f) {
 
 vec4 sc_divide(vec4 f, vec4 b) {
   vec4 result = vec4(0.0);
-
   result = b / f;
-
   return result;
 }
 
 vec4 sc_switch(vec4 f, vec4 b, float o) {
   vec4 result = vec4(0.0);
-
   result = max((f * o), (b * (1.0 - o)));
-
   return result;
 }
 
 vec4 sc_darken(vec4 f, vec4 b) {
   vec4 result = vec4(0.0);
-
   result = mix(f, min(f, b), b.a);
-  
-
   return result;
 }
 
 vec4 sc_lighten(vec4 f, vec4 b) {
   vec4 result = vec4(0.0);
-
   result = mix(f, max(f, b), b.a);
-  
-
   return result;
 }
 
-float sc_addSub(float f, float b) { return f > 0.5 ? f + b : b - f ; }
-
+float sc_addSub(float f, float b) {
+  return f > 0.5 ? f + b : b - f;
+}
 vec4 sc_addSub(vec4 f, vec4 b) {
   vec4 result = vec4(0.0);
 
@@ -140,35 +117,5 @@ vec4 sc_copy(vec4 b, vec4 f) {
   return result;
 }
 
-vec4 sc_blend(vec4 b, vec4 f, int type) {
-
-  vec4 n;
-
-  if (type == sc_COPY) {
-    n = sc_copy(f, b);
-  } else if (type == sc_ADD) {
-    n = sc_add(f, b);
-  } else if (type == sc_SUBTRACT) {
-    n = sc_subtract(f, b);
-  } else if (type == sc_MULTIPLY) {
-    n = sc_multiply(f, b);
-  } else if (type == sc_ADDSUB) {
-    n = sc_addSub(f, b);
-  } else if (type == sc_LIGHTEN) {
-    n = sc_lighten(f, b);
-  } else if (type == sc_DARKEN) {
-    n = sc_darken(f, b);
-  } else if (type == sc_DIVIDE) {
-    n = sc_divide(f, b);
-  } else if (type == sc_OVERLAY) {
-    n = sc_overlay(f, b);
-  } else if (type == sc_SCREEN) {
-    n = sc_screen(f, b);
-  } else if (type == sc_SOFTLIGHT) {
-    n = sc_softLight(f, b);
-  }
-
-  return n;
-}
 `
 // ************************************

@@ -67,8 +67,8 @@ export default function Spheres() {
                 color={FresnelColor}
                 alpha={1}
                 mode={FresnelBlendMode as BlendMode}
-                intensity={FresnelStrength * 2}
-                scale={1}
+                power={FresnelStrength * 2}
+                intensity={1}
                 bias={0.1}
               />
               <Noise color={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />

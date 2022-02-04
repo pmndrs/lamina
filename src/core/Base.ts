@@ -4,6 +4,7 @@ import { BaseProps, BlendMode, BlendModes } from '../types'
 
 export default class Base extends Abstract {
   name: string = 'Base'
+  mode: BlendMode = 'normal'
   protected uuid: string = Abstract.genID()
 
   uniforms: {
@@ -21,17 +22,15 @@ export default class Base extends Abstract {
       [`u_${this.uuid}_alpha`]: {
         value: alpha ?? 1,
       },
-      [`u_${this.uuid}_mode`]: {
-        value: BlendModes[mode ?? 'normal'],
-      },
     }
+
+    this.mode = BlendModes[mode || 'normal']
   }
 
   getFragmentVariables() {
     return `    
     // SC: Base layer uniforms **********
     uniform float u_${this.uuid}_alpha;
-    uniform int u_${this.uuid}_mode;
     uniform vec3 u_${this.uuid}_color;
     // ************************************
 `
@@ -40,7 +39,11 @@ export default class Base extends Abstract {
   getFragmentBody(e: string) {
     return `    
       // SC: Base layer frag-shader-code ***************************************************
-      ${e} = sc_blend( vec4(u_${this.uuid}_color, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
+      ${e} = ${this.getBlendMode(
+      BlendModes[this.mode] as number,
+      e,
+      `vec4(u_${this.uuid}_color, u_${this.uuid}_alpha)`
+    )};
       // *************************************************************************************
   `
   }
@@ -56,11 +59,5 @@ export default class Base extends Abstract {
   }
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
-  }
-  set mode(v: BlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = BlendModes[v]
-  }
-  get mode() {
-    return this.uniforms[`u_${this.uuid}_mode`].value
   }
 }

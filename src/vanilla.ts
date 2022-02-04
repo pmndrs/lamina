@@ -4,6 +4,9 @@ import Base from './core/Base'
 import Depth from './core/Depth'
 import Fresnel from './core/Fresnel'
 import Noise from './core/Noise'
+import Normals from './core/Normals'
+import Texture from './core/Texture'
+
 import HelperChunk from './core/ShaderChunks/Helpers'
 import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
@@ -68,4 +71,4 @@ class LayerMaterial extends ShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Base, Depth, Fresnel, Noise }
+export { LayerMaterial, Abstract, Base, Depth, Fresnel, Noise, Normals, Texture }

@@ -50,8 +50,8 @@ randomProps.forEach((prop) => {
         color: '#bffbff',
         alpha: 1,
         mode: 'softlight',
-        intensity: 2,
-        scale: 1,
+        power: 2,
+        intensity: 1,
         bias: 0.1,
       }),
       new Noise({

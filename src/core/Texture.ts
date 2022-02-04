@@ -1,28 +1,25 @@
-import { Color, ColorRepresentation, IUniform } from 'three'
-import { BlendMode, NoiseProps, BlendModes } from '../types'
+import { Color, ColorRepresentation, IUniform, Texture } from 'three'
+import { BlendMode, NoiseProps, BlendModes, TextureProps } from '../types'
 import Abstract from './Abstract'
 
 export default class Noise extends Abstract {
-  name: string = 'Noise'
-  mode: BlendMode = 'normal'
+  name: string = 'Texture'
+  mode: BlendMode = 'texture'
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: NoiseProps) {
+  constructor(props?: TextureProps) {
     super()
-    const { alpha, mode, scale, color } = props || {}
+    const { alpha, mode, map } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
         value: alpha ?? 1,
       },
-      [`u_${this.uuid}_scale`]: {
-        value: scale ?? 1,
-      },
-      [`u_${this.uuid}_color`]: {
-        value: new Color(color ?? '#ffffff'),
+      [`u_${this.uuid}_map`]: {
+        value: map,
       },
     }
     this.mode = BlendModes[mode || 'normal']
@@ -44,8 +41,7 @@ export default class Noise extends Abstract {
     return /* glsl */ `    
     // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
-    uniform vec3 u_${this.uuid}_color;
-    uniform float u_${this.uuid}_scale;
+    uniform sampler2D u_${this.uuid}_map;
 
     varying vec2 v_${this.uuid}_uv;
     // ************************************
@@ -55,12 +51,12 @@ export default class Noise extends Abstract {
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // SC: Fresnel layer frag-shader-code ***************************************************
-      float f_${this.uuid}_noise = sc_rand(v_${this.uuid}_uv * u_${this.uuid}_scale);
+      vec4 f_${this.uuid}_texture = texture2D(u_${this.uuid}_map, v_${this.uuid}_uv);
 
       ${e} = ${this.getBlendMode(
       BlendModes[this.mode] as number,
       e,
-      `vec4(u_${this.uuid}_color * f_${this.uuid}_noise, u_${this.uuid}_alpha)`
+      `vec4(f_${this.uuid}_texture.xyz, f_${this.uuid}_texture.a * u_${this.uuid}_alpha)`
     )};
       // *************************************************************************************
   `
@@ -72,17 +68,10 @@ export default class Noise extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-
-  set color(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
+  set map(v: Texture) {
+    this.uniforms[`u_${this.uuid}_map`].value = v
   }
-  get color() {
-    return this.uniforms[`u_${this.uuid}_color`].value
-  }
-  set scale(v: number) {
-    this.uniforms[`u_${this.uuid}_scale`].value = v
-  }
-  get scale() {
-    return this.uniforms[`u_${this.uuid}_scale`].value
+  get map() {
+    return this.uniforms[`u_${this.uuid}_map`].value
   }
 }

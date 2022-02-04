@@ -1,6 +1,8 @@
-import { ColorRepresentation } from 'three'
+import { ColorRepresentation, Texture, Vector3 } from 'three'
 
-export const BlendModes = {
+export const BlendModes: {
+  [key: string]: number
+} = {
   normal: 1,
   add: 2,
   subtract: 3,
@@ -38,8 +40,8 @@ export interface FresnelProps {
   color?: ColorRepresentation
   alpha?: number
   mode?: BlendMode
+  power?: number
   intensity?: number
-  scale?: number
   bias?: number
 }
 
@@ -48,4 +50,16 @@ export interface NoiseProps {
   alpha?: number
   mode?: BlendMode
   scale?: number
+}
+
+export interface NormalsProps {
+  alpha?: number
+  mode?: BlendMode
+  direction?: Vector3
+}
+
+export interface TextureProps {
+  alpha?: number
+  mode?: BlendMode
+  map?: Texture
 }
