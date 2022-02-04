@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { GroupProps, useThree } from '@react-three/fiber'
 import { MathUtils } from 'three'
 import { Sphere } from '@react-three/drei'
-import { LayerBlendMode } from '../../../src/types'
+import { BlendMode } from '../../../src/types'
 import useSphereControls from './useSphereControls'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
 
@@ -53,12 +53,12 @@ export default function Spheres() {
         <group {...props} key={'Sphere-' + i}>
           <Sphere args={[1, 128, 64]}>
             <LayerMaterial>
-              <Base color={BaseColor} alpha={BaseStrength} mode={BaseBlendMode as LayerBlendMode} />
+              <Base color={BaseColor} alpha={BaseStrength} mode={BaseBlendMode as BlendMode} />
               <Depth
                 colorA={GradientColorA}
                 colorB={GradientColorB}
                 alpha={GradientStrength}
-                mode={GradientBlendMode as LayerBlendMode}
+                mode={GradientBlendMode as BlendMode}
                 near={0}
                 far={2}
                 origin={[1, 1, 1]}
@@ -66,12 +66,12 @@ export default function Spheres() {
               <Fresnel
                 color={FresnelColor}
                 alpha={1}
-                mode={FresnelBlendMode as LayerBlendMode}
+                mode={FresnelBlendMode as BlendMode}
                 intensity={FresnelStrength * 2}
                 scale={1}
                 bias={0.1}
               />
-              <Noise color={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as LayerBlendMode} scale={1} />
+              <Noise color={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />
             </LayerMaterial>
           </Sphere>
         </group>

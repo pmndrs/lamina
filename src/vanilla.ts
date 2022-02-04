@@ -1,17 +1,17 @@
 import { ShaderMaterial, ShaderMaterialParameters } from 'three'
-import AbstractLayer from './core/AbstractLayer'
+import Abstract from './core/Abstract'
 
-import BaseLayer from './core/BaseLayer'
-import DepthLayer from './core/DepthLayer'
-import FresnelLayer from './core/FresnelLayer'
-import NoiseLayer from './core/NoiseLayer'
+import Base from './core/Base'
+import Depth from './core/Depth'
+import Fresnel from './core/Fresnel'
+import Noise from './core/Noise'
 
 import HelperChunk from './core/ShaderChunks/Helpers'
 import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
 
 type LayerMaterialProps = {
-  layers: AbstractLayer[]
+  layers: Abstract[]
 }
 
 class LayerMaterial extends ShaderMaterial {
@@ -25,7 +25,7 @@ class LayerMaterial extends ShaderMaterial {
       vert: '',
       frag: '',
     }
-    layers?.forEach((layer: AbstractLayer) => {
+    layers?.forEach((layer: Abstract) => {
       variables.frag += layer.getFragmentVariables() + ' \n'
       variables.vert += layer.getVertexVariables() + ' \n'
       Object.keys(layer.uniforms).forEach((key) => (uniforms[key] = layer.uniforms[key]))
@@ -67,4 +67,4 @@ class LayerMaterial extends ShaderMaterial {
   }
 }
 
-export { AbstractLayer, LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer }
+export { Abstract, LayerMaterial, Base, Depth, Fresnel, Noise }

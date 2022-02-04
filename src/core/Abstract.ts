@@ -1,6 +1,6 @@
 import { IUniform, MathUtils } from 'three'
 
-export default abstract class AbstractLayer {
+export default abstract class Abstract {
   protected abstract uuid: string
   protected abstract name: string
   abstract uniforms: {

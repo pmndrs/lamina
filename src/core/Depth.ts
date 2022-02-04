@@ -1,15 +1,15 @@
-import { DepthLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { DepthProps, BlendMode, SC_BLEND_MODES } from '../types'
 import { Vector3, Color, ColorRepresentation, IUniform } from 'three'
-import AbstractLayer from './AbstractLayer'
+import Abstract from './Abstract'
 
-export default class DepthLayer extends AbstractLayer {
+export default class Depth extends Abstract {
   name: string = 'Depth'
-  protected uuid: string = AbstractLayer.genID()
+  protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: DepthLayerProps) {
+  constructor(props?: DepthProps) {
     super()
 
     const { alpha, mode, colorA, colorB, near, far, origin, isVector } = props || {}
@@ -93,7 +93,7 @@ export default class DepthLayer extends AbstractLayer {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set mode(v: LayerBlendMode) {
+  set mode(v: BlendMode) {
     this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
   }
   get mode() {

@@ -15,37 +15,37 @@ export const SC_BLEND_MODES = {
   softlight: 12,
 }
 
-export type LayerBlendMode = keyof typeof SC_BLEND_MODES
+export type BlendMode = keyof typeof SC_BLEND_MODES
 
-export interface BaseLayerProps {
+export interface BaseProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
 }
 
-export interface DepthLayerProps {
+export interface DepthProps {
   colorA?: ColorRepresentation
   colorB?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
   near?: number
   far?: number
   origin?: number[]
   isVector?: boolean
 }
 
-export interface FresnelLayerProps {
+export interface FresnelProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
   intensity?: number
   scale?: number
   bias?: number
 }
 
-export interface NoiseLayerProps {
+export interface NoiseProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
   scale?: number
 }

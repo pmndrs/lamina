@@ -6,18 +6,18 @@ import mergeRefs from 'react-merge-refs'
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
-      baseLayer: Node<LAYERS.BaseLayer, typeof LAYERS.BaseLayer>
-      depthLayer: Node<LAYERS.DepthLayer, typeof LAYERS.DepthLayer>
-      fresnelLayer: Node<LAYERS.FresnelLayer, typeof LAYERS.FresnelLayer>
-      noiseLayer: Node<LAYERS.NoiseLayer, typeof LAYERS.NoiseLayer>
+      layerMaterial_: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
+      base_: Node<LAYERS.Base, typeof LAYERS.Base>
+      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
+      fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
+      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
     }
   }
 }
 
 extend(LAYERS)
 
-export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
+export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial_'] & {
   children?: React.ReactNode
 }
 
@@ -30,26 +30,26 @@ const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialPro
   }, [children])
 
   return (
-    <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
+    <layerMaterial_ ref={mergeRefs([ref, forwardRef])} {...props}>
       {children}
-    </layerMaterial>
+    </layerMaterial_>
   )
 })
 
-const Base = React.forwardRef((props: JSX.IntrinsicElements['baseLayer'], forwardRef) => {
-  return <baseLayer ref={forwardRef as any} {...props} />
+const Base = React.forwardRef((props: JSX.IntrinsicElements['base_'], forwardRef) => {
+  return <base_ ref={forwardRef as any} {...props} />
 })
 
-const Depth = React.forwardRef((props: JSX.IntrinsicElements['depthLayer'], forwardRef) => {
-  return <depthLayer ref={forwardRef as any} {...props} />
+const Depth = React.forwardRef((props: JSX.IntrinsicElements['depth_'], forwardRef) => {
+  return <depth_ ref={forwardRef as any} {...props} />
 })
 
-const Fresnel = React.forwardRef((props: JSX.IntrinsicElements['fresnelLayer'], forwardRef) => {
-  return <fresnelLayer ref={forwardRef as any} {...props} />
+const Fresnel = React.forwardRef((props: JSX.IntrinsicElements['fresnel_'], forwardRef) => {
+  return <fresnel_ ref={forwardRef as any} {...props} />
 })
 
-const Noise = React.forwardRef((props: JSX.IntrinsicElements['noiseLayer'], forwardRef) => {
-  return <noiseLayer ref={forwardRef as any} {...props} />
+const Noise = React.forwardRef((props: JSX.IntrinsicElements['noise_'], forwardRef) => {
+  return <noise_ ref={forwardRef as any} {...props} />
 })
 
 export { LayerMaterial, Base, Depth, Fresnel, Noise }

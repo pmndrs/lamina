@@ -1,15 +1,15 @@
-import { FresnelLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { FresnelProps, BlendMode, SC_BLEND_MODES } from '../types'
 import { Color, ColorRepresentation, IUniform } from 'three'
-import AbstractLayer from './AbstractLayer'
+import Abstract from './Abstract'
 
-export default class FresnelLayer extends AbstractLayer {
+export default class Fresnel extends Abstract {
   name: string = 'Fresnel'
-  protected uuid: string = AbstractLayer.genID()
+  protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: FresnelLayerProps) {
+  constructor(props?: FresnelProps) {
     super()
     const { alpha, mode, color, bias, scale, intensity } = props || {}
 
@@ -83,7 +83,7 @@ export default class FresnelLayer extends AbstractLayer {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set mode(v: LayerBlendMode) {
+  set mode(v: BlendMode) {
     this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
   }
   get mode() {
