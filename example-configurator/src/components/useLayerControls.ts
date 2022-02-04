@@ -51,7 +51,7 @@ export default function useLayerControls() {
     {
       Type: {
         options: Object.keys(LayerProperties),
-        value: 'Color',
+        value: 'Base',
       },
       Add: button((get) => {
         const key = get('Layers.Type')

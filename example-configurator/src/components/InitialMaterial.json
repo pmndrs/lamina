@@ -26,7 +26,7 @@
     { "label": "Near", "value": 0, "__constructorKey": "near" },
     { "label": "Far", "value": 5.5, "__constructorKey": "far" }
   ],
-  "Color$3": [
+  "Base$3": [
     { "label": "Color", "value": "#000000", "__constructorKey": "color" },
     { "label": "Alpha", "value": 0.17999999999999994, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {

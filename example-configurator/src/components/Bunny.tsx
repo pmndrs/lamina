@@ -7,16 +7,11 @@ import { useGLTF, Center, Bounds } from '@react-three/drei'
 import LayerStack from './LayerStack'
 
 export default function Bunny() {
-  const { nodes, materials } = useGLTF('/bunny.glb') as any
+  const { nodes } = useGLTF('/bunny.glb') as any
   return (
     <Bounds fit>
       <Center>
-        <mesh
-          matrixAutoUpdate
-          geometry={nodes.Object_2.geometry} //
-          rotation-y={Math.PI / 2}
-          scale={30}
-        >
+        <mesh matrixAutoUpdate geometry={nodes.Object_2.geometry} rotation-y={Math.PI / 2} scale={30}>
           <LayerStack />
         </mesh>
       </Center>

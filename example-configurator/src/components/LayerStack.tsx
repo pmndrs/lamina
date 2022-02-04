@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react'
-import { LayerMaterial } from 'lamina'
 import * as LAYERS from 'lamina'
 import useLayerControls from './useLayerControls'
 import LayerHud from './LayerHud'
@@ -11,13 +10,20 @@ export default function LayerStack() {
       {Object.entries(layers).map(([name, layer]) => (
         <LayerHud key={name} name={name} layer={layer} setLayers={setLayers} />
       ))}
-
-      <LayerMaterial>
+      <LAYERS.LayerMaterial>
         {Object.entries(layers).map(([name, layer]) => {
-          const Layer = LAYERS[name]
-          return <Layer {/* props ??? */} />
+          const key = name.split('$')[0]
+          const Component = (LAYERS as any)[key]
+          const props: {
+            [key: string]: {}
+          } = {}
+          layer.forEach((v: any) => {
+            props[v.__constructorKey] = v.value
+          })
+          console.log(key, props)
+          return <Component key={name} {...props} />
         })}
-      </LayerMaterial>
+      </LAYERS.LayerMaterial>
     </>
   )
 }

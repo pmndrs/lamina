@@ -14,7 +14,6 @@ export default function LayerHud({ name, layer, setLayers }: any) {
             setLayers((layers: any) => {
               const cloneLayer = { ...layers }
               cloneLayer[name][i].value = _v
-
               return cloneLayer
             })
           },
@@ -25,7 +24,6 @@ export default function LayerHud({ name, layer, setLayers }: any) {
         setLayers((layers: any) => {
           const cloneLayer = { ...layers }
           delete cloneLayer[name]
-
           return cloneLayer
         })
       })
