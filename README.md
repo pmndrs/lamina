@@ -40,11 +40,7 @@ function GradientSphere() {
   return (
     <Sphere>
       <LayerMaterial>
-        <Base
-          color="#ffffff"
-          alpha={1}
-          mode="normal"
-        />
+        <Base color="#ffffff" alpha={1} mode="normal" />
         <Depth
           colorA="#810000"
           colorB="#ffd0d0"
@@ -52,7 +48,7 @@ function GradientSphere() {
           mode="multiply"
           near={0}
           far={2}
-          origin={[1, 1, 1]}
+          origin={new THREE.Vector3(1, 1, 1)}
         />
       </LayerMaterial>
     </Sphere>
@@ -83,7 +79,7 @@ const material = new LayerMaterial({
       mode: 'multiply',
       near: 0,
       far: 2,
-      origin: [1, 1, 1],
+      origin: new THREE.Vector3(1, 1, 1),
     }),
   ],
 })
@@ -99,8 +95,8 @@ const mesh = new THREE.Mesh(geometry, material)
 
 Here are the layers that laminia currently provides
 
-| Name           | Function             |
-| -------------- | -------------------- |
+| Name      | Function             |
+| --------- | -------------------- |
 | `Base`    | Flat color           |
 | `Depth`   | Depth based gradient |
 | `Fresnel` | Fresnel shading      |
@@ -114,6 +110,8 @@ You can write your own layers by extending the `Abstract` class.
 class CustomLayer extends Abstract {
   // Name of your layer
   name: string = 'CustomLayer'
+  // Default blend mode
+  mode: BlendMode = 'normal'
   // Give it an ID
   protected uuid: string = Abstract.genID()
 
@@ -132,12 +130,9 @@ class CustomLayer extends Abstract {
         value: customUniform ?? defaultValue,
       },
 
-      // We recommend having an alpha and a blend mode defined
+      // We recommend having an alpha  defined
       [`u_${this.uuid}_alpha`]: {
         value: 1,
-      },
-      [`u_${this.uuid}_mode`]: {
-        value: BlendModes['normal'],
       },
     }
   }
@@ -148,9 +143,7 @@ class CustomLayer extends Abstract {
     return /* glsl */ `    
     // Lets assume this is a color
     uniform vec3 u_${this.uuid}_customUniform;
-
     uniform float u_${this.uuid}_alpha;
-    uniform int u_${this.uuid}_mode;
 `
   }
 
@@ -165,14 +158,18 @@ class CustomLayer extends Abstract {
   // ...
   // gl_FragColor = e;
   //
-  // List of blend modes: https://github.com/pmndrs/lamina/blob/9ebbd6ece31a1e8313c6a2f316a7d591e978437f/src/types.ts#L3
+  // List of blend modes: https://github.com/pmndrs/lamina/blob/7246a43d411dd2d4c069c134a843a3f0bf40623a/src/types.ts#L3
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // Make sure to create unique local variables
       // by appending the UUID to them
       vec3 f_${this.uuid}_color = u_${this.uuid}_customUniform;
 
-      ${e} = sc_blend(vec4(f_${this.uuid}_color, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
+     ${e} = ${this.getBlendMode(
+      BlendModes[this.mode] as number,
+      e,
+      `vec4(u_${this.uuid}_color, u_${this.uuid}_alpha)`
+    )};
   `
   }
 
@@ -196,6 +193,14 @@ class CustomLayer extends Abstract {
   }
 
   // Setters and getters for uniforms
+  set alpha(v) {
+    this.uniforms[`u_${this.uuid}_alpha`].value = v
+  }
+
+  get alpha() {
+    return this.uniforms[`u_${this.uuid}_alpha`].value
+  }
+
   set customUniform(v) {
     this.uniforms[`u_${this.uuid}_customUniform`].value = v
   }
