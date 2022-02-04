@@ -137,7 +137,7 @@ class CustomLayer extends Abstract {
         value: 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES['NORMAL'],
+        value: BlendModes['normal'],
       },
     }
   }

@@ -1,5 +1,5 @@
 import { Color, ColorRepresentation, IUniform } from 'three'
-import { BlendMode, NoiseProps, SC_BLEND_MODES } from '../types'
+import { BlendMode, NoiseProps, BlendModes } from '../types'
 import Abstract from './Abstract'
 
 export default class Noise extends Abstract {
@@ -18,7 +18,7 @@ export default class Noise extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'normal'],
+        value: BlendModes[mode ?? 'normal'],
       },
       [`u_${this.uuid}_scale`]: {
         value: scale ?? 1,
@@ -71,7 +71,7 @@ export default class Noise extends Abstract {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
   set mode(v: BlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
+    this.uniforms[`u_${this.uuid}_mode`].value = BlendModes[v]
   }
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value

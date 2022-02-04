@@ -1,4 +1,4 @@
-import { DepthProps, BlendMode, SC_BLEND_MODES } from '../types'
+import { DepthProps, BlendMode, BlendModes } from '../types'
 import { Vector3, Color, ColorRepresentation, IUniform } from 'three'
 import Abstract from './Abstract'
 
@@ -19,7 +19,7 @@ export default class Depth extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'normal'],
+        value: BlendModes[mode ?? 'normal'],
       },
       [`u_${this.uuid}_near`]: {
         value: near ?? 700,
@@ -94,7 +94,7 @@ export default class Depth extends Abstract {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
   set mode(v: BlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
+    this.uniforms[`u_${this.uuid}_mode`].value = BlendModes[v]
   }
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value

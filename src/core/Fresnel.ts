@@ -1,4 +1,4 @@
-import { FresnelProps, BlendMode, SC_BLEND_MODES } from '../types'
+import { FresnelProps, BlendMode, BlendModes } from '../types'
 import { Color, ColorRepresentation, IUniform } from 'three'
 import Abstract from './Abstract'
 
@@ -18,7 +18,7 @@ export default class Fresnel extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'normal'],
+        value: BlendModes[mode ?? 'normal'],
       },
       [`u_${this.uuid}_color`]: {
         value: new Color(color ?? '#ffffff'),
@@ -84,7 +84,7 @@ export default class Fresnel extends Abstract {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
   set mode(v: BlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
+    this.uniforms[`u_${this.uuid}_mode`].value = BlendModes[v]
   }
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value

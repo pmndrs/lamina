@@ -1,6 +1,6 @@
 import { ColorRepresentation } from 'three'
 
-export const SC_BLEND_MODES = {
+export const BlendModes = {
   normal: 1,
   add: 2,
   subtract: 3,
@@ -15,7 +15,7 @@ export const SC_BLEND_MODES = {
   softlight: 12,
 }
 
-export type BlendMode = keyof typeof SC_BLEND_MODES
+export type BlendMode = keyof typeof BlendModes
 
 export interface BaseProps {
   color?: ColorRepresentation

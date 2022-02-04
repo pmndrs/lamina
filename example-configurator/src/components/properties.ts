@@ -1,4 +1,4 @@
-import { SC_BLEND_MODES } from '../types'
+import { BlendModes } from '../types'
 
 export const LayerProperties = {
   Color: [
@@ -16,7 +16,7 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
+      options: Object.keys(BlendModes),
       value: 'normal',
       __constructorKey: 'mode',
     },
@@ -41,7 +41,7 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
+      options: Object.keys(BlendModes),
       value: 'normal',
       __constructorKey: 'mode',
     },
@@ -76,7 +76,7 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
+      options: Object.keys(BlendModes),
       value: 'normal',
       __constructorKey: 'mode',
     },
@@ -117,7 +117,7 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
+      options: Object.keys(BlendModes),
       value: 'normal',
       __constructorKey: 'mode',
     },

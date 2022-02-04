@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-export const SC_BLEND_MODES = {
+export const BlendModes = {
   normal: 1,
   add: 2,
   subtract: 3,

@@ -1,6 +1,6 @@
 import Abstract from './Abstract'
 import { Color, ColorRepresentation, IUniform } from 'three'
-import { BaseProps, BlendMode, SC_BLEND_MODES } from '../types'
+import { BaseProps, BlendMode, BlendModes } from '../types'
 
 export default class Base extends Abstract {
   name: string = 'Base'
@@ -22,7 +22,7 @@ export default class Base extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'normal'],
+        value: BlendModes[mode ?? 'normal'],
       },
     }
   }
@@ -58,7 +58,7 @@ export default class Base extends Abstract {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
   set mode(v: BlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
+    this.uniforms[`u_${this.uuid}_mode`].value = BlendModes[v]
   }
   get mode() {
     return this.uniforms[`u_${this.uuid}_mode`].value
