@@ -4,7 +4,7 @@ import resolve from '@rollup/plugin-node-resolve'
 
 const root = process.platform === 'win32' ? path.resolve('/') : '/'
 const external = (id) => !id.startsWith('.') && !id.startsWith(root)
-const extensions = ['.js', '.ts', '.json']
+const extensions = ['.js', '.jsx', '.ts', '.tsx', '.json']
 
 const getBabelOptions = ({ useESModules }) => ({
   babelrc: false,
@@ -27,6 +27,7 @@ const getBabelOptions = ({ useESModules }) => ({
         targets: '> 1%, not dead, not ie 11, not op_mini all',
       },
     ],
+    '@babel/preset-react',
     '@babel/preset-typescript',
   ],
   plugins: [['@babel/transform-runtime', { regenerator: false, useESModules }]],
@@ -34,14 +35,26 @@ const getBabelOptions = ({ useESModules }) => ({
 
 export default [
   {
-    input: `./src/index.ts`,
+    input: `./src/index.tsx`,
     output: { file: `dist/index.js`, format: 'esm' },
     external,
     plugins: [babel(getBabelOptions({ useESModules: true })), resolve({ extensions })],
   },
   {
-    input: `./src/index.ts`,
+    input: `./src/index.tsx`,
     output: { file: `dist/index.cjs.js`, format: 'cjs' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
+  },
+  {
+    input: `./src/vanilla.ts`,
+    output: { file: `dist/vanilla.js`, format: 'esm' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: true })), resolve({ extensions })],
+  },
+  {
+    input: `./src/vanilla.ts`,
+    output: { file: `dist/vanilla.cjs.js`, format: 'cjs' },
     external,
     plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
   },

@@ -1,15 +1,16 @@
-import { DepthLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
-import { Color, ColorRepresentation, IUniform } from 'three'
-import AbstractLayer from './AbstractLayer'
+import { DepthProps, BlendMode, BlendModes } from '../types'
+import { Vector3, Color, ColorRepresentation, IUniform } from 'three'
+import Abstract from './Abstract'
 
-export default class DepthLayer extends AbstractLayer {
+export default class Depth extends Abstract {
   name: string = 'Depth'
-  protected uuid: string = AbstractLayer.genID()
+  mode: BlendMode = 'normal'
+  protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: DepthLayerProps) {
+  constructor(props?: DepthProps) {
     super()
 
     const { alpha, mode, colorA, colorB, near, far, origin, isVector } = props || {}
@@ -18,9 +19,6 @@ export default class DepthLayer extends AbstractLayer {
       [`u_${this.uuid}_alpha`]: {
         value: alpha ?? 1,
       },
-      [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
-      },
       [`u_${this.uuid}_near`]: {
         value: near ?? 700,
       },
@@ -28,7 +26,7 @@ export default class DepthLayer extends AbstractLayer {
         value: far ?? 1e7,
       },
       [`u_${this.uuid}_origin`]: {
-        value: origin ?? [0, 0, 0],
+        value: origin ?? new Vector3(0, 0, 0),
       },
       [`u_${this.uuid}_colorA`]: {
         value: new Color(colorA ?? '#ffffff'),
@@ -40,6 +38,8 @@ export default class DepthLayer extends AbstractLayer {
         value: isVector ?? true,
       },
     }
+
+    this.mode = BlendModes[mode || 'normal']
   }
 
   getVertexVariables(): string {
@@ -58,7 +58,6 @@ export default class DepthLayer extends AbstractLayer {
     return /* glsl */ `    
     // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
-    uniform int u_${this.uuid}_mode;
     uniform float u_${this.uuid}_near;
     uniform float u_${this.uuid}_far;
     uniform float u_${this.uuid}_isVector;
@@ -77,12 +76,19 @@ export default class DepthLayer extends AbstractLayer {
      
       vec3 f_${this.uuid}_base = ( u_${this.uuid}_isVector > 0.5 ) ?  u_${this.uuid}_origin : cameraPosition;
       float f_${this.uuid}_dist = length( v_${this.uuid}_worldPosition.xyz - f_${this.uuid}_base );
-      float f_${this.uuid}_dep = ( f_${this.uuid}_dist - u_${this.uuid}_near ) / ( u_${this.uuid}_far - u_${this.uuid}_near );
+      float f_${this.uuid}_dep = ( f_${this.uuid}_dist - u_${this.uuid}_near ) / ( u_${this.uuid}_far - u_${
+      this.uuid
+    }_near );
 
-      vec3 f_${this.uuid}_depth =  mix( u_${this.uuid}_colorB, u_${this.uuid}_colorA, 1.0 - clamp( f_${this.uuid}_dep, 0., 1. ) );
+      vec3 f_${this.uuid}_depth =  mix( u_${this.uuid}_colorB, u_${this.uuid}_colorA, 1.0 - clamp( f_${
+      this.uuid
+    }_dep, 0., 1. ) );
 
-      ${e} = sc_blend(vec4(f_${this.uuid}_depth, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
-
+      ${e} = ${this.getBlendMode(
+      BlendModes[this.mode] as number,
+      e,
+      `vec4(f_${this.uuid}_depth, u_${this.uuid}_alpha)`
+    )};
       // *************************************************************************************
   `
   }
@@ -93,12 +99,7 @@ export default class DepthLayer extends AbstractLayer {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set mode(v: LayerBlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
-  }
-  get mode() {
-    return this.uniforms[`u_${this.uuid}_mode`].value
-  }
+
   set near(v: number) {
     this.uniforms[`u_${this.uuid}_near`].value = v
   }
@@ -111,7 +112,7 @@ export default class DepthLayer extends AbstractLayer {
   get far() {
     return this.uniforms[`u_${this.uuid}_far`].value
   }
-  set origin(v: number[]) {
+  set origin(v: Vector3) {
     this.uniforms[`u_${this.uuid}_origin`].value = v
   }
   get origin() {

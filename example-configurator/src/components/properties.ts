@@ -1,7 +1,7 @@
-import { SC_BLEND_MODES } from '../types'
+import { BlendModes } from '../types'
 
 export const LayerProperties = {
-  Color: [
+  Base: [
     {
       label: 'Color',
       value: '#ffffff',
@@ -16,8 +16,8 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      options: Object.keys(BlendModes),
+      value: 'normal',
       __constructorKey: 'mode',
     },
   ],
@@ -41,8 +41,8 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      options: Object.keys(BlendModes),
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {
@@ -76,23 +76,23 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      options: Object.keys(BlendModes),
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {
-      label: 'Intensity',
+      label: 'Power',
       value: 2,
+      min: 0,
+      max: 3,
+      __constructorKey: 'power',
+    },
+    {
+      label: 'Intensity',
+      value: 1,
       min: 0,
       max: 10,
       __constructorKey: 'intensity',
-    },
-    {
-      label: 'Scale',
-      value: 1,
-      min: 0,
-      max: 5,
-      __constructorKey: 'scale',
     },
     {
       label: 'Bias',
@@ -117,8 +117,8 @@ export const LayerProperties = {
     },
     {
       label: 'Blend Mode',
-      options: Object.keys(SC_BLEND_MODES),
-      value: 'NORMAL',
+      options: Object.keys(BlendModes),
+      value: 'normal',
       __constructorKey: 'mode',
     },
     {
@@ -127,6 +127,46 @@ export const LayerProperties = {
       min: 0,
       max: 5,
       __constructorKey: 'scale',
+    },
+  ],
+  Normals: [
+    {
+      label: 'Alpha',
+      value: 1,
+      min: 0,
+      max: 1,
+      __constructorKey: 'alpha',
+    },
+    {
+      label: 'Blend Mode',
+      options: Object.keys(BlendModes),
+      value: 'normal',
+      __constructorKey: 'mode',
+    },
+    {
+      label: 'Direction',
+      value: [1, 1, 1],
+      __constructorKey: 'direction',
+    },
+  ],
+  Texture: [
+    {
+      label: 'Alpha',
+      value: 1,
+      min: 0,
+      max: 1,
+      __constructorKey: 'alpha',
+    },
+    {
+      label: 'Blend Mode',
+      options: Object.keys(BlendModes),
+      value: 'normal',
+      __constructorKey: 'mode',
+    },
+    {
+      label: 'Map',
+      image: undefined,
+      __constructorKey: 'map',
     },
   ],
 }

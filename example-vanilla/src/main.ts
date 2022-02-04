@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
-import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
+import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/vanilla'
+import { Vector3 } from 'three'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -32,32 +33,32 @@ randomProps.forEach((prop) => {
   const geometry = new THREE.SphereGeometry(1, 128, 64)
   const material = new LayerMaterial({
     layers: [
-      new BaseLayer({
-        color: '#d9d9d9', //
+      new Base({
+        color: '#d9d9d9',
         alpha: 1,
-        mode: 'NORMAL',
+        mode: 'normal',
       }),
-      new DepthLayer({
+      new Depth({
         colorA: '#002f4b',
         colorB: '#f2fdff',
         alpha: 1,
-        mode: 'MULTIPLY',
+        mode: 'multiply',
         near: 0,
         far: 2,
-        origin: [1, 1, 1],
+        origin: new Vector3(1, 1, 1),
       }),
-      new FresnelLayer({
+      new Fresnel({
         color: '#bffbff',
         alpha: 1,
-        mode: 'SOFTLIGHT',
-        intensity: 2,
-        scale: 1,
+        mode: 'softlight',
+        power: 2,
+        intensity: 1,
         bias: 0.1,
       }),
-      new NoiseLayer({
+      new Noise({
         color: '#a3a3a3',
         alpha: 0.1,
-        mode: 'NORMAL',
+        mode: 'normal',
         scale: 1,
       }),
     ],
@@ -76,7 +77,6 @@ randomProps.forEach((prop) => {
 
 function animate() {
   requestAnimationFrame(animate)
-
   renderer.render(scene, camera)
 }
 

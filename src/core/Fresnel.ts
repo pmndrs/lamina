@@ -1,24 +1,22 @@
-import { FresnelLayerProps, LayerBlendMode, SC_BLEND_MODES } from '../types'
+import { FresnelProps, BlendMode, BlendModes } from '../types'
 import { Color, ColorRepresentation, IUniform } from 'three'
-import AbstractLayer from './AbstractLayer'
+import Abstract from './Abstract'
 
-export default class FresnelLayer extends AbstractLayer {
+export default class Fresnel extends Abstract {
   name: string = 'Fresnel'
-  protected uuid: string = AbstractLayer.genID()
+  mode: BlendMode = 'normal'
+  protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }
 
-  constructor(props?: FresnelLayerProps) {
+  constructor(props?: FresnelProps) {
     super()
-    const { alpha, mode, color, bias, scale, intensity } = props || {}
+    const { alpha, mode, color, bias, intensity, power } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
         value: alpha ?? 1,
-      },
-      [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES[mode ?? 'NORMAL'],
       },
       [`u_${this.uuid}_color`]: {
         value: new Color(color ?? '#ffffff'),
@@ -26,13 +24,15 @@ export default class FresnelLayer extends AbstractLayer {
       [`u_${this.uuid}_bias`]: {
         value: bias ?? 0,
       },
-      [`u_${this.uuid}_scale`]: {
-        value: scale ?? 1,
-      },
       [`u_${this.uuid}_intensity`]: {
-        value: intensity ?? 2,
+        value: intensity ?? 1,
+      },
+      [`u_${this.uuid}_power`]: {
+        value: power ?? 2,
       },
     }
+
+    this.mode = BlendModes[mode || 'normal']
   }
 
   getVertexVariables(): string {
@@ -53,11 +53,10 @@ export default class FresnelLayer extends AbstractLayer {
     return /* glsl */ `    
     // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
-    uniform int u_${this.uuid}_mode;
     uniform vec3 u_${this.uuid}_color;
     uniform float u_${this.uuid}_bias;
-    uniform float u_${this.uuid}_scale;
     uniform float u_${this.uuid}_intensity;
+    uniform float u_${this.uuid}_power;
     uniform float u_${this.uuid}_factor;
 
     varying vec3 v_${this.uuid}_worldPosition;
@@ -69,10 +68,18 @@ export default class FresnelLayer extends AbstractLayer {
   getFragmentBody(e: string) {
     return /* glsl */ `    
       // SC: Fresnel layer frag-shader-code ***************************************************
-      float f_${this.uuid}_a = ( 1.0 - -min(dot(v_${this.uuid}_worldPosition, normalize(v_${this.uuid}_worldNormal) ), 0.0) );
-      float f_${this.uuid}_fresnel = u_${this.uuid}_bias + (u_${this.uuid}_scale * pow(f_${this.uuid}_a, u_${this.uuid}_intensity));
+      float f_${this.uuid}_a = ( 1.0 - -min(dot(v_${this.uuid}_worldPosition, normalize(v_${
+      this.uuid
+    }_worldNormal) ), 0.0) );
+      float f_${this.uuid}_fresnel = u_${this.uuid}_bias + (u_${this.uuid}_intensity * pow(f_${this.uuid}_a, u_${
+      this.uuid
+    }_power));
 
-      ${e} = sc_blend( vec4(u_${this.uuid}_color * f_${this.uuid}_fresnel, u_${this.uuid}_alpha), ${e}, u_${this.uuid}_mode );
+      ${e} = ${this.getBlendMode(
+      BlendModes[this.mode] as number,
+      e,
+      `vec4(u_${this.uuid}_color * f_${this.uuid}_fresnel, u_${this.uuid}_alpha)`
+    )};
       // *************************************************************************************
   `
   }
@@ -83,12 +90,7 @@ export default class FresnelLayer extends AbstractLayer {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set mode(v: LayerBlendMode) {
-    this.uniforms[`u_${this.uuid}_mode`].value = SC_BLEND_MODES[v]
-  }
-  get mode() {
-    return this.uniforms[`u_${this.uuid}_mode`].value
-  }
+
   set color(v: ColorRepresentation) {
     this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
   }
@@ -101,16 +103,16 @@ export default class FresnelLayer extends AbstractLayer {
   get bias() {
     return this.uniforms[`u_${this.uuid}_bias`].value
   }
-  set scale(v: number) {
-    this.uniforms[`u_${this.uuid}_scale`].value = v
-  }
-  get scale() {
-    return this.uniforms[`u_${this.uuid}_scale`].value
-  }
   set intensity(v: number) {
     this.uniforms[`u_${this.uuid}_intensity`].value = v
   }
   get intensity() {
     return this.uniforms[`u_${this.uuid}_intensity`].value
+  }
+  set power(v: number) {
+    this.uniforms[`u_${this.uuid}_power`].value = v
+  }
+  get power() {
+    return this.uniforms[`u_${this.uuid}_power`].value
   }
 }

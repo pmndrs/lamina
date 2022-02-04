@@ -1,6 +1,6 @@
 import { button, useControls } from 'leva'
 import { useState } from 'react'
-import { SC_BLEND_MODES } from '../../../src/types'
+import { BlendModes } from '../../../src/types'
 import { LayerProperties } from './properties'
 import InitialMaterial from './InitialMaterial.json'
 
@@ -51,7 +51,7 @@ export default function useLayerControls() {
     {
       Type: {
         options: Object.keys(LayerProperties),
-        value: 'Color',
+        value: 'Base',
       },
       Add: button((get) => {
         const key = get('Layers.Type')

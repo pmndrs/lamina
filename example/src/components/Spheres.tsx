@@ -1,17 +1,13 @@
 import React, { useMemo } from 'react'
-import { extend, GroupProps, useThree } from '@react-three/fiber'
-import { Color, MathUtils } from 'three'
+import { MathUtils, Vector3 } from 'three'
+import { GroupProps, useThree } from '@react-three/fiber'
 import { Sphere } from '@react-three/drei'
-import { useControls } from 'leva'
-import { LayerBlendMode, SC_BLEND_MODES } from '../../../src/types'
+import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
+import { BlendMode } from '../../../src/types'
 import useSphereControls from './useSphereControls'
-import { LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer } from 'lamina'
-
-extend({ LayerMaterial, BaseLayer, DepthLayer, FresnelLayer, NoiseLayer })
 
 export default function Spheres() {
   const viewport = useThree((s) => s.viewport)
-
   const RandomProps = useMemo<GroupProps[]>(
     () =>
       new Array(30).fill(0).map(() => {
@@ -56,36 +52,27 @@ export default function Spheres() {
       {RandomProps.map((props, i) => (
         <group {...props} key={'Sphere-' + i}>
           <Sphere args={[1, 128, 64]}>
-            <layerMaterial>
-              <baseLayer
-                color={BaseColor} //
-                alpha={BaseStrength}
-                mode={BaseBlendMode as LayerBlendMode}
-              />
-              <depthLayer
+            <LayerMaterial>
+              <Base color={BaseColor} alpha={BaseStrength} mode={BaseBlendMode as BlendMode} />
+              <Depth
                 colorA={GradientColorA}
                 colorB={GradientColorB}
                 alpha={GradientStrength}
-                mode={GradientBlendMode as LayerBlendMode}
+                mode={GradientBlendMode as BlendMode}
                 near={0}
                 far={2}
-                origin={[1, 1, 1]}
+                origin={new Vector3(1, 1, 1)}
               />
-              <fresnelLayer
+              <Fresnel
                 color={FresnelColor}
                 alpha={1}
-                mode={FresnelBlendMode as LayerBlendMode}
-                intensity={FresnelStrength * 2}
-                scale={1}
+                mode={FresnelBlendMode as BlendMode}
+                power={FresnelStrength * 2}
+                intensity={1}
                 bias={0.1}
               />
-              <noiseLayer
-                color={GrainColor} //
-                alpha={GrainStrength}
-                mode={GrainBlendMode as LayerBlendMode}
-                scale={1}
-              />
-            </layerMaterial>
+              <Noise color={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />
+            </LayerMaterial>
           </Sphere>
         </group>
       ))}

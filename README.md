@@ -34,29 +34,27 @@
 `lamina` let's you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
-import { LayerMaterial, BaseLayer, DepthLayer } from 'lamina'
-
-extend({ LayerMaterial, BaseLayer, DepthLayer })
+import { LayerMaterial, Base, Depth } from 'lamina'
 
 function GradientSphere() {
   return (
     <Sphere>
-      <layerMaterial>
-        <baseLayer
+      <LayerMaterial>
+        <Base
           color="#ffffff"
           alpha={1}
-          mode="NORMAL"
+          mode="normal"
         />
-        <depthLayer
+        <Depth
           colorA="#810000"
           colorB="#ffd0d0"
           alpha={1}
-          mode="MULTIPLY"
+          mode="multiply"
           near={0}
           far={2}
           origin={[1, 1, 1]}
         />
-      </layerMaterial>
+      </LayerMaterial>
     </Sphere>
   )
 }
@@ -68,21 +66,21 @@ function GradientSphere() {
 Lamina can be used with vanilla Three.js. Each layer is just a class.
 
 ```js
-import { LayerMaterial, BaseLayer, DepthLayer } from 'lamina'
+import { LayerMaterial, Base, Depth } from 'lamina/vanilla'
 
 const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
   layers: [
-    new BaseLayer({
+    new Base({
       color: '#d9d9d9',
       alpha: 1,
-      mode: 'NORMAL',
+      mode: 'normal',
     }),
-    new DepthLayer({
+    new Depth({
       colorA: '#002f4b',
       colorB: '#f2fdff',
       alpha: 1,
-      mode: 'MULTIPLY',
+      mode: 'multiply',
       near: 0,
       far: 2,
       origin: [1, 1, 1],
@@ -103,21 +101,21 @@ Here are the layers that laminia currently provides
 
 | Name           | Function             |
 | -------------- | -------------------- |
-| `BaseLayer`    | Flat color           |
-| `DepthLayer`   | Depth based gradient |
-| `FresnelLayer` | Fresnel shading      |
-| `NoiseLayer`   | White noise          |
+| `Base`    | Flat color           |
+| `Depth`   | Depth based gradient |
+| `Fresnel` | Fresnel shading      |
+| `Noise`   | White noise          |
 
 ### Writing your own layers
 
-You can write your own layers by extending the `AbstractLayer` class.
+You can write your own layers by extending the `Abstract` class.
 
 ```ts
-class CustomLayer extends AbstractLayer {
+class CustomLayer extends Abstract {
   // Name of your layer
   name: string = 'CustomLayer'
   // Give it an ID
-  protected uuid: string = AbstractLayer.genID()
+  protected uuid: string = Abstract.genID()
 
   // Define your own uniforms
   uniforms: {
@@ -139,7 +137,7 @@ class CustomLayer extends AbstractLayer {
         value: 1,
       },
       [`u_${this.uuid}_mode`]: {
-        value: SC_BLEND_MODES['NORMAL'],
+        value: BlendModes['normal'],
       },
     }
   }

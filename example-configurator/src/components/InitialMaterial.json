@@ -1,78 +1,79 @@
 {
   "Depth$1": [
-    { "label": "Color A", "value": "#ff9d00", "__constructorKey": "colorA" },
-    { "label": "Color B", "value": "#002dff", "__constructorKey": "colorB" },
+    { "label": "Color A", "value": "#15ff00", "__constructorKey": "colorA" },
+    { "label": "Color B", "value": "#2100ff", "__constructorKey": "colorB" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
-        "NORMAL",
-        "ADD",
-        "SUBTRACT",
-        "MULTIPLY",
-        "ADDSUB",
-        "LIGHTEN",
-        "DARKEN",
-        "SWITCH",
-        "DIVIDE",
-        "OVERLAY",
-        "SCREEN",
-        "SOFTLIGHT"
+        "normal",
+        "add",
+        "subtract",
+        "multiply",
+        "addsub",
+        "lighten",
+        "darken",
+        "switch",
+        "divide",
+        "overlay",
+        "screen",
+        "softlight"
       ],
-      "value": "NORMAL",
+      "value": "normal",
       "__constructorKey": "mode"
     },
-    { "label": "Origin", "value": [0, 0, 0], "__constructorKey": "origin" },
+    { "label": "Origin", "value": [0, 0, 1], "__constructorKey": "origin" },
     { "label": "Near", "value": 0, "__constructorKey": "near" },
-    { "label": "Far", "value": 5.5, "__constructorKey": "far" }
-  ],
-  "Color$3": [
-    { "label": "Color", "value": "#000000", "__constructorKey": "color" },
-    { "label": "Alpha", "value": 0.17999999999999994, "min": 0, "max": 1, "__constructorKey": "alpha" },
-    {
-      "label": "Blend Mode",
-      "options": [
-        "NORMAL",
-        "ADD",
-        "SUBTRACT",
-        "MULTIPLY",
-        "ADDSUB",
-        "LIGHTEN",
-        "DARKEN",
-        "SWITCH",
-        "DIVIDE",
-        "OVERLAY",
-        "SCREEN",
-        "SOFTLIGHT"
-      ],
-      "value": "NORMAL",
-      "__constructorKey": "mode"
-    }
+    { "label": "Far", "value": 3.5, "__constructorKey": "far" }
   ],
   "Fresnel$4": [
     { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
-    { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
+    { "label": "Alpha", "value": 0.62, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
-        "NORMAL",
-        "ADD",
-        "SUBTRACT",
-        "MULTIPLY",
-        "ADDSUB",
-        "LIGHTEN",
-        "DARKEN",
-        "SWITCH",
-        "DIVIDE",
-        "OVERLAY",
-        "SCREEN",
-        "SOFTLIGHT"
+        "normal",
+        "add",
+        "subtract",
+        "multiply",
+        "addsub",
+        "lighten",
+        "darken",
+        "switch",
+        "divide",
+        "overlay",
+        "screen",
+        "softlight"
       ],
-      "value": "SOFTLIGHT",
+      "value": "multiply",
       "__constructorKey": "mode"
     },
-    { "label": "Intensity", "value": 3.3, "min": 0, "max": 10, "__constructorKey": "intensity" },
-    { "label": "Scale", "value": 3.0500000000000003, "min": 0, "max": 5, "__constructorKey": "scale" },
+    { "label": "Power", "value": 1.64, "min": 0, "max": 3, "__constructorKey": "power" },
+    { "label": "Intensity", "value": 3.8999999999999995, "min": 0, "max": 10, "__constructorKey": "intensity" },
     { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
+  ],
+  "Noise$3": [
+    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
+    { "label": "Alpha", "value": 0.6, "min": 0, "max": 1, "__constructorKey": "alpha" },
+    {
+      "label": "Blend Mode",
+      "options": [
+        "normal",
+        "add",
+        "subtract",
+        "multiply",
+        "addsub",
+        "lighten",
+        "darken",
+        "switch",
+        "divide",
+        "overlay",
+        "screen",
+        "softlight"
+      ],
+      "value": "multiply",
+      "__constructorKey": "mode"
+    },
+    { "label": "Scale", "value": 1.2, "min": 0, "max": 5, "__constructorKey": "scale" }
   ]
 }

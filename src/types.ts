@@ -1,51 +1,65 @@
-import { Color, ColorRepresentation } from 'three'
+import { ColorRepresentation, Texture, Vector3 } from 'three'
 
-export const SC_BLEND_MODES = {
-  NORMAL: 1,
-  ADD: 2,
-  SUBTRACT: 3,
-  MULTIPLY: 4,
-  ADDSUB: 5,
-  LIGHTEN: 6,
-  DARKEN: 7,
-  SWITCH: 8,
-  DIVIDE: 9,
-  OVERLAY: 10,
-  SCREEN: 11,
-  SOFTLIGHT: 12,
+export const BlendModes: {
+  [key: string]: number
+} = {
+  normal: 1,
+  add: 2,
+  subtract: 3,
+  multiply: 4,
+  addsub: 5,
+  lighten: 6,
+  darken: 7,
+  switch: 8,
+  divide: 9,
+  overlay: 10,
+  screen: 11,
+  softlight: 12,
 }
 
-export type LayerBlendMode = keyof typeof SC_BLEND_MODES
+export type BlendMode = keyof typeof BlendModes
 
-export interface BaseLayerProps {
+export interface BaseProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
 }
 
-export interface DepthLayerProps {
+export interface DepthProps {
   colorA?: ColorRepresentation
   colorB?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
   near?: number
   far?: number
-  origin?: number[]
+  origin?: Vector3
   isVector?: boolean
 }
 
-export interface FresnelLayerProps {
+export interface FresnelProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
+  power?: number
   intensity?: number
-  scale?: number
   bias?: number
 }
 
-export interface NoiseLayerProps {
+export interface NoiseProps {
   color?: ColorRepresentation
   alpha?: number
-  mode?: LayerBlendMode
+  mode?: BlendMode
   scale?: number
+}
+
+export interface NormalsProps {
+  alpha?: number
+  mode?: BlendMode
+  direction?: Vector3
+}
+
+export interface TextureProps {
+  alpha?: number
+  mode?: BlendMode
+  map?: Texture
 }
