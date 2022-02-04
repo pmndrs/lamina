@@ -1,6 +1,10 @@
 import { button, useControls } from 'leva'
+import { useMemo } from 'react'
+import { Texture, TextureLoader } from 'three'
 
-export default function LayerHud({ name, layer, setLayers }: any) {
+export default function LayerHud({ name, layer, setLayers, layers }: any) {
+  const loader = useMemo(() => new TextureLoader(), [])
+
   useControls(
     name.split('$')[0] + ': Layer ' + name.split('$')[1],
     () => {
@@ -10,7 +14,18 @@ export default function LayerHud({ name, layer, setLayers }: any) {
       layer.forEach((v: any, i: number) => {
         o[`${v.label}_${i}`] = {
           ...v,
-          onChange: (_v: any) => {
+          onChange: async (_v: any) => {
+            if (_v && layers[name][i].__constructorKey == 'map') {
+              const t = await loader.loadAsync(_v)
+              setLayers((layers: any) => {
+                const cloneLayer = { ...layers }
+                cloneLayer[name][i].value = t
+                return cloneLayer
+              })
+
+              return
+            }
+
             setLayers((layers: any) => {
               const cloneLayer = { ...layers }
               cloneLayer[name][i].value = _v

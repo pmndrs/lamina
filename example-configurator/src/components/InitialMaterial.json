@@ -1,6 +1,7 @@
 {
-  "Base$4": [
-    { "label": "Color", "value": "#3d00ff", "__constructorKey": "color" },
+  "Depth$1": [
+    { "label": "Color A", "value": "#15ff00", "__constructorKey": "colorA" },
+    { "label": "Color B", "value": "#2100ff", "__constructorKey": "colorB" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
@@ -18,13 +19,16 @@
         "screen",
         "softlight"
       ],
-      "value": "multiply",
+      "value": "normal",
       "__constructorKey": "mode"
-    }
+    },
+    { "label": "Origin", "value": [0, 0, 1], "__constructorKey": "origin" },
+    { "label": "Near", "value": 0, "__constructorKey": "near" },
+    { "label": "Far", "value": 3.5, "__constructorKey": "far" }
   ],
-  "Base$5": [
-    { "label": "Color", "value": "#3d00ff", "__constructorKey": "color" },
-    { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
+  "Fresnel$4": [
+    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
+    { "label": "Alpha", "value": 0.62, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
@@ -43,6 +47,33 @@
       ],
       "value": "multiply",
       "__constructorKey": "mode"
-    }
+    },
+    { "label": "Power", "value": 1.64, "min": 0, "max": 3, "__constructorKey": "power" },
+    { "label": "Intensity", "value": 3.8999999999999995, "min": 0, "max": 10, "__constructorKey": "intensity" },
+    { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
+  ],
+  "Noise$3": [
+    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
+    { "label": "Alpha", "value": 0.6, "min": 0, "max": 1, "__constructorKey": "alpha" },
+    {
+      "label": "Blend Mode",
+      "options": [
+        "normal",
+        "add",
+        "subtract",
+        "multiply",
+        "addsub",
+        "lighten",
+        "darken",
+        "switch",
+        "divide",
+        "overlay",
+        "screen",
+        "softlight"
+      ],
+      "value": "multiply",
+      "__constructorKey": "mode"
+    },
+    { "label": "Scale", "value": 1.2, "min": 0, "max": 5, "__constructorKey": "scale" }
   ]
 }
