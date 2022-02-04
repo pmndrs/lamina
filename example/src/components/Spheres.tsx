@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { GroupProps, useThree } from '@react-three/fiber'
 import { MathUtils } from 'three'
+import { GroupProps, useThree } from '@react-three/fiber'
 import { Sphere } from '@react-three/drei'
+import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
 import { BlendMode } from '../../../src/types'
 import useSphereControls from './useSphereControls'
-import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
 
 export default function Spheres() {
   const viewport = useThree((s) => s.viewport)

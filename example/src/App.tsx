@@ -4,6 +4,7 @@ import { Leva } from 'leva'
 import Rig from './components/Rig'
 import Spheres from './components/Spheres'
 import TextMesh from './components/TextMesh'
+import { LayerMaterial } from 'lamina'
 
 export default function App() {
   return (

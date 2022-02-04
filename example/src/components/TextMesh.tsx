@@ -1,7 +1,7 @@
 import React from 'react'
+import { Color } from 'three'
 import { Text } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
-import { Color } from 'three'
 import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
 
 export default function TextMesh() {

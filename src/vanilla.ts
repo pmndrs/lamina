@@ -1,11 +1,9 @@
 import { ShaderMaterial, ShaderMaterialParameters } from 'three'
 import Abstract from './core/Abstract'
-
 import Base from './core/Base'
 import Depth from './core/Depth'
 import Fresnel from './core/Fresnel'
 import Noise from './core/Noise'
-
 import HelperChunk from './core/ShaderChunks/Helpers'
 import BlendModesChunk from './core/ShaderChunks/BlendModes'
 import RandChunk from './core/ShaderChunks/Rand'
@@ -67,4 +65,4 @@ class LayerMaterial extends ShaderMaterial {
   }
 }
 
-export { Abstract, LayerMaterial, Base, Depth, Fresnel, Noise }
+export { LayerMaterial, Abstract, Base, Depth, Fresnel, Noise }

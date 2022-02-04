@@ -1,12 +1,12 @@
-import * as LAYERS from './vanilla'
-import { extend, Node } from '@react-three/fiber'
 import * as React from 'react'
+import { extend, Node } from '@react-three/fiber'
 import mergeRefs from 'react-merge-refs'
+import * as LAYERS from './vanilla'
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      layerMaterial_: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
+      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
       base_: Node<LAYERS.Base, typeof LAYERS.Base>
       depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
       fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
@@ -15,24 +15,30 @@ declare global {
   }
 }
 
-extend(LAYERS)
+extend({
+  LayerMaterial: LAYERS.LayerMaterial,
+  Base_: LAYERS.Base,
+  Depth_: LAYERS.Depth,
+  Fresnel_: LAYERS.Fresnel,
+  Noise_: LAYERS.Noise,
+})
 
-export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial_'] & {
+export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
   children?: React.ReactNode
 }
 
 const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialProps, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
-  React.useLayoutEffect(() => {
+  React.useLayoutEffect(() => {      
     Object.assign(ref.current, LAYERS.LayerMaterial.constructShader({ layers: (ref.current as any).__r3f.objects }))
     ref.current.uniformsNeedUpdate = true
     ref.current.needsUpdate = true
   }, [children])
 
   return (
-    <layerMaterial_ ref={mergeRefs([ref, forwardRef])} {...props}>
+    <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
       {children}
-    </layerMaterial_>
+    </layerMaterial>
   )
 })
 
