@@ -48,7 +48,7 @@ function GradientSphere() {
           mode="multiply"
           near={0}
           far={2}
-          origin={new THREE.Vector3(1, 1, 1)}
+          origin={[1, 1, 1[}
         />
       </LayerMaterial>
     </Sphere>
