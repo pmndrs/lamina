@@ -51,7 +51,6 @@ export default class Fresnel extends Abstract {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform vec3 u_${this.uuid}_color;
     uniform float u_${this.uuid}_bias;
@@ -61,13 +60,11 @@ export default class Fresnel extends Abstract {
 
     varying vec3 v_${this.uuid}_worldPosition;
     varying vec3 v_${this.uuid}_worldNormal;
-    // ************************************
 `
   }
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnel layer frag-shader-code ***************************************************
       float f_${this.uuid}_a = ( 1.0 - -min(dot(v_${this.uuid}_worldPosition, normalize(v_${
       this.uuid
     }_worldNormal) ), 0.0) );
@@ -80,7 +77,6 @@ export default class Fresnel extends Abstract {
       e,
       `vec4(u_${this.uuid}_color * f_${this.uuid}_fresnel, u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 

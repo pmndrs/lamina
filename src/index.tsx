@@ -12,7 +12,7 @@ declare global {
       fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
       noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
       normals_: Node<LAYERS.Normals, typeof LAYERS.Normals>
-      texture_: Node<LAYERS.Normals, typeof LAYERS.Texture>
+      texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
     }
   }
 }
@@ -34,7 +34,7 @@ export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
 const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialProps, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
   React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects     
+    ref.current.layers = (ref.current as any).__r3f.objects
     ref.current.update()
   }, [children])
 
