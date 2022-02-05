@@ -1,7 +1,7 @@
 {
   "Depth$1": [
-    { "label": "Color A", "value": "#2fff00", "__constructorKey": "colorA" },
-    { "label": "Color B", "value": "#1a00ff", "__constructorKey": "colorB" },
+    { "label": "Color A", "value": "#ff4eb8", "__constructorKey": "colorA" },
+    { "label": "Color B", "value": "#00ffff", "__constructorKey": "colorB" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
@@ -24,11 +24,12 @@
     },
     { "label": "Origin", "value": [0, 0, 1], "__constructorKey": "origin" },
     { "label": "Near", "value": 0, "__constructorKey": "near" },
-    { "label": "Far", "value": 3.5, "__constructorKey": "far" }
+    { "label": "Far", "value": 6, "__constructorKey": "far" }
   ],
-  "Fresnel$4": [
-    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
-    { "label": "Alpha", "value": 0.62, "min": 0, "max": 1, "__constructorKey": "alpha" },
+  "Depth$4": [
+    { "label": "Color A", "value": "#ff8f00", "__constructorKey": "colorA" },
+    { "label": "Color B", "value": "#000000", "__constructorKey": "colorB" },
+    { "label": "Alpha", "value": 0.95, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
       "options": [
@@ -45,18 +46,15 @@
         "screen",
         "softlight"
       ],
-      "value": "multiply",
+      "value": "add",
       "__constructorKey": "mode"
     },
-    { "label": "Power", "value": 1.64, "min": 0, "max": 3, "__constructorKey": "power" },
-    { "label": "Intensity", "value": 3.8999999999999995, "min": 0, "max": 10, "__constructorKey": "intensity" },
-    { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
+    { "label": "Origin", "value": [0, 0, -0.8549999999999999], "__constructorKey": "origin" },
+    { "label": "Near", "value": 0, "__constructorKey": "near" },
+    { "label": "Far", "value": 3, "__constructorKey": "far" }
   ],
-  "Noise$4": [
-    { "label": "Type", "options": ["white", "perlin", "simplex"], "value": "perlin", "__constructorKey": "type" },
-    { "label": "Mapping", "options": ["uv", "local", "world"], "value": "local", "__constructorKey": "mapping" },
-    { "label": "ColorA", "value": "#ffffff", "__constructorKey": "colorA" },
-    { "label": "ColorB", "value": "#000000", "__constructorKey": "colorB" },
+  "Fresnel$5": [
+    { "label": "Color", "value": "#ffffff", "__constructorKey": "color" },
     { "label": "Alpha", "value": 1, "min": 0, "max": 1, "__constructorKey": "alpha" },
     {
       "label": "Blend Mode",
@@ -74,9 +72,38 @@
         "screen",
         "softlight"
       ],
-      "value": "darken",
+      "value": "softlight",
       "__constructorKey": "mode"
     },
-    { "label": "Scale", "value": 19, "min": 0, "max": 100, "__constructorKey": "scale" }
+    { "label": "Power", "value": 1.97, "min": 0, "max": 3, "__constructorKey": "power" },
+    { "label": "Intensity", "value": 1, "min": 0, "max": 10, "__constructorKey": "intensity" },
+    { "label": "Bias", "value": 0, "min": 0, "max": 2, "__constructorKey": "bias" }
+  ],
+  "Noise$6": [
+    { "label": "Type", "options": ["white", "perlin", "simplex"], "value": "perlin", "__constructorKey": "type" },
+    { "label": "Mapping", "options": ["uv", "local", "world"], "value": "local", "__constructorKey": "mapping" },
+    { "label": "ColorA", "value": "#48909e", "__constructorKey": "colorA" },
+    { "label": "ColorB", "value": "#000000", "__constructorKey": "colorB" },
+    { "label": "Alpha", "value": 0.96, "min": 0, "max": 1, "__constructorKey": "alpha" },
+    {
+      "label": "Blend Mode",
+      "options": [
+        "normal",
+        "add",
+        "subtract",
+        "multiply",
+        "addsub",
+        "lighten",
+        "darken",
+        "switch",
+        "divide",
+        "overlay",
+        "screen",
+        "softlight"
+      ],
+      "value": "lighten",
+      "__constructorKey": "mode"
+    },
+    { "label": "Scale", "value": 41, "min": 0, "max": 100, "__constructorKey": "scale" }
   ]
 }

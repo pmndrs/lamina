@@ -49,9 +49,9 @@ vec4 sc_divide(vec4 f, vec4 b) {
   return result;
 }
 
-vec4 sc_switch(vec4 f, vec4 b, float o) {
+vec4 sc_switch(vec4 f, vec4 b) {
   vec4 result = vec4(0.0);
-  result = max((f * o), (b * (1.0 - o)));
+  result = max((f * b.a), (b * (1.0 - b.a)));
   return result;
 }
 

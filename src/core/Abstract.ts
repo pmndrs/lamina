@@ -28,6 +28,7 @@ export default abstract class Abstract {
     else if (type === BlendModes['overlay']) return `sc_overlay(${a}, ${b})`
     else if (type === BlendModes['screen']) return `sc_screen(${a}, ${b})`
     else if (type === BlendModes['softlight']) return `sc_softLight(${a}, ${b})`
+    else if (type === BlendModes['switch']) return `sc_switch(${a}, ${b})`
   }
 
   getVertexVariables(): string {

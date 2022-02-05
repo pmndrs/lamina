@@ -10,7 +10,7 @@ export default function App() {
     <>
       <Leva titleBar={{ title: 'lamina' }} />
       <Canvas dpr={[1, 2]} camera={{ fov: 50, position: [5, 5, 5] }}>
-        <color attach="background" args={['#111111']} />
+        <color attach="background" args={['#dadada']} />
         <Suspense fallback={null}>
           <Monkey />
           {/* <Primitives /> */}
