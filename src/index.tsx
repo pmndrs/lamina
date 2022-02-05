@@ -34,9 +34,8 @@ export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
 const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialProps, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
   React.useLayoutEffect(() => {
-    Object.assign(ref.current, LAYERS.LayerMaterial.constructShader({ layers: (ref.current as any).__r3f.objects }))
-    ref.current.uniformsNeedUpdate = true
-    ref.current.needsUpdate = true
+    ref.current.layers = (ref.current as any).__r3f.objects     
+    ref.current.update()
   }, [children])
 
   return (

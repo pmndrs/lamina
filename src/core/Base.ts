@@ -37,7 +37,6 @@ export default class Base extends Abstract {
   }
 
   getFragmentBody(e: string) {
-    console.log(BlendModes[this.mode])
     return `    
       // SC: Base layer frag-shader-code ***************************************************
       ${e} = ${this.getBlendMode(
