@@ -89,6 +89,17 @@ const mesh = new THREE.Mesh(geometry, material)
 
 </details>
 
+## Debug
+
+`lamina` has a debug layer inbuilt. It is based on [leva](https://github.com/pmndrs/leva) and will display your layer props in a small GUI panel.
+
+```jsx
+import { DebugLayerMaterial } from 'lamina'
+
+<DebugLayerMaterial>
+  <Base color="#ffffff" alpha={1} mode="normal" />
+```
+
 ## Layers
 
 ### Built-in layers
@@ -132,7 +143,7 @@ class CustomLayer extends Abstract {
   // Default blend mode
   mode: BlendMode = 'normal'
   // Give it an ID
-  protected uuid: string = Abstract.genID()
+  uuid: string = Abstract.genID()
 
   // Define your own uniforms
   uniforms: {

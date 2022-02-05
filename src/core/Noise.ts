@@ -7,7 +7,7 @@ export default class Noise extends Abstract {
   mode: BlendMode = 'normal'
   type: NoiseType = 'perlin'
   mapping: MappingType = 'uv'
-  protected uuid: string = Abstract.genID()
+  uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }

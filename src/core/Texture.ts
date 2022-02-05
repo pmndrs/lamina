@@ -5,7 +5,7 @@ import Abstract from './Abstract'
 export default class Noise extends Abstract {
   name: string = 'Texture'
   mode: BlendMode = 'texture'
-  protected uuid: string = Abstract.genID()
+  uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }

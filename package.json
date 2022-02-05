@@ -80,5 +80,7 @@
     "three": "^0.137.5",
     "typescript": "^4.4.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "leva": "^0.9.18"
+  }
 }

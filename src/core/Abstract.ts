@@ -2,15 +2,15 @@ import { IUniform, MathUtils } from 'three'
 import { BlendMode, BlendModes } from '../types'
 
 export default abstract class Abstract {
-  protected abstract uuid: string
-  protected abstract name: string
-  protected abstract mode: BlendMode
-  abstract uniforms: {
+  public abstract uuid: string
+  public abstract name: string
+  public abstract mode: BlendMode
+  public abstract uniforms: {
     [key: string]: IUniform<any>
   }
 
-  abstract getFragmentVariables(): string
-  abstract getFragmentBody(e?: string): string
+  public abstract getFragmentVariables(): string
+  public abstract getFragmentBody(e?: string): string
 
   static genID() {
     return MathUtils.generateUUID().replaceAll('-', '_')

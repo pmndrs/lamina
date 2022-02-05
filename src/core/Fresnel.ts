@@ -5,7 +5,7 @@ import Abstract from './Abstract'
 export default class Fresnel extends Abstract {
   name: string = 'Fresnel'
   mode: BlendMode = 'normal'
-  protected uuid: string = Abstract.genID()
+  uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
   }

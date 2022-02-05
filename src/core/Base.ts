@@ -5,7 +5,7 @@ import { BaseProps, BlendMode, BlendModes } from '../types'
 export default class Base extends Abstract {
   name: string = 'Base'
   mode: BlendMode = 'normal'
-  protected uuid: string = Abstract.genID()
+  uuid: string = Abstract.genID()
 
   uniforms: {
     [key: string]: IUniform<any>
