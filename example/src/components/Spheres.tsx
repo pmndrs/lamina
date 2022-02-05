@@ -2,9 +2,8 @@ import React, { useMemo } from 'react'
 import { MathUtils, Vector3 } from 'three'
 import { GroupProps, useThree } from '@react-three/fiber'
 import { Sphere } from '@react-three/drei'
-import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina'
+import { LayerMaterial, Base, Depth, Fresnel, Noise, DebugLayerMaterial } from 'lamina'
 import { BlendMode } from '../../../src/types'
-import useSphereControls from './useSphereControls'
 
 export default function Spheres() {
   const viewport = useThree((s) => s.viewport)
@@ -28,51 +27,23 @@ export default function Spheres() {
     [viewport]
   )
 
-  const {
-    GradientStrength,
-    GradientBlendMode,
-    GradientColorA,
-    GradientColorB,
-
-    GrainBlendMode,
-    GrainColor,
-    GrainStrength,
-
-    FresnelBlendMode,
-    FresnelColor,
-    FresnelStrength,
-
-    BaseStrength,
-    BaseColor,
-    BaseBlendMode,
-  } = useSphereControls()
-
   return (
     <>
       {RandomProps.map((props, i) => (
         <group {...props} key={'Sphere-' + i}>
           <Sphere args={[1, 128, 64]}>
-            <LayerMaterial>
-              <Base color={BaseColor} alpha={BaseStrength} mode={BaseBlendMode as BlendMode} />
+            <DebugLayerMaterial>
+              <Base color={'#ffffff'} />
               <Depth
-                colorA={GradientColorA}
-                colorB={GradientColorB}
-                alpha={GradientStrength}
-                mode={GradientBlendMode as BlendMode}
+                colorA={'#005182'}
+                colorB={'#d4f8ff'}
+                mode="multiply"
                 near={0}
                 far={2}
                 origin={new Vector3(1, 1, 1)}
               />
-              <Fresnel
-                color={FresnelColor}
-                alpha={1}
-                mode={FresnelBlendMode as BlendMode}
-                power={FresnelStrength * 2}
-                intensity={1}
-                bias={0.1}
-              />
-              <Noise colorA={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />
-            </LayerMaterial>
+              <Fresnel color={'ffffff'} alpha={1} mode="softlight" power={2} intensity={1} bias={0.1} />
+            </DebugLayerMaterial>
           </Sphere>
         </group>
       ))}
