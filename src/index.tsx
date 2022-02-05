@@ -132,7 +132,7 @@ function DebugLayer({ layer }: { layer: LAYERS.Abstract }) {
         transient: true,
         onChange: (value, path, ctx) => {
           layer.mode = value
-          (layer as any).__r3f?.parent?.update()
+          ;(layer as any).__r3f?.parent?.update()
         },
       },
       ...props,
