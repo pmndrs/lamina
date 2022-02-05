@@ -29,22 +29,18 @@ export default class Base extends Abstract {
 
   getFragmentVariables() {
     return `    
-    // SC: Base layer uniforms **********
     uniform float u_${this.uuid}_alpha;
     uniform vec3 u_${this.uuid}_color;
-    // ************************************
 `
   }
 
   getFragmentBody(e: string) {
     return `    
-      // SC: Base layer frag-shader-code ***************************************************
       ${e} = ${this.getBlendMode(
       BlendModes[this.mode] as number,
       e,
       `vec4(u_${this.uuid}_color, u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 

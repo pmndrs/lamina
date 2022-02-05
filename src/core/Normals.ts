@@ -1,8 +1,8 @@
 import { Color, ColorRepresentation, IUniform, Vector3 } from 'three'
-import { BlendMode, NoiseProps, BlendModes, NormalsProps } from '../types'
+import { BlendMode, BlendModes, NormalsProps } from '../types'
 import Abstract from './Abstract'
 
-export default class Noise extends Abstract {
+export default class Normals extends Abstract {
   name: string = 'Normals'
   mode: BlendMode = 'normal'
   uuid: string = Abstract.genID()
@@ -39,19 +39,16 @@ export default class Noise extends Abstract {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform vec3 u_${this.uuid}_color;
     uniform vec3 u_${this.uuid}_direction;
 
     varying vec3 v_${this.uuid}_normals;
-    // ************************************
 `
   }
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnel layer frag-shader-code ***************************************************
       vec3 f_${this.uuid}_normalColor = vec3(1.);
       f_${this.uuid}_normalColor.x = v_${this.uuid}_normals.x * u_${this.uuid}_direction.x;
       f_${this.uuid}_normalColor.y = v_${this.uuid}_normals.y * u_${this.uuid}_direction.y;
@@ -62,7 +59,6 @@ export default class Noise extends Abstract {
       e,
       `vec4(f_${this.uuid}_normalColor, u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 

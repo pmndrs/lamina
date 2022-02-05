@@ -56,7 +56,6 @@ export default class Depth extends Abstract {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform float u_${this.uuid}_near;
     uniform float u_${this.uuid}_far;
@@ -66,13 +65,11 @@ export default class Depth extends Abstract {
     uniform vec3 u_${this.uuid}_colorB;
 
     varying vec3 v_${this.uuid}_worldPosition;
-    // ************************************
 `
   }
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Depth layer frag-shader-code ***************************************************
      
       vec3 f_${this.uuid}_base = ( u_${this.uuid}_isVector > 0.5 ) ?  u_${this.uuid}_origin : cameraPosition;
       float f_${this.uuid}_dist = length( v_${this.uuid}_worldPosition.xyz - f_${this.uuid}_base );
@@ -89,7 +86,6 @@ export default class Depth extends Abstract {
       e,
       `vec4(f_${this.uuid}_depth, u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 

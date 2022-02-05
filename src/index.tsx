@@ -14,7 +14,7 @@ declare global {
       fresnel_: ReactThreeFiber.Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
       noise_: ReactThreeFiber.Node<LAYERS.Noise, typeof LAYERS.Noise>
       normals_: ReactThreeFiber.Node<LAYERS.Normals, typeof LAYERS.Normals>
-      texture_: ReactThreeFiber.Node<LAYERS.Normals, typeof LAYERS.Texture>
+      texture_: ReactThreeFiber.Node<LAYERS.Texture, typeof LAYERS.Texture>
     }
   }
 }

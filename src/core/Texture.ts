@@ -1,8 +1,8 @@
-import { Color, ColorRepresentation, IUniform, Texture } from 'three'
-import { BlendMode, NoiseProps, BlendModes, TextureProps } from '../types'
+import { IUniform, Texture as TextureType } from 'three'
+import { BlendMode, BlendModes, TextureProps } from '../types'
 import Abstract from './Abstract'
 
-export default class Noise extends Abstract {
+export default class Texture extends Abstract {
   name: string = 'Texture'
   mode: BlendMode = 'texture'
   uuid: string = Abstract.genID()
@@ -39,18 +39,15 @@ export default class Noise extends Abstract {
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
     uniform sampler2D u_${this.uuid}_map;
 
     varying vec2 v_${this.uuid}_uv;
-    // ************************************
 `
   }
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnel layer frag-shader-code ***************************************************
       vec4 f_${this.uuid}_texture = texture2D(u_${this.uuid}_map, v_${this.uuid}_uv);
 
       ${e} = ${this.getBlendMode(
@@ -58,7 +55,6 @@ export default class Noise extends Abstract {
       e,
       `vec4(f_${this.uuid}_texture.xyz, f_${this.uuid}_texture.a * u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 
@@ -68,7 +64,7 @@ export default class Noise extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set map(v: Texture) {
+  set map(v: TextureType) {
     this.uniforms[`u_${this.uuid}_map`].value = v
   }
   get map() {
