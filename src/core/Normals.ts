@@ -22,7 +22,7 @@ export default class Noise extends Abstract {
         value: direction,
       },
     }
-    this.mode = BlendModes[mode || 'normal']
+    this.mode = mode || 'normal'
   }
 
   getVertexVariables(): string {

@@ -39,7 +39,7 @@ export default class Depth extends Abstract {
       },
     }
 
-    this.mode = BlendModes[mode || 'normal']
+    this.mode = mode || 'normal'
   }
 
   getVertexVariables(): string {

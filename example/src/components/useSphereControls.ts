@@ -28,7 +28,7 @@ export default function useSphereControls() {
     Color: FresnelColor,
     BlendMode: FresnelBlendMode,
   } = useControls('Fresnel', {
-    Strength: { min: 0, max: 1, value: 0.5 },
+    Strength: { min: 0, max: 1, value: 0.94 },
     Color: { value: '#bffbff' },
     BlendMode: { options: Object.keys(BlendModes), value: 'softlight' },
   })
@@ -38,7 +38,7 @@ export default function useSphereControls() {
     Color: GrainColor,
     BlendMode: GrainBlendMode,
   } = useControls('Grain', {
-    Strength: { min: 0, max: 1, value: 0.5 },
+    Strength: { min: 0, max: 1, value: 0.49 },
     Color: { value: '#a3a3a3' },
     BlendMode: { options: Object.keys(BlendModes), value: 'normal' },
   })

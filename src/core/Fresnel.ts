@@ -32,7 +32,7 @@ export default class Fresnel extends Abstract {
       },
     }
 
-    this.mode = BlendModes[mode || 'normal']
+    this.mode = mode || 'normal'
   }
 
   getVertexVariables(): string {

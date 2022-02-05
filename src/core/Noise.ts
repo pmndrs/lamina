@@ -25,7 +25,7 @@ export default class Noise extends Abstract {
         value: new Color(color ?? '#ffffff'),
       },
     }
-    this.mode = BlendModes[mode || 'normal']
+    this.mode = mode || 'normal'
   }
 
   getVertexVariables(): string {
