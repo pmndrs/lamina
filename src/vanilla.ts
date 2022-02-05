@@ -16,7 +16,8 @@ type LayerMaterialProps = {
 }
 
 class LayerMaterial extends ShaderMaterial {
-  static constructShader({ layers, ...props }: ShaderMaterialParameters & LayerMaterialProps = {} as any) {
+  public layers: Abstract[] = []
+  static constructShader(layers: Abstract[] = []) {
     const uniforms: { [key: string]: any } = {}
     const variables = {
       vert: '',
@@ -61,14 +62,23 @@ class LayerMaterial extends ShaderMaterial {
       #include <dithering_fragment>
     }
     `,
-      ...props,
     }
   }
 
   constructor(props: ShaderMaterialParameters & LayerMaterialProps) {
-    super(LayerMaterial.constructShader(props))
-    this.uniformsNeedUpdate = true
-    this.needsUpdate = true
+    super(props)
+    if (props && props.layers && props.layers.length) {
+      this.layers = props.layers
+      this.update()
+    }
+  }
+
+  update() {
+    if (this.layers.length) {
+      Object.assign(this, LayerMaterial.constructShader(this.layers))
+      this.uniformsNeedUpdate = true
+      this.needsUpdate = true
+    }
   }
 }
 
