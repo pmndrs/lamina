@@ -1,10 +1,12 @@
 import { Color, ColorRepresentation, IUniform } from 'three'
-import { BlendMode, NoiseProps, BlendModes } from '../types'
+import { BlendMode, NoiseProps, BlendModes, NoiseType, NoiseTypes, MappingType, MappingTypes } from '../types'
 import Abstract from './Abstract'
 
 export default class Noise extends Abstract {
   name: string = 'Noise'
   mode: BlendMode = 'normal'
+  type: NoiseType = 'perlin'
+  mapping: MappingType = 'uv'
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
@@ -12,7 +14,7 @@ export default class Noise extends Abstract {
 
   constructor(props?: NoiseProps) {
     super()
-    const { alpha, mode, scale, color } = props || {}
+    const { alpha, mode, scale, colorA, colorB, type, mapping } = props || {}
 
     this.uniforms = {
       [`u_${this.uuid}_alpha`]: {
@@ -21,48 +23,80 @@ export default class Noise extends Abstract {
       [`u_${this.uuid}_scale`]: {
         value: scale ?? 1,
       },
-      [`u_${this.uuid}_color`]: {
-        value: new Color(color ?? '#ffffff'),
+      [`u_${this.uuid}_colorA`]: {
+        value: new Color(colorA ?? '#ffffff'),
+      },
+      [`u_${this.uuid}_colorB`]: {
+        value: new Color(colorB ?? '#000000'),
       },
     }
     this.mode = mode || 'normal'
+    this.type = type || 'perlin'
+    this.mapping = mapping || 'uv'
+  }
+
+  private getMapping() {
+    switch (MappingTypes[this.mapping]) {
+      case MappingTypes.uv:
+        return `vec3(uv, 0.)`
+      case MappingTypes.local:
+        return `position`
+      case MappingTypes.world:
+        return `
+        (modelMatrix * vec4(position,1.0)).xyz;
+        `
+
+      default:
+        break
+    }
+  }
+
+  private getNoise(e: string) {
+    switch (NoiseTypes[this.type]) {
+      case NoiseTypes.white:
+        return `lamina_noise_white(${e})`
+      case NoiseTypes.perlin:
+        return `lamina_noise_perlin(${e})`
+      case NoiseTypes.simplex:
+        return `lamina_noise_simplex(${e})`
+
+      default:
+        break
+    }
   }
 
   getVertexVariables(): string {
     return /* glsl */ `
-    varying vec2 v_${this.uuid}_uv;
+    varying vec3 v_${this.uuid}_position;
     `
   }
 
   getVertexBody(e: string): string {
     return /* glsl */ `
-    v_${this.uuid}_uv = uv;
+    v_${this.uuid}_position = ${this.getMapping()};
     `
   }
 
   getFragmentVariables() {
     return /* glsl */ `    
-    // SC: Fresnel layer variables **********
     uniform float u_${this.uuid}_alpha;
-    uniform vec3 u_${this.uuid}_color;
+    uniform vec3 u_${this.uuid}_colorA;
+    uniform vec3 u_${this.uuid}_colorB;
     uniform float u_${this.uuid}_scale;
-
-    varying vec2 v_${this.uuid}_uv;
-    // ************************************
+    varying vec3 v_${this.uuid}_position;
 `
   }
 
   getFragmentBody(e: string) {
     return /* glsl */ `    
-      // SC: Fresnel layer frag-shader-code ***************************************************
-      float f_${this.uuid}_noise = sc_rand(v_${this.uuid}_uv * u_${this.uuid}_scale);
+      float f_${this.uuid}_noise = ${this.getNoise(`v_${this.uuid}_position * u_${this.uuid}_scale`)};
+      vec3 f_${this.uuid}_noiseColor = mix(u_${this.uuid}_colorA, u_${this.uuid}_colorB, f_${this.uuid}_noise);
 
       ${e} = ${this.getBlendMode(
       BlendModes[this.mode] as number,
       e,
-      `vec4(u_${this.uuid}_color * f_${this.uuid}_noise, u_${this.uuid}_alpha)`
+      `vec4(f_${this.uuid}_noiseColor, u_${this.uuid}_alpha)`
     )};
-      // *************************************************************************************
   `
   }
 
@@ -72,12 +106,17 @@ export default class Noise extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-
-  set color(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
+  set colorA(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_colorA`].value = new Color(v)
   }
-  get color() {
-    return this.uniforms[`u_${this.uuid}_color`].value
+  get colorA() {
+    return this.uniforms[`u_${this.uuid}_colorA`].value
+  }
+  set colorB(v: ColorRepresentation) {
+    this.uniforms[`u_${this.uuid}_colorB`].value = new Color(v)
+  }
+  get colorB() {
+    return this.uniforms[`u_${this.uuid}_colorB`].value
   }
   set scale(v: number) {
     this.uniforms[`u_${this.uuid}_scale`].value = v

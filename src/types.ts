@@ -19,6 +19,26 @@ export const BlendModes: {
 
 export type BlendMode = keyof typeof BlendModes
 
+export const NoiseTypes: {
+  [key: string]: number
+} = {
+  white: 1,
+  perlin: 2,
+  simplex: 3,
+}
+
+export type NoiseType = keyof typeof NoiseTypes
+
+export const MappingTypes: {
+  [key: string]: number
+} = {
+  uv: 1,
+  local: 2,
+  world: 3,
+}
+
+export type MappingType = keyof typeof MappingTypes
+
 export interface BaseProps {
   color?: ColorRepresentation
   alpha?: number
@@ -46,10 +66,13 @@ export interface FresnelProps {
 }
 
 export interface NoiseProps {
-  color?: ColorRepresentation
+  colorA?: ColorRepresentation
+  colorB?: ColorRepresentation
   alpha?: number
   mode?: BlendMode
   scale?: number
+  type?: NoiseType
+  mapping?: MappingType
 }
 
 export interface NormalsProps {

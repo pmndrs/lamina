@@ -9,7 +9,7 @@ import Texture from './core/Texture'
 
 import HelperChunk from './core/ShaderChunks/Helpers'
 import BlendModesChunk from './core/ShaderChunks/BlendModes'
-import RandChunk from './core/ShaderChunks/Rand'
+import NoiseChunk from './core/ShaderChunks/Noise'
 
 type LayerMaterialProps = {
   layers: Abstract[]
@@ -37,6 +37,7 @@ class LayerMaterial extends ShaderMaterial {
     return {
       uniforms,
       vertexShader: `
+
     ${variables.vert}
     void main() {
       ${body.vert}
@@ -45,8 +46,8 @@ class LayerMaterial extends ShaderMaterial {
     }
     `,
       fragmentShader: `
-    ${HelperChunk}
-    ${RandChunk}
+      ${HelperChunk}
+      ${NoiseChunk}
     ${BlendModesChunk}
     ${variables.frag}
     void main() {

@@ -71,7 +71,7 @@ export default function Spheres() {
                 intensity={1}
                 bias={0.1}
               />
-              <Noise color={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />
+              <Noise colorA={GrainColor} alpha={GrainStrength} mode={GrainBlendMode as BlendMode} scale={1} />
             </LayerMaterial>
           </Sphere>
         </group>

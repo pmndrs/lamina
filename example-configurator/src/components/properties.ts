@@ -104,9 +104,26 @@ export const LayerProperties = {
   ],
   Noise: [
     {
-      label: 'Color',
+      label: 'Type',
+      options: ['white', 'perlin', 'simplex'],
+      value: 'perlin',
+      __constructorKey: 'type',
+    },
+    {
+      label: 'Mapping',
+      options: ['uv', 'local', 'world'],
+      value: 'local',
+      __constructorKey: 'mapping',
+    },
+    {
+      label: 'ColorA',
       value: '#ffffff',
-      __constructorKey: 'color',
+      __constructorKey: 'colorA',
+    },
+    {
+      label: 'ColorB',
+      value: '#000000',
+      __constructorKey: 'colorB',
     },
     {
       label: 'Alpha',
@@ -123,9 +140,9 @@ export const LayerProperties = {
     },
     {
       label: 'Scale',
-      value: 1,
+      value: 10,
       min: 0,
-      max: 5,
+      max: 100,
       __constructorKey: 'scale',
     },
   ],

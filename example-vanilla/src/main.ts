@@ -56,7 +56,7 @@ randomProps.forEach((prop) => {
         bias: 0.1,
       }),
       new Noise({
-        color: '#a3a3a3',
+        colorA: '#a3a3a3',
         alpha: 0.1,
         mode: 'normal',
         scale: 1,
