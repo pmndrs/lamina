@@ -23,8 +23,8 @@
 <br />
 
 <p align="center">
-  <a href="https://codesandbox.io/s/lamina-configurator-4tdfb" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/configurator.png?raw=true"  /></a>
-  <a href="https://codesandbox.io/s/lamina-example-r3f-02x0c" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
+  <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/example-configurator" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/configurator.png?raw=true"  /></a>
+  <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/layer-materials" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
 </p>
 <p align="middle">
   <i>These demos are real, you can click them! They contain the full code, too. 📦</i>
