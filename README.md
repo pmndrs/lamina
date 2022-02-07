@@ -109,16 +109,16 @@ Here are the layers that laminia currently provides
 | Name      | Function             |
 | --------- | -------------------- |
 | `normal`    | opaque |
+| `switch`   | skip layer |
 | `add`   | prev layer + current |
 | `subtract` | prev layer - current |
 | `multiply`   | prev layer * current |
-| `addsub`   | ... |
+| `divide`   | prev laywer / current |
+| `addsub`   | prev layer > 0.5 ? prev layer + current : prev layer - current |
 | `lighten`   | lighter pixels only |
 | `darken`   | darker pixels only |
-| `switch`   | skip layer |
-| `divide`   | ... |
-| `overlay`   | ... |
 | `screen`   | ... |
+| `overlay`   | ... |
 | `softlight`   | ... |
 
 ### Writing your own layers
