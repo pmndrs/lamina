@@ -14,10 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": ".",
-    "paths": {
-      "lamina": ["../src/index.tsx"]
-    }
+    "baseUrl": "."
   },
   "include": ["./src"]
 }

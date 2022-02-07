@@ -21,9 +21,8 @@
   ],
   "scripts": {
     "build": "rollup -c",
-    "postbuild": "tsc --emitDeclarationOnly",
-    "prepublishOnly": "npm run build",
-    "test": "echo no tests yet"
+    "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
+    "prepublishOnly": "npm run build"
   },
   "husky": {
     "hooks": {
