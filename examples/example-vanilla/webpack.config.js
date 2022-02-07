@@ -21,10 +21,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
-    alias: {
-      three: path.resolve(__dirname, './node_modules/three'),
-      'lamina/vanilla': path.resolve(__dirname, '../src/vanilla.ts'),
-    },
   },
 
   devServer: {

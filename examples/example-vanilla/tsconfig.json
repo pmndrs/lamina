@@ -9,10 +9,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "lamina/vanilla": ["../src/vanilla.ts"]
-    }
+    "baseUrl": "."
   },
   "include": ["./src"]
 }

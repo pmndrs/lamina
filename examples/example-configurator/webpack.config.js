@@ -11,14 +11,6 @@ const webpackConfig = (env) => ({
     //TODO waiting on https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/61
     //@ts-ignore
     plugins: [new TsconfigPathsPlugin()],
-    alias: {
-      react: path.resolve(__dirname, './node_modules/react'),
-      three: path.resolve(__dirname, './node_modules/three'),
-      'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
-      '@react-three/fiber': path.resolve(__dirname, './node_modules/@react-three/fiber'),
-      '@react-three/drei': path.resolve(__dirname, './node_modules/@react-three/drei'),
-      lamina: path.resolve(__dirname, '../src/index.tsx'),
-    },
   },
   output: {
     path: path.join(__dirname, '/dist'),
