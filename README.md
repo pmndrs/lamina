@@ -100,7 +100,7 @@ Here are the layers that laminia currently provides
 | `Base`    | Flat color           |
 | `Depth`   | Depth based gradient |
 | `Fresnel` | Fresnel shading (strip or rim-lights) |
-| `Noise`   | White, perlin or simplex noise (requires UVs) |
+| `Noise`   | White, perlin or simplex noise |
 | `Normals`   | Visualize vertex normals |
 | `Texture`   | Image texture |
 
