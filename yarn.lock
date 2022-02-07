@@ -3560,6 +3560,11 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
+json@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/json/-/json-11.0.0.tgz#2e84493134e2f42c131165aa22a124df38b3a3ee"
+  integrity sha512-N/ITv3Yw9Za8cGxuQqSqrq6RHnlaHWZkAFavcfpH/R52522c26EbihMxnY7A1chxfXJ4d+cEFIsyTgfi9GihrA==
+
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"

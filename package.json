@@ -1,15 +1,27 @@
 {
   "name": "lamina",
+  "private": true,
   "version": "1.0.3",
   "description": "🍰 An extensable, layer based shader material for ThreeJS.",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/**/*",
-    "package.json",
-    "README.md"
+    "**"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.cjs.js",
+      "import": "./index.js"
+    },
+    "./vanilla": {
+      "types": "./vanilla.d.ts",
+      "require": "./vanilla.cjs.js",
+      "import": "./vanilla.js"
+    }
+  },
   "keywords": [
     "react",
     "shaders",
@@ -22,7 +34,8 @@
   "scripts": {
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
-    "prepublishOnly": "npm run build"
+    "release": "chmod +x ./scripts/publish.sh && ./scripts/publish.sh",
+    "patchJSON": "json -I -f dist/package.json -e \"this.private=false;\""
   },
   "husky": {
     "hooks": {
@@ -69,6 +82,7 @@
     "eslint-plugin-jest": "^25.2.2",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
+    "json": "^11.0.0",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
