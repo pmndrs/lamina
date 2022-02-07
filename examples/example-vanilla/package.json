@@ -1,6 +1,7 @@
 {
-  "name": "vite-project",
+  "name": "lamina-example",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "start": "webpack-dev-server --open"
   },
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@types/three": "^0.137.0",
+    "lamina": "^1.0.5",
     "three": "^0.137.5",
     "webpack": "5.40.0",
     "webpack-cli": "^4.9.2"

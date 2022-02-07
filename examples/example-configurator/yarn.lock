@@ -2406,6 +2406,11 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
+lamina@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.0.5.tgz#e61299a328abf108bae4023b17085b2c4ad6c82f"
+  integrity sha512-oBMOAqfYiLTmyz0mIi+SMOXuiaAYj3ELf0ejmV+NDc9GkuqxZpO312aZrF2QKZmkY2oa7I9sGB52EyQ1pjfaVg==
+
 leva@^0.9.18:
   version "0.9.18"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.18.tgz#f281375cad1dde517761e3663c3121fd616b97f7"

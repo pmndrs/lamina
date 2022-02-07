@@ -1566,6 +1566,11 @@ kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+lamina@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.0.5.tgz#e61299a328abf108bae4023b17085b2c4ad6c82f"
+  integrity sha512-oBMOAqfYiLTmyz0mIi+SMOXuiaAYj3ELf0ejmV+NDc9GkuqxZpO312aZrF2QKZmkY2oa7I9sGB52EyQ1pjfaVg==
+
 loader-runner@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-4.2.0.tgz#d7022380d66d14c5fb1d496b89864ebcfd478384"
