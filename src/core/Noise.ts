@@ -69,10 +69,6 @@ export default class Noise extends Abstract {
     }
   }
 
-  private isOutVec3() {
-    return NoiseTypes[this.type] === NoiseTypes.curl
-  }
-
   getVertexVariables(): string {
     return /* glsl */ `
     varying vec3 v_${this.uuid}_position;
