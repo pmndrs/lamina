@@ -59,10 +59,18 @@ export default class Noise extends Abstract {
         return `lamina_noise_perlin(${e})`
       case NoiseTypes.simplex:
         return `lamina_noise_simplex(${e})`
+      case NoiseTypes.curl:
+        return `lamina_noise_swirl(${e})`
+      case NoiseTypes.cell:
+        return `lamina_noise_worley(${e})`
 
       default:
         break
     }
+  }
+
+  private isOutVec3() {
+    return NoiseTypes[this.type] === NoiseTypes.curl
   }
 
   getVertexVariables(): string {
@@ -97,7 +105,7 @@ export default class Noise extends Abstract {
       e,
       `vec4(f_${this.uuid}_noiseColor, u_${this.uuid}_alpha)`
     )};
-  `
+    `
   }
 
   set alpha(v: number) {

@@ -4,7 +4,7 @@ import useLayerControls from './useLayerControls'
 import LayerHud from './LayerHud'
 import { useRef } from 'react'
 
-export default function LayerStack() {
+export default function LayerStack({ options }: any) {
   const [layers, setLayers] = useLayerControls()
   return (
     <>
@@ -21,7 +21,7 @@ export default function LayerStack() {
           layer.forEach((v: any) => {
             props[v.__constructorKey] = v.value
           })
-          return <Component key={name} {...props} />
+          return <Component {...options?.[key]} key={name} {...props} />
         })}
       </LAYERS.LayerMaterial>
     </>

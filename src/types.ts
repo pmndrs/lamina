@@ -25,6 +25,8 @@ export const NoiseTypes: {
   white: 1,
   perlin: 2,
   simplex: 3,
+  curl: 4,
+  cell: 5,
 }
 
 export type NoiseType = keyof typeof NoiseTypes
@@ -54,6 +56,16 @@ export interface DepthProps {
   far?: number
   origin?: Vector3
   isVector?: boolean
+}
+
+export interface GradientProps {
+  colorA?: ColorRepresentation
+  colorB?: ColorRepresentation
+  alpha?: number
+  mode?: BlendMode
+  a?: Vector3
+  b?: Vector3
+  angle?: Vector3
 }
 
 export interface FresnelProps {

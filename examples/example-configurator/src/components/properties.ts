@@ -105,8 +105,8 @@ export const LayerProperties = {
   Noise: [
     {
       label: 'Type',
-      options: ['white', 'perlin', 'simplex'],
-      value: 'perlin',
+      options: ['white', 'perlin', 'simplex', 'curl', 'cell'],
+      value: 'curl',
       __constructorKey: 'type',
     },
     {

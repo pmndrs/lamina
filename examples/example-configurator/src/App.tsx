@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Bounds, OrbitControls } from '@react-three/drei'
 import { Leva } from 'leva'
 import Monkey from './components/Monkey'
 import Primitives from './components/Primitives'
@@ -14,7 +13,6 @@ export default function App() {
         <Suspense fallback={null}>
           <Monkey />
           {/* <Primitives /> */}
-          <OrbitControls />
         </Suspense>
         <axesHelper args={[5]} />
         {/* <gridHelper /> */}
