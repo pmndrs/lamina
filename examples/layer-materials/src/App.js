@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls, Environment, ContactShadows, Plane, Box } from '@react-three/drei'
 import { LayerMaterial, Base, Depth, Fresnel } from 'lamina'
 import { useControls } from 'leva'
 
@@ -12,19 +12,26 @@ export default function App() {
     colorB: { value: '#ff8f00' }
   })
   return (
-    <Canvas dpr={[1, 2]} camera={{ position: [0, -0.75, 0.75], fov: 80, near: 0.001 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [2, 0, 0], fov: 80, near: 0.001 }}>
       <Suspense fallback={null}>
         <Bg {...props} />
         <Flower {...props} />
         <mesh>
           <sphereGeometry args={[0.2, 64, 64]} />
-          <meshPhysicalMaterial transmission={1} thickness={10} roughness={0.65} />
+          <meshPhysicalMaterial transmission={1} thickness={10} roughness={0.2} />
         </mesh>
         <OrbitControls />
-        <pointLight position={[10, 10, 5]} />
-        <pointLight position={[-10, -10, -5]} color={props.colorA} />
+        <pointLight castShadow position={[10, 10, 5]} />
+        <pointLight castShadow position={[-10, -10, -5]} color={props.colorA} />
+
         <ambientLight intensity={0.4} />
         <Environment preset="warehouse" />
+
+        <fog attach="fog" color="#f0f0f0" near={1} far={10} />
+
+        <Plane receiveShadow args={[100, 100]} position={[0, -1.2, 0]} rotation-x={-Math.PI / 2}>
+          <meshStandardMaterial />
+        </Plane>
       </Suspense>
     </Canvas>
   )
@@ -38,7 +45,7 @@ function Bg({ base, colorA, colorB }) {
   return (
     <mesh ref={mesh} scale={100}>
       <sphereGeometry args={[1, 64, 64]} />
-      <LayerMaterial attach="material" side={THREE.BackSide}>
+      <LayerMaterial fog attach="material" side={THREE.BackSide}>
         <Base color={base} alpha={1} mode="normal" />
         <Depth colorA={colorB} colorB={colorA} alpha={0.5} mode="normal" near={0} far={300} origin={[100, 100, 100]} />
       </LayerMaterial>
@@ -54,9 +61,9 @@ function Flower({ base, colorA, colorB }) {
     depth.current.origin.set(-state.mouse.y, state.mouse.x, 0)
   })
   return (
-    <mesh rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
+    <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
-      <LayerMaterial>
+      <LayerMaterial fog>
         <Base color={base} alpha={1} mode="normal" />
         <Depth colorA={colorB} colorB={colorA} alpha={0.5} mode="normal" near={0} far={3} origin={[1, 1, 1]} />
         <Depth ref={depth} colorA={colorB} colorB="black" alpha={1} mode="lighten" near={0.25} far={2} origin={[1, 0, 0]} />

@@ -64,6 +64,7 @@ const Noise = React.forwardRef((props: JSX.IntrinsicElements['noise_'], forwardR
 const Normals = React.forwardRef((props: JSX.IntrinsicElements['normals_'], forwardRef) => {
   return <normals_ ref={forwardRef as any} {...props} />
 })
+
 const Texture = React.forwardRef((props: JSX.IntrinsicElements['texture_'], forwardRef) => {
   return <texture_ ref={forwardRef as any} {...props} />
 })

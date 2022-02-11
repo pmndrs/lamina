@@ -1,4 +1,4 @@
-import { ShaderMaterial, ShaderMaterialParameters } from 'three'
+import { ShaderChunk, ShaderMaterial, ShaderMaterialParameters, UniformsLib, UniformsUtils } from 'three'
 import Abstract from './core/Abstract'
 import Base from './core/Base'
 import Depth from './core/Depth'
@@ -17,13 +17,17 @@ type LayerMaterialProps = {
 
 class LayerMaterial extends ShaderMaterial {
   public layers: Abstract[] = []
-  static constructShader(layers: Abstract[] = []) {
-    const uniforms: { [key: string]: any } = {}
+  static constructShader(shaderMaterial: ShaderMaterial, layers: Abstract[] = []) {
+    let uniforms: { [key: string]: any } = {}
     const variables = {
       vert: '',
       frag: '',
     }
     const body = {
+      vert: '',
+      frag: '',
+    }
+    const specials = {
       vert: '',
       frag: '',
     }
@@ -35,34 +39,58 @@ class LayerMaterial extends ShaderMaterial {
       body.vert += layer.getVertexBody('') + ' \n'
     })
 
-    return {
+    if (shaderMaterial.fog) {
+      variables.vert += ShaderChunk.fog_pars_vertex + '\n'
+      specials.vert += ShaderChunk.fog_vertex + '\n'
+
+      variables.frag += ShaderChunk.fog_pars_fragment + '\n'
+      specials.frag += ShaderChunk.fog_fragment + '\n'
+    }
+
+    uniforms = UniformsUtils.merge([uniforms, UniformsLib.fog])
+
+    const shaders = {
       uniforms,
       vertexShader: `
+      #include <common>
+      ${variables.vert}
+      void main() {
+        ${body.vert}
 
-    ${variables.vert}
-    void main() {
-      ${body.vert}
-      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_Position = projectionMatrix * modelViewPosition;
+        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+        
+        vec4 worldPosition = gl_Position;
+        vec3 transformedNormal = normal;
+
+        ${specials.vert}
     }
     `,
       fragmentShader: `
+      #include <common>
+      #include <packing>
+
       ${HelperChunk}
       ${NoiseChunk}
-    ${BlendModesChunk}
-    ${variables.frag}
-    void main() {
-      vec4 sc_finalColor = vec4(vec3(1.), 1.);
-      ${body.frag}
-      gl_FragColor = sc_finalColor;
-      #include <tonemapping_fragment>
-      #include <encodings_fragment>
-      #include <fog_fragment>
-      #include <premultiplied_alpha_fragment>
-      #include <dithering_fragment>
+      ${BlendModesChunk}
+      ${variables.frag}
+      void main() {
+        vec4 sc_finalColor = vec4(vec3(1.), 1.);
+        ${body.frag}
+        gl_FragColor = sc_finalColor;
+
+
+        #include <tonemapping_fragment>
+        #include <encodings_fragment>
+        #include <premultiplied_alpha_fragment>
+        #include <dithering_fragment>
+
+        ${specials.frag}
     }
     `,
     }
+
+    return shaders
   }
 
   constructor(props: ShaderMaterialParameters & LayerMaterialProps) {
@@ -75,7 +103,7 @@ class LayerMaterial extends ShaderMaterial {
 
   update() {
     if (this.layers.length) {
-      Object.assign(this, LayerMaterial.constructShader(this.layers))
+      Object.assign(this, LayerMaterial.constructShader(this, this.layers))
       this.uniformsNeedUpdate = true
       this.needsUpdate = true
     }
