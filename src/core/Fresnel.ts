@@ -19,7 +19,7 @@ export default class Fresnel extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_color`]: {
-        value: new Color(color ?? '#ffffff'),
+        value: new Color(color ?? '#ff0000'),
       },
       [`u_${this.uuid}_bias`]: {
         value: bias ?? 0,
@@ -110,5 +110,68 @@ export default class Fresnel extends Abstract {
   }
   get power() {
     return this.uniforms[`u_${this.uuid}_power`].value
+  }
+
+  // Schema
+  getSchema() {
+    return [
+      {
+        label: 'Color',
+        value: '#' + new Color(this.color).getHexString(),
+        __constructorKey: 'color',
+      },
+      {
+        label: 'Alpha',
+        value: this.alpha,
+        min: 0,
+        max: 1,
+        __constructorKey: 'alpha',
+      },
+      {
+        label: 'Blend Mode',
+        options: Object.keys(BlendModes),
+        value: this.mode,
+        __constructorKey: 'mode',
+      },
+      {
+        label: 'Power',
+        value: this.power,
+        __constructorKey: 'power',
+      },
+      {
+        label: 'Intensity',
+        value: this.intensity,
+        __constructorKey: 'intensity',
+      },
+      {
+        label: 'Bias',
+        value: this.bias,
+        __constructorKey: 'bias',
+      },
+    ]
+  }
+
+  serialize() {
+    return {
+      type: 'Fresnel',
+      name: this.name,
+      uuid: this.uuid,
+      settings: {
+        color: new Color(this.color).toArray(),
+        alpha: this.alpha,
+        mode: this.mode,
+        power: this.power,
+        intensity: this.intensity,
+        bias: this.bias,
+      },
+      defaults: {
+        color: '#ff0000',
+        alpha: 1,
+        mode: 'normal',
+        power: 2,
+        intensity: 1,
+        bias: 0,
+      },
+    }
   }
 }

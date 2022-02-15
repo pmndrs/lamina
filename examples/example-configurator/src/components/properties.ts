@@ -1,7 +1,7 @@
 import { BlendModes } from '../types'
 
 export const LayerProperties = {
-  Base: [
+  Color: [
     {
       label: 'Color',
       value: '#ffffff',

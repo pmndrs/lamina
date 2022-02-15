@@ -1,6 +1,6 @@
 import './style.css'
 import * as THREE from 'three'
-import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/vanilla'
+import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
 import { Vector3 } from 'three'
 
 const scene = new THREE.Scene()
@@ -33,7 +33,7 @@ randomProps.forEach((prop) => {
   const geometry = new THREE.SphereGeometry(1, 128, 64)
   const material = new LayerMaterial({
     layers: [
-      new Base({
+      new Color({
         color: '#d9d9d9',
         alpha: 1,
         mode: 'normal',

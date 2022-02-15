@@ -20,7 +20,7 @@ export default class Depth extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_near`]: {
-        value: near ?? 700,
+        value: near ?? 0,
       },
       [`u_${this.uuid}_far`]: {
         value: far ?? 1e7,
@@ -29,10 +29,10 @@ export default class Depth extends Abstract {
         value: origin ?? new Vector3(0, 0, 0),
       },
       [`u_${this.uuid}_colorA`]: {
-        value: new Color(colorA ?? '#ffffff'),
+        value: new Color(colorA ?? '#ff0000'),
       },
       [`u_${this.uuid}_colorB`]: {
-        value: new Color(colorB ?? '#ffffff'),
+        value: new Color(colorB ?? '#0000ff'),
       },
       [`u_${this.uuid}_isVector`]: {
         value: isVector ?? true,
@@ -131,5 +131,75 @@ export default class Depth extends Abstract {
   }
   get isVector() {
     return this.uniforms[`u_${this.uuid}_isVector`].value
+  }
+
+  // Schema
+  getSchema() {
+    return [
+      {
+        label: 'Color A',
+        value: '#' + new Color(this.colorA).getHexString(),
+        __constructorKey: 'colorA',
+      },
+      {
+        label: 'Color B',
+        value: '#' + new Color(this.colorB).getHexString(),
+        __constructorKey: 'colorB',
+      },
+      {
+        label: 'Alpha',
+        value: this.alpha,
+        min: 0,
+        max: 1,
+        __constructorKey: 'alpha',
+      },
+      {
+        label: 'Blend Mode',
+        options: Object.keys(BlendModes),
+        value: this.mode,
+        __constructorKey: 'mode',
+      },
+      {
+        label: 'Origin',
+        value: this.origin,
+        __constructorKey: 'origin',
+      },
+      {
+        label: 'Near',
+        value: this.near,
+        __constructorKey: 'near',
+      },
+      {
+        label: 'Far',
+        value: this.far,
+        __constructorKey: 'far',
+      },
+    ]
+  }
+
+  serialize() {
+    return {
+      type: 'Depth',
+      name: this.name,
+      uuid: this.uuid,
+      settings: {
+        colorA: '#' + new Color(this.colorA).getHexString(),
+        colorB: '#' + new Color(this.colorB).getHexString(),
+        alpha: this.alpha,
+        mode: this.mode,
+        origin: this.origin.toArray(),
+        near: this.near,
+        far: this.far,
+      },
+      defaults: {
+        colorA: '#ff0000',
+        colorB: '#0000ff',
+        alpha: 1,
+        mode: 'normal',
+        origin: [0, 0, 0],
+        near: 0,
+        far: 1e7,
+      },
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { IUniform, MathUtils } from 'three'
-import { BlendMode, BlendModes } from '../types'
+import { BlendMode, BlendModes, DebugSchema, SerializedLayer } from '../types'
 
 export default abstract class Abstract {
   protected abstract uuid: string
@@ -37,4 +37,10 @@ export default abstract class Abstract {
   getVertexBody(e?: string): string {
     return ''
   }
+
+  serialize(): SerializedLayer | null {
+    return null
+  }
+
+  static Schema: DebugSchema[]
 }

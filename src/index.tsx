@@ -3,11 +3,14 @@ import { extend, Node } from '@react-three/fiber'
 import mergeRefs from 'react-merge-refs'
 import * as LAYERS from './vanilla'
 
+import { DebugLayerMaterial } from './helpers/Debug'
+import { LayerMaterialProps } from './types'
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
       layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
-      base_: Node<LAYERS.Base, typeof LAYERS.Base>
+      color_: Node<LAYERS.Color, typeof LAYERS.Color>
       depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
       fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
       noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
@@ -19,17 +22,13 @@ declare global {
 
 extend({
   LayerMaterial: LAYERS.LayerMaterial,
-  Base_: LAYERS.Base,
+  Color_: LAYERS.Color,
   Depth_: LAYERS.Depth,
   Fresnel_: LAYERS.Fresnel,
   Noise_: LAYERS.Noise,
   Normals_: LAYERS.Normals,
   Texture_: LAYERS.Texture,
 })
-
-export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
-  children?: React.ReactNode
-}
 
 const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialProps, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
@@ -45,8 +44,8 @@ const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialPro
   )
 })
 
-const Base = React.forwardRef((props: JSX.IntrinsicElements['base_'], forwardRef) => {
-  return <base_ ref={forwardRef as any} {...props} />
+const Color = React.forwardRef((props: JSX.IntrinsicElements['color_'], forwardRef) => {
+  return <color_ ref={forwardRef as any} {...props} />
 })
 
 const Depth = React.forwardRef((props: JSX.IntrinsicElements['depth_'], forwardRef) => {
@@ -69,4 +68,4 @@ const Texture = React.forwardRef((props: JSX.IntrinsicElements['texture_'], forw
   return <texture_ ref={forwardRef as any} {...props} />
 })
 
-export { LayerMaterial, Base, Depth, Fresnel, Noise, Normals, Texture }
+export { LayerMaterial, DebugLayerMaterial, Color, Depth, Fresnel, Noise, Normals, Texture }

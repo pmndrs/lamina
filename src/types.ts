@@ -1,4 +1,17 @@
+import { Schema } from 'leva/dist/declarations/src/types'
 import { ColorRepresentation, Texture, Vector3 } from 'three'
+import { Abstract } from './vanilla'
+
+export type LayerMaterialParameters = {
+  layers: Abstract[]
+  color?: THREE.ColorRepresentation
+  alpha?: number
+  shadows?: boolean
+}
+
+export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
+  children?: React.ReactNode
+} & LayerMaterialParameters
 
 export const BlendModes: {
   [key: string]: number
@@ -93,8 +106,32 @@ export interface NormalsProps {
   direction?: Vector3
 }
 
-export interface TextureProps {
-  alpha?: number
-  mode?: BlendMode
-  map?: Texture
+export type DebugSchema = Omit<Schema[''], 'value'> & {
+  label: string
+  value: any
+  __constructorKey: string
+}
+
+export interface SerializedLayer {
+  type: string
+  name: string
+  uuid: string
+  settings: {
+    [name: string]: any
+  }
+  defaults: {
+    [name: string]: any
+  }
+}
+
+export interface SerializedMaterial {
+  version: number
+  name: string
+  settings: {
+    [name: string]: any
+  }
+  defaults: {
+    [name: string]: any
+  }
+  layers: SerializedLayer[]
 }
