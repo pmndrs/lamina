@@ -183,8 +183,8 @@ export default class Depth extends Abstract {
       name: this.name,
       uuid: this.uuid,
       settings: {
-        colorA: '#' + new Color(this.colorA).getHexString(),
-        colorB: '#' + new Color(this.colorB).getHexString(),
+        colorA: new Color(this.colorA).toArray(),
+        colorB: new Color(this.colorB).toArray(),
         alpha: this.alpha,
         mode: this.mode,
         origin: this.origin.toArray(),
