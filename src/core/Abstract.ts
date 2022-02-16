@@ -1,19 +1,55 @@
+import { getUniform } from '../utils/Functions'
 import { IUniform, MathUtils } from 'three'
-import { BlendMode, BlendModes, DebugSchema, SerializedLayer } from '../types'
+import { BlendMode, BlendModes, DebugSchema, LayerProps, SerializedLayer } from '../types'
 
-export default abstract class Abstract {
-  protected abstract uuid: string
-  protected abstract name: string
-  protected abstract mode: BlendMode
-  abstract uniforms: {
+export default class Abstract {
+  static genID() {
+    return MathUtils.generateUUID().replaceAll('-', '_')
+  }
+
+  uuid: string = MathUtils.generateUUID().replaceAll('-', '_')
+  name: string = 'Depth'
+  mode: BlendMode = 'normal'
+  visible: boolean = true
+  alpha = 1
+  uniforms: {
     [key: string]: IUniform<any>
   }
 
-  abstract getFragmentVariables(): string
-  abstract getFragmentBody(e?: string): string
+  constructor(props?: LayerProps, c?: any) {
+    const defaults = Object.getOwnPropertyNames(c).filter((e) => e.startsWith('u_'))
+    const uniforms: { [key: string]: any } = defaults.reduce(
+      (a, v) => ({ ...a, [v.slice(1)]: Object.getOwnPropertyDescriptor(c, v)?.value }),
+      {}
+    )
 
-  static genID() {
-    return MathUtils.generateUUID().replaceAll('-', '_')
+    for (const key in uniforms) {
+      if (props?.[key]) uniforms[key] = props[key]
+    }
+
+    this.uniforms = {}
+    const properties: PropertyDescriptorMap & ThisType<any> = {}
+    Object.keys(uniforms).map((key) => {
+      this.uniforms[`u_${this.uuid}_${key}`] = {
+        value: getUniform(key, uniforms[key]),
+      }
+
+      properties[key] = {
+        set: (v: any) => {
+          this.uniforms[`u_${this.uuid}_${key}`].value = getUniform(key, uniforms[key])
+        },
+        get: () => {
+          return this.uniforms[`u_${this.uuid}_${key}`].value
+        },
+      }
+    })
+
+    if (props?.name) this.name = props.name
+    if (props?.mode) this.mode = props.mode
+    if (props?.visible) this.visible = props.visible
+    if (props?.alpha) this.alpha = props.alpha
+
+    Object.defineProperties(this, properties)
   }
 
   getBlendMode(type: number, a: string, b: string) {

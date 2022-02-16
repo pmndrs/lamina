@@ -5,6 +5,7 @@ import { BaseProps, BlendMode, BlendModes } from '../types'
 export default class Color extends Abstract {
   name: string = 'Color'
   mode: BlendMode = 'normal'
+  visible: boolean = true
   protected uuid: string = Abstract.genID()
 
   uniforms: {
@@ -60,6 +61,11 @@ export default class Color extends Abstract {
   // Schema
   getSchema() {
     return [
+      {
+        label: 'Visible',
+        value: this.visible,
+        __constructorKey: 'visible',
+      },
       {
         label: 'Color',
         value: new THREEColor(this.color).toArray(),

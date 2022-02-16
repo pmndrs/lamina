@@ -54,17 +54,23 @@ export const MappingTypes: {
 
 export type MappingType = keyof typeof MappingTypes
 
+export interface LayerProps {
+  alpha?: number
+  mode?: BlendMode
+  name?: string
+  visible?: boolean
+  [key: string]: any
+}
+
 export interface BaseProps {
   color?: ColorRepresentation
   alpha?: number
   mode?: BlendMode
 }
 
-export interface DepthProps {
+export interface DepthProps extends LayerProps {
   colorA?: ColorRepresentation
   colorB?: ColorRepresentation
-  alpha?: number
-  mode?: BlendMode
   near?: number
   far?: number
   origin?: Vector3
@@ -104,6 +110,12 @@ export interface NormalsProps {
   alpha?: number
   mode?: BlendMode
   direction?: Vector3
+}
+
+export interface TextureProps {
+  alpha?: number
+  mode?: BlendMode
+  map?: Texture | string
 }
 
 export type DebugSchema = Omit<Schema[''], 'value'> & {

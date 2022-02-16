@@ -5,6 +5,8 @@ import Abstract from './Abstract'
 export default class Fresnel extends Abstract {
   name: string = 'Fresnel'
   mode: BlendMode = 'normal'
+  visible: boolean = true
+
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
@@ -116,6 +118,11 @@ export default class Fresnel extends Abstract {
   getSchema() {
     return [
       {
+        label: 'Visible',
+        value: this.visible,
+        __constructorKey: 'visible',
+      },
+      {
         label: 'Color',
         value: '#' + new Color(this.color).getHexString(),
         __constructorKey: 'color',
@@ -163,6 +170,7 @@ export default class Fresnel extends Abstract {
         power: this.power,
         intensity: this.intensity,
         bias: this.bias,
+        visible: this.visible,
       },
       defaults: {
         color: '#ff0000',
@@ -171,6 +179,7 @@ export default class Fresnel extends Abstract {
         power: 2,
         intensity: 1,
         bias: 0,
+        visible: true,
       },
     }
   }

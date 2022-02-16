@@ -1,7 +1,7 @@
 import { extend, useThree } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import mergeRefs from 'react-merge-refs'
 import { DebugSchema, LayerMaterialProps } from 'src/types'
@@ -105,7 +105,7 @@ export const DebugLayerMaterial = React.forwardRef(
       const layers = ref.current.layers
       const schema: { [name: string]: DebugSchema[] } = {}
       layers.forEach((layer: any, i: number) => {
-        schema[`${layer.name}$${i}`] = layer.getSchema()
+        if (layer.getSchema) schema[`${layer.name}$${i}`] = layer.getSchema()
       })
       setLayers(schema)
     }, [ref.current])
@@ -124,8 +124,6 @@ export const DebugLayerMaterial = React.forwardRef(
         const id = ref.current.layers[index].uuid
         const uniform = ref.current.uniforms[`u_${id}_${property}`]
 
-        let t = ref.current.uniforms
-
         // @ts-ignore
         ref.current.layers[index][property] = updatedData.value
         if (uniform) {
@@ -137,14 +135,21 @@ export const DebugLayerMaterial = React.forwardRef(
       }
     }, [update])
 
+    useLayoutEffect(() => {
+      const root = document.body.querySelector('#root')
+      if (root) {
+        const div = document.createElement('div')
+        root.appendChild(div)
+        ReactDOM.render(ReactDOM.createPortal(<LevaPanel store={store} />, div), div)
+      }
+    }, [])
+
     return (
       <>
         {Object.entries(layers).map(([name, layers], i) => (
           <DynamicLeva key={`${name}$${i}`} name={name} layers={layers} store={store} setUpdate={setUpdate} />
         ))}
-        <FullScreenHtml>
-          <LevaPanel store={store} />
-        </FullScreenHtml>
+
         <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
           {children}
         </layerMaterial>
@@ -152,26 +157,3 @@ export const DebugLayerMaterial = React.forwardRef(
     )
   }
 )
-
-function FullScreenHtml({ children, ...rest }: React.PropsWithChildren<HtmlProps>) {
-  const htmlRef = React.useRef<HTMLDivElement>(null!)
-
-  React.useEffect(() => {
-    if (htmlRef.current?.parentElement) {
-      htmlRef.current.parentElement!.style.pointerEvents = 'none'
-      htmlRef.current.parentElement!.style.width = '100%'
-      htmlRef.current.parentElement!.style.height = '100%'
-      htmlRef.current.style.width = '100%'
-      htmlRef.current.style.height = '100%'
-
-      // @ts-ignore
-      htmlRef.current.children[0].style.pointerEvents = 'all'
-    }
-  }, [htmlRef])
-
-  return (
-    <Html ref={htmlRef} center {...rest}>
-      {children}
-    </Html>
-  )
-}

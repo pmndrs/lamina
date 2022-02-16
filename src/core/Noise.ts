@@ -7,6 +7,8 @@ export default class Noise extends Abstract {
   mode: BlendMode = 'normal'
   type: NoiseType = 'perlin'
   mapping: MappingType = 'uv'
+  visible: boolean = true
+
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
@@ -21,18 +23,18 @@ export default class Noise extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_scale`]: {
-        value: scale ?? 1,
+        value: scale ?? 10,
       },
       [`u_${this.uuid}_colorA`]: {
-        value: new Color(colorA ?? '#ffffff'),
+        value: new Color(colorA ?? '#000000'),
       },
       [`u_${this.uuid}_colorB`]: {
-        value: new Color(colorB ?? '#000000'),
+        value: new Color(colorB ?? '#ffffff'),
       },
     }
     this.mode = mode || 'normal'
     this.type = type || 'perlin'
-    this.mapping = mapping || 'uv'
+    this.mapping = mapping || 'local'
   }
 
   private getMapping() {
@@ -127,5 +129,82 @@ export default class Noise extends Abstract {
   }
   get scale() {
     return this.uniforms[`u_${this.uuid}_scale`].value
+  }
+
+  getSchema() {
+    return [
+      {
+        label: 'Visible',
+        value: this.visible,
+        __constructorKey: 'visible',
+      },
+      {
+        label: 'Color A',
+        value: '#' + new Color(this.colorA).getHexString(),
+        __constructorKey: 'colorA',
+      },
+      {
+        label: 'Color B',
+        value: '#' + new Color(this.colorB).getHexString(),
+        __constructorKey: 'colorB',
+      },
+      {
+        label: 'Alpha',
+        value: this.alpha,
+        min: 0,
+        max: 1,
+        __constructorKey: 'alpha',
+      },
+      {
+        label: 'Scale',
+        value: this.scale,
+        __constructorKey: 'scale',
+      },
+      {
+        label: 'Type',
+        options: Object.keys(NoiseTypes),
+        value: this.type,
+        __constructorKey: 'type',
+      },
+      {
+        label: 'Blend Mode',
+        options: Object.keys(BlendModes),
+        value: this.mode,
+        __constructorKey: 'mode',
+      },
+
+      {
+        label: 'Mapping',
+        options: Object.keys(MappingTypes),
+        value: this.mapping,
+        __constructorKey: 'mapping',
+      },
+    ]
+  }
+
+  serialize() {
+    return {
+      type: 'Color',
+      name: this.name,
+      uuid: this.uuid,
+      settings: {
+        colorA: new Color(this.colorA).toArray(),
+        colorB: new Color(this.colorB).toArray(),
+        alpha: this.alpha,
+        scale: this.scale,
+        mode: this.mode,
+        mapping: this.mapping,
+        visible: this.visible,
+      },
+      defaults: {
+        colorA: '#000000',
+        colorB: '#ffffff',
+        alpha: 1,
+        scale: 10,
+        mode: 'normal',
+        mapping: 'local',
+        visible: true,
+      },
+    }
   }
 }

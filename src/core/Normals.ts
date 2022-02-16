@@ -5,6 +5,8 @@ import Abstract from './Abstract'
 export default class Normals extends Abstract {
   name: string = 'Normals'
   mode: BlendMode = 'normal'
+  visible: boolean = true
+
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
@@ -19,7 +21,7 @@ export default class Normals extends Abstract {
         value: alpha ?? 1,
       },
       [`u_${this.uuid}_direction`]: {
-        value: direction,
+        value: direction ?? new Vector3(1, 1, 1),
       },
     }
     this.mode = mode || 'normal'
@@ -40,7 +42,6 @@ export default class Normals extends Abstract {
   getFragmentVariables() {
     return /* glsl */ `    
     uniform float u_${this.uuid}_alpha;
-    uniform vec3 u_${this.uuid}_color;
     uniform vec3 u_${this.uuid}_direction;
 
     varying vec3 v_${this.uuid}_normals;
@@ -57,7 +58,7 @@ export default class Normals extends Abstract {
       ${e} = ${this.getBlendMode(
       BlendModes[this.mode] as number,
       e,
-      `vec4(f_${this.uuid}_normalColor, u_${this.uuid}_alpha)`
+      `vec4(packNormalToRGB(f_${this.uuid}_normalColor), u_${this.uuid}_alpha)`
     )};
   `
   }
@@ -68,16 +69,58 @@ export default class Normals extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set color(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_color`].value = new Color(v)
-  }
-  get color() {
-    return this.uniforms[`u_${this.uuid}_color`].value
-  }
   set direction(v: Vector3) {
     this.uniforms[`u_${this.uuid}_direction`].value = v
   }
   get direction() {
     return this.uniforms[`u_${this.uuid}_direction`].value
+  }
+
+  getSchema() {
+    return [
+      {
+        label: 'Visible',
+        value: this.visible,
+        __constructorKey: 'visible',
+      },
+      {
+        label: 'Alpha',
+        value: this.alpha,
+        min: 0,
+        max: 1,
+        __constructorKey: 'alpha',
+      },
+      {
+        label: 'Direction',
+        value: this.direction,
+        __constructorKey: 'direction',
+      },
+      {
+        label: 'Blend Mode',
+        options: Object.keys(BlendModes),
+        value: this.mode,
+        __constructorKey: 'mode',
+      },
+    ]
+  }
+
+  serialize() {
+    return {
+      type: 'Color',
+      name: this.name,
+      uuid: this.uuid,
+      settings: {
+        alpha: this.alpha,
+        mode: this.mode,
+        direction: this.direction,
+        visible: this.visible,
+      },
+      defaults: {
+        alpha: 1,
+        mode: 'normal',
+        direction: [1, 1, 1],
+        visible: true,
+      },
+    }
   }
 }

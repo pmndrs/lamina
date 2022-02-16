@@ -1,10 +1,12 @@
-import { IUniform, Texture as TextureType } from 'three'
+import { IUniform, Texture as TextureType, TextureLoader } from 'three'
 import { BlendMode, BlendModes, TextureProps } from '../types'
 import Abstract from './Abstract'
 
 export default class Texture extends Abstract {
   name: string = 'Texture'
   mode: BlendMode = 'texture'
+  visible: boolean = true
+
   protected uuid: string = Abstract.genID()
   uniforms: {
     [key: string]: IUniform<any>
@@ -64,7 +66,7 @@ export default class Texture extends Abstract {
   get alpha() {
     return this.uniforms[`u_${this.uuid}_alpha`].value
   }
-  set map(v: TextureType) {
+  set map(v: Texture) {
     this.uniforms[`u_${this.uuid}_map`].value = v
   }
   get map() {

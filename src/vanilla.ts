@@ -28,13 +28,16 @@ class LayerMaterial extends THREE.ShaderMaterial {
       vert: '',
       frag: '',
     }
-    layers?.forEach((layer: Abstract) => {
-      variables.frag += layer.getFragmentVariables() + ' \n'
-      variables.vert += layer.getVertexVariables() + ' \n'
-      Object.keys(layer.uniforms).forEach((key) => (uniforms[key] = layer.uniforms[key]))
-      body.frag += layer.getFragmentBody('sc_finalColor') + ' \n'
-      body.vert += layer.getVertexBody('') + ' \n'
-    })
+
+    layers
+      ?.filter((l) => l.visible)
+      .forEach((layer: Abstract) => {
+        variables.frag += layer.getFragmentVariables() + ' \n'
+        variables.vert += layer.getVertexVariables() + ' \n'
+        Object.keys(layer.uniforms).forEach((key) => (uniforms[key] = layer.uniforms[key]))
+        body.frag += layer.getFragmentBody('sc_finalColor') + ' \n'
+        body.vert += layer.getVertexBody('') + ' \n'
+      })
 
     if (shaderMaterial.fog) {
       variables.vert += THREE.ShaderChunk.fog_pars_vertex + '\n'

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows, Plane, Box } from '@react-three/drei'
-import { LayerMaterial, DebugLayerMaterial, Color, Depth, Fresnel } from 'lamina'
+import { LayerMaterial, DebugLayerMaterial, Depth } from 'lamina'
 import { useControls } from 'leva'
 
 export default function App() {
@@ -40,7 +40,7 @@ function Bg({ base, colorA, colorB }) {
     <mesh ref={mesh} scale={100}>
       <sphereGeometry args={[1, 64, 64]} />
       <LayerMaterial fog attach="material" side={THREE.BackSide}>
-        <Color color={base} alpha={1} mode="normal" />
+        {/* <Color color={base} alpha={1} mode="normal" /> */}
         <Depth colorA={colorB} colorB={colorA} alpha={0.5} mode="normal" near={0} far={300} origin={[100, 100, 100]} />
       </LayerMaterial>
     </mesh>
@@ -59,8 +59,8 @@ function Flower({ base, colorA, colorB }) {
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
       <DebugLayerMaterial color={base}>
         <Depth colorA={colorB} colorB={colorA} alpha={0.5} far={3} origin={[1, 1, 1]} />
-        <Depth colorA={colorB} colorB="black" mode="lighten" near={0.25} far={2} origin={[1, 0, 0]} />
-        <Fresnel mode="softlight" bias={0} />
+        {/* <Depth colorA={colorB} colorB="black" mode="lighten" near={0.25} far={2} origin={[1, 0, 0]} /> */}
+        {/* <Fresnel mode="softlight" bias={0} /> */}
       </DebugLayerMaterial>
     </mesh>
   )
