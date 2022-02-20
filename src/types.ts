@@ -1,149 +1,102 @@
-import { Schema } from 'leva/dist/declarations/src/types'
-import { ColorRepresentation, Texture, Vector3 } from 'three'
-import { Abstract } from './vanilla'
-
-export type LayerMaterialParameters = {
-  layers: Abstract[]
-  color?: THREE.ColorRepresentation
-  alpha?: number
-  shadows?: boolean
-}
-
-export type LayerMaterialProps = JSX.IntrinsicElements['layerMaterial'] & {
-  children?: React.ReactNode
-} & LayerMaterialParameters
+import { ColorRepresentation, Vector3 } from "three";
+import { Abstract } from "./vanilla";
 
 export const BlendModes: {
-  [key: string]: number
+  [key: string]: string;
 } = {
-  normal: 1,
-  add: 2,
-  subtract: 3,
-  multiply: 4,
-  addsub: 5,
-  lighten: 6,
-  darken: 7,
-  switch: 8,
-  divide: 9,
-  overlay: 10,
-  screen: 11,
-  softlight: 12,
-}
+  normal: "normal",
+  add: "add",
+  subtract: "subtract",
+  multiply: "multiply",
+  addsub: "addsub",
+  lighten: "lighten",
+  darken: "darken",
+  switch: "switch",
+  divide: "divide",
+  overlay: "overlay",
+  screen: "screen",
+  softlight: "softlight",
+};
 
-export type BlendMode = keyof typeof BlendModes
+export type BlendMode =
+  | "normal"
+  | "add"
+  | "subtract"
+  | "multiply"
+  | "addsub"
+  | "lighten"
+  | "darken"
+  | "switch"
+  | "divide"
+  | "overlay"
+  | "screen"
+  | "softlight";
 
 export const NoiseTypes: {
-  [key: string]: number
+  [key: string]: string;
 } = {
-  white: 1,
-  perlin: 2,
-  simplex: 3,
-  curl: 4,
-  cell: 5,
-}
+  perlin: "perlin",
+  simplex: "simplex",
+  cell: "cell",
+  curl: "curl",
+  white: "white",
+};
 
-export type NoiseType = keyof typeof NoiseTypes
+export type NoiseType = "perlin" | "simplex" | "cell" | "curl";
 
 export const MappingTypes: {
-  [key: string]: number
+  [key: string]: string;
 } = {
-  uv: 1,
-  local: 2,
-  world: 3,
-}
+  local: "local",
+  world: "world",
+  uv: "uv",
+};
 
-export type MappingType = keyof typeof MappingTypes
-
-export interface LayerProps {
-  alpha?: number
-  mode?: BlendMode
-  name?: string
-  visible?: boolean
-  [key: string]: any
-}
+export type MappingType = "local" | "world" | "uv";
 
 export interface BaseProps {
-  color?: ColorRepresentation
-  alpha?: number
-  mode?: BlendMode
+  color?: ColorRepresentation;
+  alpha?: number;
+}
+
+export interface LayerMaterialParameters {
+  layers?: Abstract[];
+  color?: ColorRepresentation;
+  alpha?: number;
+}
+export interface LayerMaterialProps {
+  color?: ColorRepresentation;
+  alpha?: number;
+}
+
+export interface LayerProps {
+  alpha?: number;
+  mode?: BlendMode;
+  name?: string;
+  visible?: boolean;
+  [key: string]: any;
 }
 
 export interface DepthProps extends LayerProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
-  near?: number
-  far?: number
-  origin?: Vector3
-  isVector?: boolean
+  colorA?: ColorRepresentation;
+  colorB?: ColorRepresentation;
+  near?: number;
+  far?: number;
+  origin?: Vector3;
+  isVector?: boolean;
 }
 
-export interface GradientProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
-  alpha?: number
-  mode?: BlendMode
-  a?: Vector3
-  b?: Vector3
-  angle?: Vector3
+export interface ColorProps extends LayerProps {
+  color?: ColorRepresentation;
 }
+export interface ShadingProps extends LayerProps {}
 
-export interface FresnelProps {
-  color?: ColorRepresentation
-  alpha?: number
-  mode?: BlendMode
-  power?: number
-  intensity?: number
-  bias?: number
-}
+export interface NoiseProps extends LayerProps {
+  colorA?: ColorRepresentation;
+  colorB?: ColorRepresentation;
+  colorC?: ColorRepresentation;
+  colorD?: ColorRepresentation;
 
-export interface NoiseProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
-  alpha?: number
-  mode?: BlendMode
-  scale?: number
-  type?: NoiseType
-  mapping?: MappingType
-}
-
-export interface NormalsProps {
-  alpha?: number
-  mode?: BlendMode
-  direction?: Vector3
-}
-
-export interface TextureProps {
-  alpha?: number
-  mode?: BlendMode
-  map?: Texture | string
-}
-
-export type DebugSchema = Omit<Schema[''], 'value'> & {
-  label: string
-  value: any
-  __constructorKey: string
-}
-
-export interface SerializedLayer {
-  type: string
-  name: string
-  uuid: string
-  settings: {
-    [name: string]: any
-  }
-  defaults: {
-    [name: string]: any
-  }
-}
-
-export interface SerializedMaterial {
-  version: number
-  name: string
-  settings: {
-    [name: string]: any
-  }
-  defaults: {
-    [name: string]: any
-  }
-  layers: SerializedLayer[]
+  mapping?: MappingType;
+  type?: NoiseType;
 }

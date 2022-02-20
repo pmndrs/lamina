@@ -1,107 +1,23 @@
-import Abstract from './Abstract'
-import { Color as THREEColor, ColorRepresentation, IUniform } from 'three'
-import { BaseProps, BlendMode, BlendModes } from '../types'
+import { ColorProps } from "../types";
+import Abstract from "./Abstract";
 
 export default class Color extends Abstract {
-  name: string = 'Color'
-  mode: BlendMode = 'normal'
-  visible: boolean = true
-  protected uuid: string = Abstract.genID()
+  static u_color = "red";
+  static u_alpha = 1;
 
-  uniforms: {
-    [key: string]: IUniform<any>
-  }
+  static fragmentShader = `   
+    uniform vec3 u_color;
+    uniform float u_alpha;
 
-  constructor(props?: BaseProps) {
-    super()
-    const { color, alpha, mode } = props || {}
-
-    this.uniforms = {
-      [`u_${this.uuid}_color`]: {
-        value: new THREEColor(color ?? '#ffffff'),
-      },
-      [`u_${this.uuid}_alpha`]: {
-        value: alpha ?? 1,
-      },
+    void main() {
+      return vec4(u_color, u_alpha);
     }
+  `;
 
-    this.mode = mode || 'normal'
-  }
-
-  getFragmentVariables() {
-    return `    
-    uniform float u_${this.uuid}_alpha;
-    uniform vec3 u_${this.uuid}_color;
-`
-  }
-
-  getFragmentBody(e: string) {
-    return `    
-      ${e} = ${this.getBlendMode(
-      BlendModes[this.mode] as number,
-      e,
-      `vec4(u_${this.uuid}_color, u_${this.uuid}_alpha)`
-    )};
-  `
-  }
-
-  set color(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_color`].value = new THREEColor(v)
-  }
-  get color() {
-    return this.uniforms[`u_${this.uuid}_color`].value
-  }
-  set alpha(v: number) {
-    this.uniforms[`u_${this.uuid}_alpha`].value = v
-  }
-  get alpha() {
-    return this.uniforms[`u_${this.uuid}_alpha`].value
-  }
-
-  // Schema
-  getSchema() {
-    return [
-      {
-        label: 'Visible',
-        value: this.visible,
-        __constructorKey: 'visible',
-      },
-      {
-        label: 'Color',
-        value: new THREEColor(this.color).toArray(),
-        __constructorKey: 'color',
-      },
-      {
-        label: 'Alpha',
-        value: this.alpha,
-        min: 0,
-        max: 1,
-        __constructorKey: 'alpha',
-      },
-      {
-        label: 'Blend Mode',
-        options: Object.keys(BlendModes),
-        value: this.mode,
-        __constructorKey: 'mode',
-      },
-    ]
-  }
-
-  serialize() {
-    return {
-      type: 'Color',
-      name: this.name,
-      uuid: this.uuid,
-      settings: {
-        color: '#' + new THREEColor(this.color).getHexString(),
-        alpha: this.alpha,
-        mode: this.mode,
-      },
-      defaults: {
-        color: '#ffffff',
-        alpha: 1,
-        mode: 'normal',
-      },
-    }
+  constructor(props?: ColorProps) {
+    super(Color, {
+      name: "Color",
+      ...props,
+    });
   }
 }

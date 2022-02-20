@@ -1,71 +1,101 @@
-import * as React from 'react'
-import { extend, Node } from '@react-three/fiber'
-import mergeRefs from 'react-merge-refs'
-import * as LAYERS from './vanilla'
+/* eslint-disable */
 
-import { DebugLayerMaterial } from './helpers/Debug'
-import { LayerMaterialProps } from './types'
+import { extend, Node } from "@react-three/fiber";
+import React from "react";
+import mergeRefs from "react-merge-refs";
+import {
+  DepthProps,
+  ColorProps,
+  LayerMaterialProps,
+  ShadingProps,
+  NoiseProps,
+} from "./types";
+import * as LAYERS from "./vanilla";
+import DebugLayerMaterial from "./debug";
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
-      color_: Node<LAYERS.Color, typeof LAYERS.Color>
-      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
-      fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
-      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
-      normals_: Node<LAYERS.Normals, typeof LAYERS.Normals>
-      texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
+      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>;
+      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>;
+      color_: Node<LAYERS.Color, typeof LAYERS.Color>;
+      shading_: Node<LAYERS.Shading, typeof LAYERS.Shading>;
+      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>;
     }
   }
 }
 
 extend({
   LayerMaterial: LAYERS.LayerMaterial,
-  Color_: LAYERS.Color,
   Depth_: LAYERS.Depth,
-  Fresnel_: LAYERS.Fresnel,
+  Color_: LAYERS.Color,
+  Shading_: LAYERS.Shading,
   Noise_: LAYERS.Noise,
-  Normals_: LAYERS.Normals,
-  Texture_: LAYERS.Texture,
-})
+});
 
-const LayerMaterial = React.forwardRef(({ children, ...props }: LayerMaterialProps, forwardRef) => {
-  const ref = React.useRef<LAYERS.LayerMaterial>(null!)
+const LayerMaterial = React.forwardRef<
+  LAYERS.LayerMaterial,
+  React.PropsWithChildren<LayerMaterialProps>
+>(({ children, ...props }, forwardRef) => {
+  const ref = React.useRef<LAYERS.LayerMaterial>(null!);
+
   React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects
-    ref.current.update()
-  }, [children])
+    ref.current.layers = (ref.current as any).__r3f.objects;
+    ref.current.update();
+  }, [children]);
 
   return (
     <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
       {children}
     </layerMaterial>
-  )
-})
+  );
+});
 
-const Color = React.forwardRef((props: JSX.IntrinsicElements['color_'], forwardRef) => {
-  return <color_ ref={forwardRef as any} {...props} />
-})
+function getNonUniformArgs(props: any) {
+  return [
+    {
+      mode: props?.mode,
+      visible: props?.visible,
+      type: props?.type,
+      mapping: props?.mapping,
+    },
+  ] as any;
+}
 
-const Depth = React.forwardRef((props: JSX.IntrinsicElements['depth_'], forwardRef) => {
-  return <depth_ ref={forwardRef as any} {...props} />
-})
+const Depth = React.forwardRef<LAYERS.Depth, DepthProps>(
+  (props, forwardRef) => {
+    return (
+      <depth_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+    );
+  }
+) as React.ForwardRefExoticComponent<
+  DepthProps & React.RefAttributes<LAYERS.Depth>
+>;
 
-const Fresnel = React.forwardRef((props: JSX.IntrinsicElements['fresnel_'], forwardRef) => {
-  return <fresnel_ ref={forwardRef as any} {...props} />
-})
+const Color = React.forwardRef<LAYERS.Color, ColorProps>(
+  (props, forwardRef) => {
+    return (
+      <color_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+    );
+  }
+) as React.ForwardRefExoticComponent<
+  ColorProps & React.RefAttributes<LAYERS.Color>
+>;
 
-const Noise = React.forwardRef((props: JSX.IntrinsicElements['noise_'], forwardRef) => {
-  return <noise_ ref={forwardRef as any} {...props} />
-})
+const Shading = React.forwardRef<LAYERS.Shading, ShadingProps>(
+  (props, forwardRef) => {
+    return (
+      <shading_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+    );
+  }
+) as React.ForwardRefExoticComponent<
+  ShadingProps & React.RefAttributes<LAYERS.Shading>
+>;
 
-const Normals = React.forwardRef((props: JSX.IntrinsicElements['normals_'], forwardRef) => {
-  return <normals_ ref={forwardRef as any} {...props} />
-})
+const Noise = React.forwardRef<LAYERS.Noise, NoiseProps>((props, ref) => {
+  return <noise_ args={getNonUniformArgs(props)} {...props} />;
+}) as React.ForwardRefExoticComponent<
+  NoiseProps & React.RefAttributes<LAYERS.Noise>
+>;
 
-const Texture = React.forwardRef((props: JSX.IntrinsicElements['texture_'], forwardRef) => {
-  return <texture_ ref={forwardRef as any} {...props} />
-})
-
-export { LayerMaterial, DebugLayerMaterial, Color, Depth, Fresnel, Noise, Normals, Texture }
+export { DebugLayerMaterial, LayerMaterial, Depth, Color, Shading, Noise };

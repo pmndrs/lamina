@@ -1,13 +1,27 @@
-import { Color } from 'three'
+import { Color, ColorRepresentation } from "three";
 
-export function getUniform(name: string, value: any) {
-  switch (name) {
-    case 'color':
-    case 'colorA':
-    case 'colorB':
-      return new Color(value)
+export function getUniform(value: any) {
+  if (typeof value === "string") {
+    const v = new Color(value);
+    v.convertLinearToSRGB();
+    return v;
+  }
+  return value;
+}
+
+export function getSpecialParameters(label: string) {
+  switch (label) {
+    case "alpha":
+      return {
+        min: 0,
+        max: 1,
+      };
+    case "scale":
+      return {
+        min: 0,
+      };
 
     default:
-      return value
+      return {};
   }
 }

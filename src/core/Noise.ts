@@ -1,210 +1,134 @@
-import { Color, ColorRepresentation, IUniform } from 'three'
-import { BlendMode, NoiseProps, BlendModes, NoiseType, NoiseTypes, MappingType, MappingTypes } from '../types'
-import Abstract from './Abstract'
+import {
+  ColorProps,
+  MappingType,
+  MappingTypes,
+  NoiseProps,
+  NoiseType,
+  NoiseTypes,
+} from "../types";
+import Abstract from "./Abstract";
 
 export default class Noise extends Abstract {
-  name: string = 'Noise'
-  mode: BlendMode = 'normal'
-  type: NoiseType = 'perlin'
-  mapping: MappingType = 'uv'
-  visible: boolean = true
+  static u_colorA = "#666666";
+  static u_colorB = "#666666";
+  static u_colorC = "#FFFFFF";
+  static u_colorD = "#FFFFFF";
 
-  protected uuid: string = Abstract.genID()
-  uniforms: {
-    [key: string]: IUniform<any>
-  }
+  static u_alpha = 1;
+  static u_scale = 1;
+
+  static vertexShader = `
+    varying vec3 v_position;
+
+    void main() {
+        vec3 f_pos = lamina_mapping_template;
+        v_position = f_pos;
+    }
+  `;
+
+  static fragmentShader = `   
+    uniform vec3 u_colorA;
+    uniform vec3 u_colorB;
+    uniform vec3 u_colorC;
+    uniform vec3 u_colorD;
+
+    uniform float u_alpha;
+    uniform float u_scale;
+
+    varying vec3 v_position;
+
+
+    void main() {
+        float f_n = lamina_noise_template(v_position * u_scale);
+
+        float f_step1 = 0.;
+        float f_step2 = 0.2;
+        float f_step3 = 0.6;
+        float f_step4 = 1.;
+
+        vec3 f_color = mix(u_colorA, u_colorB, smoothstep(f_step1, f_step2, f_n));
+        f_color = mix(f_color, u_colorC, smoothstep(f_step2, f_step3, f_n));
+        f_color = mix(f_color, u_colorD, smoothstep(f_step3, f_step4, f_n));
+
+        return vec4(f_color, u_alpha);
+    }
+  `;
 
   constructor(props?: NoiseProps) {
-    super()
-    const { alpha, mode, scale, colorA, colorB, type, mapping } = props || {}
+    super(
+      Noise,
+      {
+        name: "noise",
+        ...props,
+      },
+      null,
+      {
+        onParse: (self) => {
+          const extendedSelf = self as AbstractExtended;
+          if (!extendedSelf.type) {
+            extendedSelf.type = props?.type || "perlin";
+            self.schema.push({
+              value: extendedSelf.type,
+              label: "type",
+              options: Object.values(NoiseTypes),
+            });
+          }
 
-    this.uniforms = {
-      [`u_${this.uuid}_alpha`]: {
-        value: alpha ?? 1,
-      },
-      [`u_${this.uuid}_scale`]: {
-        value: scale ?? 10,
-      },
-      [`u_${this.uuid}_colorA`]: {
-        value: new Color(colorA ?? '#000000'),
-      },
-      [`u_${this.uuid}_colorB`]: {
-        value: new Color(colorB ?? '#ffffff'),
-      },
-    }
-    this.mode = mode || 'normal'
-    this.type = type || 'perlin'
-    this.mapping = mapping || 'local'
+          if (!extendedSelf.mapping) {
+            extendedSelf.mapping = props?.mapping || "local";
+            self.schema.push({
+              value: extendedSelf.mapping,
+              label: "mapping",
+              options: Object.values(MappingTypes),
+            });
+          }
+
+          const noiseFunc = Noise.getNoiseFunction(extendedSelf.type);
+          const mapping = Noise.getMapping(extendedSelf.mapping);
+
+          self.vertexShader = self.vertexShader.replace(
+            "lamina_mapping_template",
+            mapping
+          );
+          self.fragmentShader = self.fragmentShader.replace(
+            "lamina_noise_template",
+            noiseFunc
+          );
+
+          type AbstractExtended = Abstract & {
+            type: NoiseType;
+            mapping: MappingType;
+          };
+        },
+      }
+    );
   }
 
-  private getMapping() {
-    switch (MappingTypes[this.mapping]) {
-      case MappingTypes.uv:
-        return `vec3(uv, 0.)`
-      case MappingTypes.local:
-        return `position`
-      case MappingTypes.world:
-        return `
-        (modelMatrix * vec4(position,1.0)).xyz;
-        `
-
+  private static getNoiseFunction(type?: string) {
+    switch (type) {
       default:
-        break
+      case "perlin":
+        return `lamina_noise_perlin`;
+      case "simplex":
+        return `lamina_noise_simplex`;
+      case "cell":
+        return `lamina_noise_worley`;
+      case "white":
+        return `lamina_noise_white`;
+      case "curl":
+        return `lamina_noise_swirl`;
     }
   }
 
-  private getNoise(e: string) {
-    switch (NoiseTypes[this.type]) {
-      case NoiseTypes.white:
-        return `lamina_noise_white(${e})`
-      case NoiseTypes.perlin:
-        return `lamina_noise_perlin(${e})`
-      case NoiseTypes.simplex:
-        return `lamina_noise_simplex(${e})`
-      case NoiseTypes.curl:
-        return `lamina_noise_swirl(${e})`
-      case NoiseTypes.cell:
-        return `lamina_noise_worley(${e})`
-
+  private static getMapping(type?: string) {
+    switch (type) {
       default:
-        break
-    }
-  }
-
-  getVertexVariables(): string {
-    return /* glsl */ `
-    varying vec3 v_${this.uuid}_position;
-    `
-  }
-
-  getVertexBody(e: string): string {
-    return /* glsl */ `
-    v_${this.uuid}_position = ${this.getMapping()};
-    `
-  }
-
-  getFragmentVariables() {
-    return /* glsl */ `    
-    uniform float u_${this.uuid}_alpha;
-    uniform vec3 u_${this.uuid}_colorA;
-    uniform vec3 u_${this.uuid}_colorB;
-    uniform float u_${this.uuid}_scale;
-    varying vec3 v_${this.uuid}_position;
-`
-  }
-
-  getFragmentBody(e: string) {
-    return /* glsl */ `    
-      float f_${this.uuid}_noise = ${this.getNoise(`v_${this.uuid}_position * u_${this.uuid}_scale`)};
-      vec3 f_${this.uuid}_noiseColor = mix(u_${this.uuid}_colorA, u_${this.uuid}_colorB, f_${this.uuid}_noise);
-
-      ${e} = ${this.getBlendMode(
-      BlendModes[this.mode] as number,
-      e,
-      `vec4(f_${this.uuid}_noiseColor, u_${this.uuid}_alpha)`
-    )};
-    `
-  }
-
-  set alpha(v: number) {
-    this.uniforms[`u_${this.uuid}_alpha`].value = v
-  }
-  get alpha() {
-    return this.uniforms[`u_${this.uuid}_alpha`].value
-  }
-  set colorA(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_colorA`].value = new Color(v)
-  }
-  get colorA() {
-    return this.uniforms[`u_${this.uuid}_colorA`].value
-  }
-  set colorB(v: ColorRepresentation) {
-    this.uniforms[`u_${this.uuid}_colorB`].value = new Color(v)
-  }
-  get colorB() {
-    return this.uniforms[`u_${this.uuid}_colorB`].value
-  }
-  set scale(v: number) {
-    this.uniforms[`u_${this.uuid}_scale`].value = v
-  }
-  get scale() {
-    return this.uniforms[`u_${this.uuid}_scale`].value
-  }
-
-  getSchema() {
-    return [
-      {
-        label: 'Visible',
-        value: this.visible,
-        __constructorKey: 'visible',
-      },
-      {
-        label: 'Color A',
-        value: '#' + new Color(this.colorA).getHexString(),
-        __constructorKey: 'colorA',
-      },
-      {
-        label: 'Color B',
-        value: '#' + new Color(this.colorB).getHexString(),
-        __constructorKey: 'colorB',
-      },
-      {
-        label: 'Alpha',
-        value: this.alpha,
-        min: 0,
-        max: 1,
-        __constructorKey: 'alpha',
-      },
-      {
-        label: 'Scale',
-        value: this.scale,
-        __constructorKey: 'scale',
-      },
-      {
-        label: 'Type',
-        options: Object.keys(NoiseTypes),
-        value: this.type,
-        __constructorKey: 'type',
-      },
-      {
-        label: 'Blend Mode',
-        options: Object.keys(BlendModes),
-        value: this.mode,
-        __constructorKey: 'mode',
-      },
-
-      {
-        label: 'Mapping',
-        options: Object.keys(MappingTypes),
-        value: this.mapping,
-        __constructorKey: 'mapping',
-      },
-    ]
-  }
-
-  serialize() {
-    return {
-      type: 'Color',
-      name: this.name,
-      uuid: this.uuid,
-      settings: {
-        colorA: new Color(this.colorA).toArray(),
-        colorB: new Color(this.colorB).toArray(),
-        alpha: this.alpha,
-        scale: this.scale,
-        mode: this.mode,
-        mapping: this.mapping,
-        visible: this.visible,
-      },
-      defaults: {
-        colorA: '#000000',
-        colorB: '#ffffff',
-        alpha: 1,
-        scale: 10,
-        mode: 'normal',
-        mapping: 'local',
-        visible: true,
-      },
+      case "local":
+        return `position`;
+      case "world":
+        return `(modelMatrix * vec4(position,1.0)).xyz`;
+      case "uv":
+        return `vec3(uv, 0.)`;
     }
   }
 }
