@@ -1,30 +1,35 @@
-import { Color, TextureLoader } from "three";
-import { LayerMaterialProps } from "../types";
+import { Color, TextureLoader } from 'three'
+import { LayerMaterialProps } from '../types'
 
 export function getUniform(value: any) {
-  if (typeof value === "string") {
-    const v = new Color(value);
-    v.convertLinearToSRGB();
-    return v;
+  if (typeof value === 'string') {
+    const v = new Color(value)
+    v.convertLinearToSRGB()
+    return v
   }
 
-  return value;
+  return value
 }
 
 export function getSpecialParameters(label: string) {
   switch (label) {
-    case "alpha":
+    case 'alpha':
       return {
         min: 0,
         max: 1,
-      };
-    case "scale":
+      }
+    case 'scale':
       return {
         min: 0,
-      };
+      }
+
+    case 'map':
+      return {
+        image: undefined,
+      }
 
     default:
-      return {};
+      return {}
   }
 }
 
@@ -35,5 +40,5 @@ export function getLayerMaterialArgs(props: LayerMaterialProps) {
       alpha: props?.alpha,
       lighting: props?.lighting,
     },
-  ] as any;
+  ] as any
 }
