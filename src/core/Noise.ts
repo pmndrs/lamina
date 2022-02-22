@@ -8,6 +8,11 @@ import {
 } from "../types";
 import Abstract from "./Abstract";
 
+type AbstractExtended = Abstract & {
+  type: NoiseType;
+  mapping: MappingType;
+};
+
 export default class Noise extends Abstract {
   static u_colorA = "#666666";
   static u_colorB = "#666666";
@@ -21,8 +26,7 @@ export default class Noise extends Abstract {
     varying vec3 v_position;
 
     void main() {
-        vec3 f_pos = lamina_mapping_template;
-        v_position = f_pos;
+        v_position = lamina_mapping_template;
     }
   `;
 
@@ -94,11 +98,6 @@ export default class Noise extends Abstract {
             "lamina_noise_template",
             noiseFunc
           );
-
-          type AbstractExtended = Abstract & {
-            type: NoiseType;
-            mapping: MappingType;
-          };
         },
       }
     );

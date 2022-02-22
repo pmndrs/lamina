@@ -1,4 +1,4 @@
-import { ColorRepresentation, Vector3 } from "three";
+import { ColorRepresentation, Texture, Vector3 } from "three";
 import { Abstract } from "./vanilla";
 
 export const BlendModes: {
@@ -54,6 +54,8 @@ export const MappingTypes: {
 
 export type MappingType = "local" | "world" | "uv";
 
+export type ShadingType = "phong" | "none";
+
 export interface BaseProps {
   color?: ColorRepresentation;
   alpha?: number;
@@ -63,14 +65,11 @@ export interface LayerMaterialParameters {
   layers?: Abstract[];
   color?: ColorRepresentation;
   alpha?: number;
+  lighting?: ShadingType;
 }
-export interface LayerMaterialProps {
-  color?: ColorRepresentation;
-  alpha?: number;
-}
+export type LayerMaterialProps = Omit<LayerMaterialParameters, "layers">;
 
 export interface LayerProps {
-  alpha?: number;
   mode?: BlendMode;
   name?: string;
   visible?: boolean;
@@ -80,6 +79,7 @@ export interface LayerProps {
 export interface DepthProps extends LayerProps {
   colorA?: ColorRepresentation;
   colorB?: ColorRepresentation;
+  alpha?: number;
   near?: number;
   far?: number;
   origin?: Vector3;
@@ -88,6 +88,7 @@ export interface DepthProps extends LayerProps {
 
 export interface ColorProps extends LayerProps {
   color?: ColorRepresentation;
+  alpha?: number;
 }
 export interface ShadingProps extends LayerProps {}
 
@@ -96,7 +97,39 @@ export interface NoiseProps extends LayerProps {
   colorB?: ColorRepresentation;
   colorC?: ColorRepresentation;
   colorD?: ColorRepresentation;
-
+  alpha?: number;
   mapping?: MappingType;
   type?: NoiseType;
+  scale?: number;
+}
+export interface DisplaceProps extends LayerProps {
+  strength?: number;
+  scale?: number;
+  mapping?: MappingType;
+  type?: NoiseType;
+}
+
+export interface FresnelProps extends LayerProps {
+  color?: ColorRepresentation;
+  alpha?: number;
+  power?: number;
+  intensity?: number;
+  bias?: number;
+}
+export interface GradientProps extends LayerProps {
+  colorA?: ColorRepresentation;
+  colorB?: ColorRepresentation;
+  axes?: "x" | "y" | "z";
+  alpha?: number;
+  contrast?: number;
+  start?: number;
+  end?: number;
+  mapping?: MappingType;
+}
+
+export interface MatcapProps extends LayerProps {
+  map?: Texture;
+}
+export interface TextureProps extends LayerProps {
+  map?: Texture;
 }

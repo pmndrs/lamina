@@ -5,11 +5,16 @@ import Depth from "./core/Depth";
 import Color from "./core/Color";
 import Shading from "./core/Shading";
 import Noise from "./core/Noise";
+import Fresnel from "./core/Fresnel";
+import Gradient from "./core/Gradient";
+import Matcap from "./core/Matcap";
+import Texture from "./core/Texture";
+import Displace from "./core/Displace";
 
 import BlendModesChunk from "./chunks/BlendModes";
 import NoiseChunk from "./chunks/Noise";
 import HelpersChunk from "./chunks/Helpers";
-import { LayerMaterialParameters } from "./types";
+import { LayerMaterialParameters, ShadingType } from "./types";
 import { MathUtils, UniformsUtils } from "three";
 
 class LayerMaterial extends THREE.ShaderMaterial {
@@ -17,17 +22,38 @@ class LayerMaterial extends THREE.ShaderMaterial {
   layers: Abstract[];
   color: THREE.ColorRepresentation;
   alpha: number;
+  lighting: ShadingType;
 
   constructor(
     props?: THREE.ShaderMaterialParameters & LayerMaterialParameters
   ) {
-    super(props);
+    super();
+
     this.color = props?.color || "#808080";
     this.alpha = props?.alpha ?? 1;
     this.layers = props?.layers || [];
+    this.lighting = props?.lighting || "phong";
+
     this.customProgramCacheKey = () => {
       return MathUtils.generateUUID();
     };
+
+    this.forceShading();
+  }
+
+  forceShading() {
+    // Force shading as first layer. May change?
+    switch (this.lighting) {
+      default:
+      case "phong":
+        if (this.layers[0]?.name !== "Shading")
+          this.layers.unshift(new Shading());
+        break;
+
+      case "none":
+        if (this.layers[0]?.name === "Shading") this.layers.shift();
+        break;
+    }
   }
 
   genShaders() {
@@ -84,16 +110,20 @@ class LayerMaterial extends THREE.ShaderMaterial {
 
     return {
       uniforms: uniforms,
-      vertexShader: `
+      vertexShader: /* glsl */ `
+
+      ${HelpersChunk}
+      ${NoiseChunk}
       ${vertexVariables}
 
       void main() {
+        vec3 lamina_finalPosition = position;
         ${vertexShader}
 
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(lamina_finalPosition, 1.0);
       }
       `,
-      fragmentShader: `
+      fragmentShader: /* glsl */ `
       ${BlendModesChunk}
 
       ${HelpersChunk}
@@ -114,6 +144,9 @@ class LayerMaterial extends THREE.ShaderMaterial {
   }
 
   update() {
+    // Force shading as first layer
+    this.forceShading();
+
     const { uniforms, ...rest } = this.genShaders();
     Object.assign(this, rest);
 
@@ -127,4 +160,16 @@ class LayerMaterial extends THREE.ShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Shading, Noise };
+export {
+  LayerMaterial,
+  Abstract,
+  Depth,
+  Color,
+  Shading,
+  Noise,
+  Fresnel,
+  Gradient,
+  Matcap,
+  Texture,
+  Displace,
+};

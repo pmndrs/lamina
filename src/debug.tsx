@@ -1,12 +1,12 @@
 import { extend } from "@react-three/fiber";
 import { button, LevaPanel, useControls, useCreateStore } from "leva";
 import { DataItem, StoreType } from "leva/dist/declarations/src/types";
-import React from "react";
+import React, { useMemo } from "react";
 import ReactDOM from "react-dom";
 import mergeRefs from "react-merge-refs";
 import { getUniform } from "./utils/Functions";
 import * as LAYERS from "./vanilla";
-import { Color } from "three";
+import { Color, TextureLoader } from "three";
 import { LayerMaterialProps } from "./types";
 
 extend({
@@ -54,6 +54,7 @@ const DebugLayerMaterial = React.forwardRef<
   const store = useCreateStore();
   const [layers, setLayers] = React.useState<{ [name: string]: any[] }>({});
   const [path, setPath] = React.useState(["", ""]);
+  const textureLoader = useMemo(() => new TextureLoader(), []);
 
   const onBasePropsChange = React.useCallback((t, v) => {
     ref.current.uniforms[`u_lamina_${t}`].value = getUniform(v);
@@ -108,16 +109,35 @@ const DebugLayerMaterial = React.forwardRef<
       const layer = ref.current.layers[index] as LAYERS.Abstract & {
         [key: string]: any;
       };
-      layer[property] = updatedData.value;
 
-      if (uniform) {
-        uniform.value = getUniform(updatedData.value);
+      if (property !== "map") {
+        layer[property] = updatedData.value;
+
+        if (uniform) {
+          uniform.value = getUniform(updatedData.value);
+        } else {
+          ref.current.layers[index].buildShaders(
+            ref.current.layers[index].constructor
+          );
+
+          ref.current.update();
+        }
       } else {
-        ref.current.layers[index].buildShaders(
-          ref.current.layers[index].constructor
-        );
-
-        ref.current.update();
+        (async () => {
+          try {
+            if (updatedData.value) {
+              console.log(layer[property]);
+              const t = await textureLoader.loadAsync(updatedData.value);
+              layer[property] = t;
+              uniform.value = t;
+            } else {
+              layer[property] = undefined;
+              uniform.value = undefined;
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        })();
       }
     }
   }, [path]);

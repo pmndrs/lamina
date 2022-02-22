@@ -1,5 +1,5 @@
 import { getSpecialParameters, getUniform } from "../utils/Functions";
-import { IUniform, MathUtils } from "three";
+import { IUniform, MathUtils, Texture } from "three";
 import { BlendMode, BlendModes, LayerProps } from "../types";
 
 // @ts-ignore
@@ -196,12 +196,11 @@ export default class Abstract {
           : "",
     };
 
-    this.vertexShader = this.processFinal(funcBodies.vert);
+    this.vertexShader = this.processFinal(funcBodies.vert, true);
     this.fragmentShader = this.processFinal(funcBodies.frag);
     this.vertexVariables = variables.vert;
     this.fragmentVariables = variables.frag;
 
-    console.log(this);
     this.events?.onParse?.(this);
   }
 
@@ -217,7 +216,7 @@ export default class Abstract {
     }
   }
 
-  processFinal(shader: string) {
+  processFinal(shader: string, isVertex?: boolean) {
     const s: string = shader
       .replaceAll(/\sf_/gm, ` f_${this.uuid}_`)
       .replaceAll(/\(f_/gm, `(f_${this.uuid}_`);
@@ -232,7 +231,9 @@ export default class Abstract {
         .replace(";", "");
 
       const blendMode = this.getBlendMode(returnVariable, "lamina_finalColor");
-      sReplaced += `lamina_finalColor = ${blendMode};`;
+      sReplaced += isVertex
+        ? `lamina_finalPosition = ${returnVariable}.xyz;`
+        : `lamina_finalColor = ${blendMode};`;
     }
 
     return sReplaced;
@@ -273,11 +274,12 @@ export default class Abstract {
   }
 
   getSchema() {
-    const latestSchema = this.schema.map(({ label, options }) => {
+    const latestSchema = this.schema.map(({ label, options, ...rest }) => {
       return {
         label,
         options,
         ...getSpecialParameters(label),
+        ...rest,
         // @ts-ignore
         value: this[label],
       };

@@ -26,6 +26,7 @@ function createFragment() {
 
 export default class Shading extends Abstract {
   static u_alpha = 1;
+  static u_shininess = 1;
 
   static vertexShader = ShaderLib.phong.vertexShader;
   static fragmentShader = createFragment();
@@ -39,13 +40,25 @@ export default class Shading extends Abstract {
       },
       {
         lights: true,
+      },
+      {
+        onParse: (self) => {
+          self.uniforms = UniformsUtils.merge([
+            ShaderLib.phong.uniforms,
+            self.uniforms,
+          ]);
+
+          self.fragmentShader = self.fragmentShader.replace(
+            "#include <lights_phong_fragment>",
+            `
+            #include <lights_phong_fragment>
+            material.specularShininess = clamp(u_${self.uuid}_shininess, 0.0001, 1.) * 100.;
+            `
+          );
+
+          self.fragmentVariables += `uniform float u_${self.uuid}_shininess;`;
+        },
       }
     );
-
-    this.uniforms = UniformsUtils.merge([
-      this.uniforms,
-      ShaderLib.phong.uniforms,
-    ]);
-    this.uniforms.shininess.value = 100;
   }
 }

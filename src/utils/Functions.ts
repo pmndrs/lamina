@@ -1,4 +1,5 @@
-import { Color, ColorRepresentation } from "three";
+import { Color, TextureLoader } from "three";
+import { LayerMaterialProps } from "../types";
 
 export function getUniform(value: any) {
   if (typeof value === "string") {
@@ -6,6 +7,7 @@ export function getUniform(value: any) {
     v.convertLinearToSRGB();
     return v;
   }
+
   return value;
 }
 
@@ -24,4 +26,14 @@ export function getSpecialParameters(label: string) {
     default:
       return {};
   }
+}
+
+export function getLayerMaterialArgs(props: LayerMaterialProps) {
+  return [
+    {
+      color: props?.color,
+      alpha: props?.alpha,
+      lighting: props?.lighting,
+    },
+  ] as any;
 }
