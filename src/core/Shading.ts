@@ -1,4 +1,5 @@
-import { ShaderLib, UniformsUtils } from "three";
+import { ColorRepresentation, ShaderLib, UniformsUtils } from "three";
+import { Color } from "three";
 import { ShadingProps } from "../types";
 import Abstract from "./Abstract";
 

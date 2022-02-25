@@ -56,7 +56,7 @@ export default class Displace extends Abstract {
       void main() {
        
 				vec3 f_newPosition = displace(position);
-        vNormal = recalcNormals(f_newPosition);
+        lamina_finalNormal = recalcNormals(f_newPosition);
 
         return f_newPosition;
       }

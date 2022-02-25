@@ -1,9 +1,9 @@
-import { ColorProps } from "../types";
-import Abstract from "./Abstract";
+import { ColorProps } from '../types'
+import Abstract from './Abstract'
 
 export default class Color extends Abstract {
-  static u_color = "red";
-  static u_alpha = 1;
+  static u_color = 'red'
+  static u_alpha = 1
 
   static fragmentShader = `   
     uniform vec3 u_color;
@@ -12,12 +12,12 @@ export default class Color extends Abstract {
     void main() {
       return vec4(u_color, u_alpha);
     }
-  `;
+  `
 
   constructor(props?: ColorProps) {
     super(Color, {
-      name: "Color",
+      name: 'Color',
       ...props,
-    });
+    })
   }
 }

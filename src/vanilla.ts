@@ -1,102 +1,115 @@
-import * as THREE from "three";
+import * as THREE from 'three'
 
-import Abstract from "./core/Abstract";
-import Depth from "./core/Depth";
-import Color from "./core/Color";
-import Shading from "./core/Shading";
-import Noise from "./core/Noise";
-import Fresnel from "./core/Fresnel";
-import Gradient from "./core/Gradient";
-import Matcap from "./core/Matcap";
-import Texture from "./core/Texture";
-import Displace from "./core/Displace";
+import Abstract from './core/Abstract'
+import Depth from './core/Depth'
+import Color from './core/Color'
+import Shading from './core/Shading'
+import Noise from './core/Noise'
+import Fresnel from './core/Fresnel'
+import Gradient from './core/Gradient'
+import Matcap from './core/Matcap'
+import Texture from './core/Texture'
+import Displace from './core/Displace'
 
-import BlendModesChunk from "./chunks/BlendModes";
-import NoiseChunk from "./chunks/Noise";
-import HelpersChunk from "./chunks/Helpers";
-import { LayerMaterialParameters, ShadingType } from "./types";
-import { MathUtils, UniformsUtils } from "three";
+import BlendModesChunk from './chunks/BlendModes'
+import NoiseChunk from './chunks/Noise'
+import HelpersChunk from './chunks/Helpers'
+import { LayerMaterialParameters, SerializedLayer, ShadingType } from './types'
+import { MathUtils, UniformsUtils } from 'three'
 
 class LayerMaterial extends THREE.ShaderMaterial {
-  shadingAdded: boolean = false;
-  layers: Abstract[];
-  color: THREE.ColorRepresentation;
-  alpha: number;
-  lighting: ShadingType;
+  shadingAdded: boolean = false
+  layers: Abstract[]
+  color: THREE.ColorRepresentation
+  alpha: number
+  lighting: ShadingType
+  uuid: string
 
-  constructor(
-    props?: THREE.ShaderMaterialParameters & LayerMaterialParameters
-  ) {
-    super();
+  static u_color = 'white'
+  static u_alpha = 1
+  static u_layers = []
+  static u_lighting: ShadingType = 'phong'
+  static u_name = 'LayerMaterial'
 
-    this.color = props?.color || "#808080";
-    this.alpha = props?.alpha ?? 1;
-    this.layers = props?.layers || [];
-    this.lighting = props?.lighting || "phong";
+  constructor(props?: THREE.ShaderMaterialParameters & LayerMaterialParameters) {
+    super()
+
+    this.uuid = MathUtils.generateUUID()
+    this.color = props?.color || LayerMaterial.u_color
+    this.alpha = props?.alpha ?? LayerMaterial.u_alpha
+    this.layers = props?.layers || LayerMaterial.u_layers
+    this.lighting = props?.lighting || LayerMaterial.u_lighting
+    this.name = props?.name || LayerMaterial.u_name
 
     this.customProgramCacheKey = () => {
-      return MathUtils.generateUUID();
-    };
+      return this.uuid
+    }
 
-    this.forceShading();
+    this.forceShading()
   }
 
   forceShading() {
     // Force shading as first layer. May change?
     switch (this.lighting) {
       default:
-      case "phong":
-        if (this.layers[0]?.name !== "Shading")
-          this.layers.unshift(new Shading());
-        break;
+      case 'phong':
+        if (this.layers[0]?.name !== 'PresetShading') {
+          const s = new Shading()
+          s.name = 'PresetShading'
+          this.layers.unshift(s)
+        }
+        break
 
-      case "none":
-        if (this.layers[0]?.name === "Shading") this.layers.shift();
-        break;
+      case 'none':
+        if (this.layers[0]?.name === 'PresetShading') this.layers.shift()
+        break
     }
   }
 
   genShaders() {
-    let vertexVariables = "";
-    let fragmentVariables = "";
-    let vertexShader = "";
-    let fragmentShader = "";
+    let vertexVariables = ''
+    let fragmentVariables = ''
+    let vertexShader = ''
+    let fragmentShader = ''
 
     // Restrict to one shading layer
-    let shadingAdded = false;
+    let shadingAdded = false
     this.layers = this.layers.filter((l) => {
-      if (l.name === "Shading") {
+      if (l.name === 'Shading') {
         if (shadingAdded) {
-          return false;
+          return false
         } else {
-          shadingAdded = true;
+          shadingAdded = true
         }
       }
 
-      return true;
-    });
+      return true
+    })
 
-    let uniforms: any = {};
-    this.layers.forEach((l) => {
-      vertexVariables += l.vertexVariables + "\n";
-      fragmentVariables += l.fragmentVariables + "\n";
-      vertexShader += l.vertexShader + "\n";
-      fragmentShader += l.fragmentShader + "\n";
+    let uniforms: any = {}
+    this.layers
+      .filter((l) => l.visible)
+      .forEach((l) => {
+        vertexVariables += l.vertexVariables + '\n'
+        fragmentVariables += l.fragmentVariables + '\n'
+        vertexShader += l.vertexShader + '\n'
+        fragmentShader += l.fragmentShader + '\n'
 
-      Object.entries(l.uniforms).forEach(([key, value]) => {
-        uniforms[key] = value;
-      });
+        uniforms = {
+          ...uniforms,
+          ...l.uniforms,
+        }
 
-      for (const key in l.attribs) {
-        // @ts-ignore
-        this[key] = l.attribs[key];
-      }
-    });
+        for (const key in l.attribs) {
+          // @ts-ignore
+          this[key] = l.attribs[key]
+        }
+      })
 
-    uniforms = THREE.UniformsUtils.merge([
-      uniforms,
-      THREE.UniformsLib.fog,
-      {
+    uniforms = {
+      ...uniforms,
+      ...THREE.UniformsLib.fog,
+      ...{
         u_lamina_color: {
           value: new THREE.Color(this.color),
         },
@@ -104,30 +117,32 @@ class LayerMaterial extends THREE.ShaderMaterial {
           value: this.alpha,
         },
       },
-    ]);
+    }
 
-    this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1);
+    this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
 
     return {
       uniforms: uniforms,
       vertexShader: /* glsl */ `
-
       ${HelpersChunk}
       ${NoiseChunk}
       ${vertexVariables}
 
       void main() {
         vec3 lamina_finalPosition = position;
+        vec3 lamina_finalNormal = normal;
         ${vertexShader}
 
+        #ifdef vNormal
+          vNormal = lamina_finalNormal;
+        #endif
         gl_Position = projectionMatrix * modelViewMatrix * vec4(lamina_finalPosition, 1.0);
       }
       `,
       fragmentShader: /* glsl */ `
-      ${BlendModesChunk}
-
       ${HelpersChunk}
       ${NoiseChunk}
+      ${BlendModesChunk}
       ${fragmentVariables}
 
       uniform vec3 u_lamina_color;
@@ -140,36 +155,35 @@ class LayerMaterial extends THREE.ShaderMaterial {
         gl_FragColor = lamina_finalColor;
       }
       `,
-    };
+    }
   }
 
   update() {
     // Force shading as first layer
-    this.forceShading();
+    this.forceShading()
 
-    const { uniforms, ...rest } = this.genShaders();
-    Object.assign(this, rest);
+    const { uniforms, ...rest } = this.genShaders()
+    Object.assign(this, rest)
 
-    // Merge uniform keeping reference to this.uniforms
     for (const key in uniforms) {
-      this.uniforms[key] = uniforms[key];
+      this.uniforms[key] = uniforms[key]
     }
 
-    this.uniformsNeedUpdate = true;
-    this.needsUpdate = true;
+    this.uniformsNeedUpdate = true
+    this.needsUpdate = true
+  }
+
+  serialize(): SerializedLayer {
+    return {
+      constructor: 'LayerMaterial',
+      properties: {
+        color: this.color,
+        alpha: this.alpha,
+        lighting: this.lighting,
+        name: this.name,
+      },
+    }
   }
 }
 
-export {
-  LayerMaterial,
-  Abstract,
-  Depth,
-  Color,
-  Shading,
-  Noise,
-  Fresnel,
-  Gradient,
-  Matcap,
-  Texture,
-  Displace,
-};
+export { LayerMaterial, Abstract, Depth, Color, Shading, Noise, Fresnel, Gradient, Matcap, Texture, Displace }

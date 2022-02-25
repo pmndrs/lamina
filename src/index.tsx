@@ -1,8 +1,8 @@
 /* eslint-disable */
 
-import { extend, Node } from "@react-three/fiber";
-import React from "react";
-import mergeRefs from "react-merge-refs";
+import { extend, Node } from '@react-three/fiber'
+import React from 'react'
+import mergeRefs from 'react-merge-refs'
 import {
   DepthProps,
   ColorProps,
@@ -14,24 +14,24 @@ import {
   MatcapProps,
   TextureProps,
   DisplaceProps,
-} from "./types";
-import * as LAYERS from "./vanilla";
-import DebugLayerMaterial from "./debug";
-import { getLayerMaterialArgs } from "./utils/Functions";
+} from './types'
+import * as LAYERS from './vanilla'
+import DebugLayerMaterial from './debug'
+import { getLayerMaterialArgs } from './utils/Functions'
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>;
-      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>;
-      color_: Node<LAYERS.Color, typeof LAYERS.Color>;
-      shading_: Node<LAYERS.Shading, typeof LAYERS.Shading>;
-      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>;
-      fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>;
-      gradient_: Node<LAYERS.Gradient, typeof LAYERS.Gradient>;
-      matcap_: Node<LAYERS.Matcap, typeof LAYERS.Matcap>;
-      texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>;
-      displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>;
+      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
+      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
+      color_: Node<LAYERS.Color, typeof LAYERS.Color>
+      shading_: Node<LAYERS.Shading, typeof LAYERS.Shading>
+      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
+      fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
+      gradient_: Node<LAYERS.Gradient, typeof LAYERS.Gradient>
+      matcap_: Node<LAYERS.Matcap, typeof LAYERS.Matcap>
+      texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
+      displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>
     }
   }
 }
@@ -47,29 +47,27 @@ extend({
   Matcap_: LAYERS.Matcap,
   Texture_: LAYERS.Texture,
   Displace_: LAYERS.Displace,
-});
+})
 
-const LayerMaterial = React.forwardRef<
-  LAYERS.LayerMaterial,
-  React.PropsWithChildren<LayerMaterialProps>
->(({ children, ...props }, forwardRef) => {
-  const ref = React.useRef<LAYERS.LayerMaterial>(null!);
+const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps>>(
+  ({ children, ...props }, forwardRef) => {
+    const ref = React.useRef<LAYERS.LayerMaterial>(null!)
 
-  React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects;
-    ref.current.update();
-  }, [children]);
+    React.useLayoutEffect(() => {
+      ref.current.layers = (ref.current as any).__r3f.objects
+      ref.current.update()
+      setTimeout(() => {
+        ref.current.update()
+      }, 2000)
+    }, [children])
 
-  return (
-    <layerMaterial
-      args={getLayerMaterialArgs(props)}
-      ref={mergeRefs([ref, forwardRef])}
-      {...props}
-    >
-      {children}
-    </layerMaterial>
-  );
-});
+    return (
+      <layerMaterial args={getLayerMaterialArgs(props)} ref={mergeRefs([ref, forwardRef])} {...props}>
+        {children}
+      </layerMaterial>
+    )
+  }
+)
 
 function getNonUniformArgs(props: any) {
   return [
@@ -80,88 +78,42 @@ function getNonUniformArgs(props: any) {
       mapping: props?.mapping,
       map: props?.map,
     },
-  ] as any;
+  ] as any
 }
 
-const Depth = React.forwardRef<LAYERS.Depth, DepthProps>(
-  (props, forwardRef) => {
-    return (
-      <depth_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
-    );
-  }
-) as React.ForwardRefExoticComponent<
-  DepthProps & React.RefAttributes<LAYERS.Depth>
->;
+const Depth = React.forwardRef<LAYERS.Depth, DepthProps>((props, forwardRef) => {
+  return <depth_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+}) as React.ForwardRefExoticComponent<DepthProps & React.RefAttributes<LAYERS.Depth>>
 
-const Color = React.forwardRef<LAYERS.Color, ColorProps>(
-  (props, forwardRef) => {
-    return (
-      <color_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
-    );
-  }
-) as React.ForwardRefExoticComponent<
-  ColorProps & React.RefAttributes<LAYERS.Color>
->;
+const Color = React.forwardRef<LAYERS.Color, ColorProps>((props, forwardRef) => {
+  return <color_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+}) as React.ForwardRefExoticComponent<ColorProps & React.RefAttributes<LAYERS.Color>>
 
-const Shading = React.forwardRef<LAYERS.Shading, ShadingProps>(
-  (props, forwardRef) => {
-    return (
-      <shading_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
-    );
-  }
-) as React.ForwardRefExoticComponent<
-  ShadingProps & React.RefAttributes<LAYERS.Shading>
->;
+const Shading = React.forwardRef<LAYERS.Shading, ShadingProps>((props, forwardRef) => {
+  return <shading_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+}) as React.ForwardRefExoticComponent<ShadingProps & React.RefAttributes<LAYERS.Shading>>
 
 const Noise = React.forwardRef<LAYERS.Noise, NoiseProps>((props, ref) => {
-  return <noise_ args={getNonUniformArgs(props)} {...props} />;
-}) as React.ForwardRefExoticComponent<
-  NoiseProps & React.RefAttributes<LAYERS.Noise>
->;
+  return <noise_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<NoiseProps & React.RefAttributes<LAYERS.Noise>>
 const Fresnel = React.forwardRef<LAYERS.Fresnel, FresnelProps>((props, ref) => {
-  return <fresnel_ args={getNonUniformArgs(props)} {...props} />;
-}) as React.ForwardRefExoticComponent<
-  FresnelProps & React.RefAttributes<LAYERS.Fresnel>
->;
+  return <fresnel_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<FresnelProps & React.RefAttributes<LAYERS.Fresnel>>
 
-const Gradient = React.forwardRef<LAYERS.Gradient, GradientProps>(
-  (props, ref) => {
-    return <gradient_ args={getNonUniformArgs(props)} {...props} />;
-  }
-) as React.ForwardRefExoticComponent<
-  GradientProps & React.RefAttributes<LAYERS.Gradient>
->;
+const Gradient = React.forwardRef<LAYERS.Gradient, GradientProps>((props, ref) => {
+  return <gradient_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<GradientProps & React.RefAttributes<LAYERS.Gradient>>
 
 const Matcap = React.forwardRef<LAYERS.Matcap, MatcapProps>((props, ref) => {
-  return <matcap_ args={getNonUniformArgs(props)} {...props} />;
-}) as React.ForwardRefExoticComponent<
-  MatcapProps & React.RefAttributes<LAYERS.Matcap>
->;
+  return <matcap_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<MatcapProps & React.RefAttributes<LAYERS.Matcap>>
 
 const Texture = React.forwardRef<LAYERS.Texture, TextureProps>((props, ref) => {
-  return <texture_ args={getNonUniformArgs(props)} {...props} />;
-}) as React.ForwardRefExoticComponent<
-  TextureProps & React.RefAttributes<LAYERS.Texture>
->;
+  return <texture_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<TextureProps & React.RefAttributes<LAYERS.Texture>>
 
-const Displace = React.forwardRef<LAYERS.Displace, DisplaceProps>(
-  (props, ref) => {
-    return <displace_ args={getNonUniformArgs(props)} {...props} />;
-  }
-) as React.ForwardRefExoticComponent<
-  DisplaceProps & React.RefAttributes<LAYERS.Displace>
->;
+const Displace = React.forwardRef<LAYERS.Displace, DisplaceProps>((props, ref) => {
+  return <displace_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<DisplaceProps & React.RefAttributes<LAYERS.Displace>>
 
-export {
-  DebugLayerMaterial,
-  LayerMaterial,
-  Depth,
-  Color,
-  Shading,
-  Noise,
-  Fresnel,
-  Gradient,
-  Matcap,
-  Texture,
-  Displace,
-};
+export { DebugLayerMaterial, LayerMaterial, Depth, Color, Shading, Noise, Fresnel, Gradient, Matcap, Texture, Displace }

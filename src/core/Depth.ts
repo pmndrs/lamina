@@ -1,22 +1,27 @@
-import { DepthProps } from "../types";
-import Abstract from "./Abstract";
+import { DepthProps, MappingType, MappingTypes } from '../types'
+import Abstract from './Abstract'
+
+type AbstractExtended = Abstract & {
+  mapping: MappingType
+}
 
 export default class Depth extends Abstract {
-  static u_near = 0;
-  static u_far = 1e7;
-  static u_origin = [0, 0, 0];
-  static u_colorA = "red";
-  static u_colorB = "blue";
-  static u_isVector = true;
-  static u_alpha = 1;
+  static u_near = 2
+  static u_far = 10
+  static u_origin = [0, 0, 0]
+  static u_colorA = 'white'
+  static u_colorB = 'black'
+  static u_alpha = 1
 
   static vertexShader = `
   varying vec3 v_worldPosition;
+  varying vec3 v_position;
 
   void main() {
-    v_worldPosition = vec3(vec4(position, 1.0) * modelMatrix);
+    v_worldPosition = (vec4(position, 1.0) * modelMatrix).xyz;
+    v_position = position;
   }
-  `;
+  `
 
   static fragmentShader = `   
     uniform float u_alpha;
@@ -26,23 +31,58 @@ export default class Depth extends Abstract {
     uniform vec3 u_origin;
     uniform vec3 u_colorA;
     uniform vec3 u_colorB;
-  
+
     varying vec3 v_worldPosition;
+    varying vec3 v_position;
 
     void main() {
-      vec3 f_base =  ( u_isVector > 0.5 ) ?  u_origin : cameraPosition;
-      float f_dist = length(v_worldPosition.xyz - f_base);
-      float f_dep = (f_dist - u_near) / (u_far - u_near);
-      vec3 f_depth =  mix( u_colorB, u_colorA, 1.0 - clamp(f_dep, 0., 1.));
+      float f_dist = lamina_mapping_template;
+      float f_depth = (f_dist - u_near) / (u_far - u_near);
+			vec3 f_depthColor =  mix(u_colorB, u_colorA, 1.0 - clamp(f_depth, 0., 1.));
   
-      return vec4(f_depth, u_alpha);
+  
+      return vec4(f_depthColor, u_alpha);
     }
-  `;
+  `
 
   constructor(props?: DepthProps) {
-    super(Depth, {
-      name: "Depth",
-      ...props,
-    });
+    super(
+      Depth,
+      {
+        name: 'Depth',
+        ...props,
+      },
+      null,
+      {
+        onParse: (self) => {
+          const extendedSelf = self as AbstractExtended
+
+          if (!extendedSelf.mapping) {
+            extendedSelf.mapping = props?.mapping || 'vector'
+            self.schema.push({
+              value: extendedSelf.mapping,
+              label: 'mapping',
+              options: ['vector', 'world', 'camera'],
+            })
+          }
+
+          const mapping = Depth.getMapping(self.uuid, extendedSelf.mapping)
+
+          self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
+        },
+      }
+    )
+  }
+
+  private static getMapping(uuid: string, type?: string) {
+    switch (type) {
+      default:
+      case 'vector':
+        return `length(v_${uuid}_worldPosition - u_${uuid}_origin)`
+      case 'world':
+        return `length(v_${uuid}_position - vec3(0.))`
+      case 'camera':
+        return `length(v_${uuid}_worldPosition - cameraPosition)`
+    }
   }
 }

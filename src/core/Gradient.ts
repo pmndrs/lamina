@@ -8,8 +8,8 @@ type AbstractExtended = Abstract & {
 };
 
 export default class Gradient extends Abstract {
-  static u_colorA = "black";
-  static u_colorB = "white";
+  static u_colorA = "white";
+  static u_colorB = "black";
   static u_alpha = 1;
 
   static u_start = 1;
