@@ -23,6 +23,7 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
+      debuglayerMaterial: Node<typeof DebugLayerMaterial, typeof DebugLayerMaterial>
       depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
       color_: Node<LAYERS.Color, typeof LAYERS.Color>
       shading_: Node<LAYERS.Shading, typeof LAYERS.Shading>

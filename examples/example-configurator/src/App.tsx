@@ -2,17 +2,18 @@ import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
 import Monkey from './components/Monkey'
-import Primitives from './components/Primitives'
+import styled from 'styled-components'
 
 export default function App() {
   return (
     <>
-      <Leva titleBar={{ title: 'lamina' }} />
+      <LevaContainer>
+        <Leva titleBar={{ title: 'lamina' }} />
+      </LevaContainer>
       <Canvas dpr={[1, 2]} camera={{ fov: 50, position: [5, 5, 5] }}>
         <color attach="background" args={['#dadada']} />
         <Suspense fallback={null}>
           <Monkey />
-          {/* <Primitives /> */}
         </Suspense>
         <axesHelper args={[5]} />
         {/* <gridHelper /> */}
@@ -20,3 +21,10 @@ export default function App() {
     </>
   )
 }
+
+const LevaContainer = styled.div`
+  & > div[class*='leva-c'] {
+    left: 10px;
+    right: unset;
+  }
+`

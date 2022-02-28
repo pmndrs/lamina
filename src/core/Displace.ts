@@ -1,24 +1,16 @@
-import { Vector3 } from "three";
-import {
-  ColorProps,
-  DisplaceProps,
-  MappingType,
-  MappingTypes,
-  NoiseProps,
-  NoiseType,
-  NoiseTypes,
-} from "../types";
-import Abstract from "./Abstract";
+import { Vector3 } from 'three'
+import { ColorProps, DisplaceProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../types'
+import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {
-  type: NoiseType;
-  mapping: MappingType;
-};
+  type: NoiseType
+  mapping: MappingType
+}
 
 export default class Displace extends Abstract {
-  static u_strength = 1;
-  static u_scale = 1;
-  static u_offset = new Vector3(0, 0, 0);
+  static u_strength = 1
+  static u_scale = 1
+  static u_offset = new Vector3(0, 0, 0)
 
   static vertexShader = `
        
@@ -60,80 +52,72 @@ export default class Displace extends Abstract {
 
         return f_newPosition;
       }
-    `;
+    `
 
   constructor(props?: DisplaceProps) {
     super(
       Displace,
       {
-        name: "Displace",
+        name: 'Displace',
         ...props,
       },
       null,
       {
         onParse: (self) => {
-          const extendedSelf = self as AbstractExtended;
+          const extendedSelf = self as AbstractExtended
           if (!extendedSelf.type) {
-            extendedSelf.type = props?.type || "perlin";
+            extendedSelf.type = props?.type || 'perlin'
             self.schema.push({
               value: extendedSelf.type,
-              label: "type",
+              label: 'type',
               options: Object.values(NoiseTypes),
-            });
+            })
           }
 
           if (!extendedSelf.mapping) {
-            extendedSelf.mapping = props?.mapping || "local";
+            extendedSelf.mapping = props?.mapping || 'local'
             self.schema.push({
               value: extendedSelf.mapping,
-              label: "mapping",
+              label: 'mapping',
               options: Object.values(MappingTypes),
-            });
+            })
           }
 
-          const noiseFunc = Displace.getNoiseFunction(extendedSelf.type);
-          const mapping = Displace.getMapping(extendedSelf.mapping);
+          const noiseFunc = Displace.getNoiseFunction(extendedSelf.type)
+          const mapping = Displace.getMapping(extendedSelf.mapping)
 
-          console.log(noiseFunc);
-
-          self.vertexVariables = self.vertexVariables.replace(
-            "lamina_mapping_template",
-            mapping
-          );
-          self.vertexVariables = self.vertexVariables.replace(
-            "lamina_noise_template",
-            noiseFunc
-          );
+          self.vertexVariables = self.vertexVariables.replace('lamina_mapping_template', mapping)
+          self.vertexVariables = self.vertexVariables.replace('lamina_noise_template', noiseFunc)
         },
       }
-    );
+    )
   }
 
   private static getNoiseFunction(type?: string) {
     switch (type) {
       default:
-      case "perlin":
-        return `lamina_noise_perlin`;
-      case "simplex":
-        return `lamina_noise_simplex`;
-      case "cell":
-        return `lamina_noise_worley`;
-      case "white":
-        return `lamina_noise_white`;
-      case "curl":
-        return `lamina_noise_swirl`;
+      case 'perlin':
+        return `lamina_noise_perlin`
+      case 'simplex':
+        return `lamina_noise_simplex`
+      case 'cell':
+        return `lamina_noise_worley`
+      case 'white':
+        return `lamina_noise_white`
+      case 'curl':
+        return `lamina_noise_swirl`
     }
   }
 
   private static getMapping(type?: string) {
     switch (type) {
       default:
-      case "local":
-        return `p`;
-      case "world":
-        return `(modelMatrix * vec4(p,1.0)).xyz`;
-      case "uv":
-        return `vec3(uv, 0.)`;
+      case 'local':
+        return `p`
+      case 'world':
+        return `(modelMatrix * vec4(p,1.0)).xyz`
+      case 'uv':
+        return `vec3(uv, 0.)`
     }
   }
 }

@@ -32,7 +32,7 @@
     "3d"
   ],
   "scripts": {
-    "start": "rollup -c -w",
+    "start": "tsc --emitDeclarationOnly && rollup -c -w",
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
     "release": "chmod +x ./scripts/publish.sh && ./scripts/publish.sh",

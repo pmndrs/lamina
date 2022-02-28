@@ -74,8 +74,9 @@ class LayerMaterial extends THREE.ShaderMaterial {
 
     // Restrict to one shading layer
     let shadingAdded = false
+
     this.layers = this.layers.filter((l) => {
-      if (l.name === 'Shading') {
+      if (l.constructor.name === 'Shading') {
         if (shadingAdded) {
           return false
         } else {
@@ -84,6 +85,10 @@ class LayerMaterial extends THREE.ShaderMaterial {
       }
 
       return true
+    })
+
+    this.layers.forEach((layer) => {
+      layer.buildShaders(layer.constructor)
     })
 
     let uniforms: any = {}
@@ -120,7 +125,6 @@ class LayerMaterial extends THREE.ShaderMaterial {
     }
 
     this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
-
     return {
       uniforms: uniforms,
       vertexShader: /* glsl */ `

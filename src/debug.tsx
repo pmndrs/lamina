@@ -1,10 +1,11 @@
 import { extend } from '@react-three/fiber'
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import ReactDOM from 'react-dom'
 import mergeRefs from 'react-merge-refs'
-import { getLayerMaterialArgs, getUniform, serializedLayersToJSX } from './utils/Functions'
+import { getLayerMaterialArgs, getUniform } from './utils/Functions'
+import { serializedLayersToJSX } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
 import { Color, TextureLoader } from 'three'
 import { LayerMaterialProps } from './types'
@@ -68,9 +69,8 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       {
         'Copy JSX': button(() => {
           const serialized = ref.current.layers.map((l) => l.serialize())
-          serializedLayersToJSX(serialized, ref.current.serialize())
-
-          console.log(serialized)
+          const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
+          navigator.clipboard.writeText(jsx)
         }),
       },
       { store }
@@ -100,7 +100,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
         if (layer.getSchema) schema[`${layer.name} ~${i}`] = layer.getSchema()
       })
       setLayers(schema)
-    }, [ref.current, children])
+    }, [ref.current, children, props.layers])
 
     React.useEffect(() => {
       const data = store.getData()
@@ -135,7 +135,6 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           ;(async () => {
             try {
               if (updatedData.value) {
-                console.log(layer[property])
                 const t = await textureLoader.loadAsync(updatedData.value)
                 layer[property] = t
                 uniform.value = t
@@ -152,8 +151,12 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
     }, [path])
 
     React.useLayoutEffect(() => {
-      ref.current.layers = (ref.current as any).__r3f.objects
+      ref.current.layers = props.layers as LAYERS.Abstract[]
+      ref.current.update()
+    }, [props.layers])
 
+    React.useLayoutEffect(() => {
+      ref.current.layers = (ref.current as any).__r3f.objects
       ref.current.update()
     }, [children])
 
@@ -166,7 +169,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           ReactDOM.createPortal(
             <LevaPanel
               titleBar={{
-                title: ref.current.name,
+                title: props.name || ref.current.name,
               }}
               store={store}
             />,
@@ -175,7 +178,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           div
         )
       }
-    }, [])
+    }, [props.name])
 
     return (
       <>
