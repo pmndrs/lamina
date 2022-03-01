@@ -39,7 +39,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
   static u_name = 'LayerMaterial'
 
   constructor(props?: THREE.ShaderMaterialParameters & LayerMaterialParameters) {
-    super()
+    super(props)
 
     this.uuid = MathUtils.generateUUID()
     this.color = props?.color || LayerMaterial.u_color
@@ -53,7 +53,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
       return this.uuid
     }
 
-    this.forceShading()
+    this.update()
   }
 
   forceShading() {

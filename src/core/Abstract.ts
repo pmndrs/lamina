@@ -224,29 +224,29 @@ export default class Abstract {
     switch (this.mode) {
       default:
       case 'normal':
-        return `lamina_blend_copy(${a}, ${b})`
+        return `lamina_blend_alpha(${a}, ${b}, ${b}.a)`
       case 'add':
-        return `lamina_blend_add(${a}, ${b})`
+        return `lamina_blend_add(${a}, ${b}, ${b}.a)`
       case 'subtract':
-        return `lamina_blend_subtract(${a}, ${b})`
+        return `lamina_blend_subtract(${a}, ${b}, ${b}.a)`
       case 'multiply':
-        return `lamina_blend_multiply(${a}, ${b})`
-      case 'addsub':
-        return `lamina_blend_addSub(${a}, ${b})`
+        return `lamina_blend_multiply(${a}, ${b}, ${b}.a)`
       case 'lighten':
-        return `lamina_blend_lighten(${a}, ${b})`
+        return `lamina_blend_lighten(${a}, ${b}, ${b}.a)`
       case 'darken':
-        return `lamina_blend_darken(${a}, ${b})`
+        return `lamina_blend_darken(${a}, ${b}, ${b}.a)`
       case 'divide':
-        return `lamina_blend_divide(${a}, ${b})`
+        return `lamina_blend_divide(${a}, ${b}, ${b}.a)`
       case 'overlay':
-        return `lamina_blend_overlay(${a}, ${b})`
+        return `lamina_blend_overlay(${a}, ${b}, ${b}.a)`
       case 'screen':
-        return `lamina_blend_screen(${a}, ${b})`
+        return `lamina_blend_screen(${a}, ${b}, ${b}.a)`
       case 'softlight':
-        return `lamina_blend_softLight(${a}, ${b})`
-      case 'switch':
-        return `lamina_blend_switch(${a}, ${b})`
+        return `lamina_blend_softlight(${a}, ${b}, ${b}.a)`
+      case 'reflect':
+        return `lamina_blend_reflect(${a}, ${b}, ${b}.a)`
+      case 'negation':
+        return `lamina_blend_negation(${a}, ${b}, ${b}.a)`
     }
   }
 

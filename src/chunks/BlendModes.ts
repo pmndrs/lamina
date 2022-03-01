@@ -1,89 +1,181 @@
 export default /* glsl */ `
-float lamina_blend_softLight(float f, float b) {
-  return (f < 0.5)
-             ? b - (1.0 - 2.0 * f) * b * (1.0 - b)
-             : (b < 0.25)
-                   ? b + (2.0 * f - 1.0) * b * ((16.0 * b - 12.0) * b + 3.0)
-                   : b + (2.0 * f - 1.0) * (sqrt(b) - b);
+vec4 lamina_blend_add(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return min(x + y, 1.0) * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_softLight(vec4 b, vec4 f) {
-  vec4 result;
-  result.x = lamina_blend_softLight(f.x, b.x);
-  result.y = lamina_blend_softLight(f.y, b.y);
-  result.z = lamina_blend_softLight(f.z, b.z);
-  result.a = lamina_blend_softLight(f.a, b.a);
-  
-  return result;
+vec3 lamina_blend_alpha(const in vec3 x, const in vec3 y, const in float opacity) {
+
+	return y * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_screen(vec4 f, vec4 b) {
-  vec4 result;
-  result = 1.0 - (1.0 - f) * (1.0 - b);
-  result = mix(f, result, b.a);
-  return result;
+
+vec4 lamina_blend_alpha(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	float a = min(y.a, opacity);
+
+	return vec4(lamina_blend_alpha(x.rgb, y.rgb, a), max(x.a, a));
+
 }
-float lamina_blend_overlay(float f, float b) {
-  return (b < 0.5) ? 2.0 * f * b : 1.0 - 2.0 * (1.0 - f) * (1.0 - b);
+vec4 lamina_blend_average(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return (x + y) * 0.5 * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_overlay(vec4 b, vec4 f) {
-  vec4 result;
-  result.x = lamina_blend_overlay(f.x, b.x);
-  result.y = lamina_blend_overlay(f.y, b.y);
-  result.z = lamina_blend_overlay(f.z, b.z);
-  result.a = lamina_blend_overlay(f.a, b.a);
-  return result;
+float lamina_blend_color_burn(const in float x, const in float y) {
+
+	return (y == 0.0) ? y : max(1.0 - (1.0 - x) / y, 0.0);
+
 }
-vec4 lamina_blend_divide(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = b / f;
-  return result;
+
+vec4 lamina_blend_color_burn(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_color_burn(x.r, y.r),
+		lamina_blend_color_burn(x.g, y.g),
+		lamina_blend_color_burn(x.b, y.b),
+		lamina_blend_color_burn(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_switch(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = max((f * b.a), (b * (1.0 - b.a)));
-  return result;
+float lamina_blend_color_dodge(const in float x, const in float y) {
+
+	return (y == 1.0) ? y : min(x / (1.0 - y), 1.0);
+
 }
-vec4 lamina_blend_darken(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = mix(f, min(f, b), b.a);
-  return result;
+
+vec4 lamina_blend_color_dodge(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_color_dodge(x.r, y.r),
+		lamina_blend_color_dodge(x.g, y.g),
+		lamina_blend_color_dodge(x.b, y.b),
+		lamina_blend_color_dodge(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_lighten(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = mix(f, max(f, b), b.a);
-  return result;
+vec4 lamina_blend_darken(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return min(x, y) * opacity + x * (1.0 - opacity);
+
 }
-float lamina_blend_addSub(float f, float b) {
-  return f > 0.5 ? f + b : b - f;
+vec4 lamina_blend_difference(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return abs(x - y) * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_addSub(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result.r = lamina_blend_addSub(f.r, b.r * b.a);
-  result.g = lamina_blend_addSub(f.g, b.g * b.a);
-  result.b = lamina_blend_addSub(f.b, b.b* b.a ) ;
-  result.a = lamina_blend_addSub(f.a, b.a);
-  return result;
+float lamina_blend_divide(const in float x, const in float y) {
+
+	return (y > 0.0) ? min(x / y, 1.0) : 1.0;
+
 }
-vec4 lamina_blend_multiply(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = mix(f, b * f, b.a);
-  result.a = f.a + b.a * (1.0 - f.a);
-  return result;
+
+vec4 lamina_blend_divide(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_divide(x.r, y.r),
+		lamina_blend_divide(x.g, y.g),
+		lamina_blend_divide(x.b, y.b),
+		lamina_blend_divide(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_subtract(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = f - b * b.a;
-  result.a = f.a + b.a * (1.0 - f.a);
-  return result;
+vec4 lamina_blend_exclusion(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return (x + y - 2.0 * x * y) * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_add(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = f + b * (b.a);
-  result.a = f.a + b.a * (1.0 - f.a);
-  return result;
+vec4 lamina_blend_lighten(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return max(x, y) * opacity + x * (1.0 - opacity);
+
 }
-vec4 lamina_blend_copy(vec4 f, vec4 b) {
-  vec4 result = vec4(0.0);
-  result = mix(f, b, b.a);
-  return result;
+vec4 lamina_blend_multiply(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return x * y * opacity + x * (1.0 - opacity);
+
 }
-`;
+vec4 lamina_blend_negation(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return (1.0 - abs(1.0 - x - y)) * opacity + x * (1.0 - opacity);
+
+}
+vec4 lamina_blend_normal(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return y * opacity + x * (1.0 - opacity);
+
+}
+float lamina_blend_overlay(const in float x, const in float y) {
+
+	return (x < 0.5) ? (2.0 * x * y) : (1.0 - 2.0 * (1.0 - x) * (1.0 - y));
+
+}
+
+vec4 lamina_blend_overlay(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_overlay(x.r, y.r),
+		lamina_blend_overlay(x.g, y.g),
+		lamina_blend_overlay(x.b, y.b),
+		lamina_blend_overlay(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
+}
+float lamina_blend_reflect(const in float x, const in float y) {
+
+	return (y == 1.0) ? y : min(x * x / (1.0 - y), 1.0);
+
+}
+
+vec4 lamina_blend_reflect(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_reflect(x.r, y.r),
+		lamina_blend_reflect(x.g, y.g),
+		lamina_blend_reflect(x.b, y.b),
+		lamina_blend_reflect(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
+}
+vec4 lamina_blend_screen(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return (1.0 - (1.0 - x) * (1.0 - y)) * opacity + x * (1.0 - opacity);
+
+}
+float lamina_blend_softlight(const in float x, const in float y) {
+
+	return (y < 0.5) ?
+		(2.0 * x * y + x * x * (1.0 - 2.0 * y)) :
+		(sqrt(x) * (2.0 * y - 1.0) + 2.0 * x * (1.0 - y));
+
+}
+
+vec4 lamina_blend_softlight(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	vec4 z = vec4(
+		lamina_blend_softlight(x.r, y.r),
+		lamina_blend_softlight(x.g, y.g),
+		lamina_blend_softlight(x.b, y.b),
+		lamina_blend_softlight(x.a, y.a)
+	);
+
+	return z * opacity + x * (1.0 - opacity);
+
+}
+vec4 lamina_blend_subtract(const in vec4 x, const in vec4 y, const in float opacity) {
+
+	return max(x + y - 1.0, 0.0) * opacity + x * (1.0 - opacity);
+
+}
+
+`

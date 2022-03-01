@@ -1,8 +1,8 @@
-import { DepthProps, MappingType, MappingTypes } from '../types'
+import { DepthProps } from '../types'
 import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {
-  mapping: MappingType
+  mapping: DepthProps['mapping']
 }
 
 export default class Depth extends Abstract {

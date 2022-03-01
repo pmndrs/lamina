@@ -8,14 +8,14 @@ export const BlendModes: {
   add: 'add',
   subtract: 'subtract',
   multiply: 'multiply',
-  addsub: 'addsub',
   lighten: 'lighten',
   darken: 'darken',
-  switch: 'switch',
   divide: 'divide',
   overlay: 'overlay',
   screen: 'screen',
   softlight: 'softlight',
+  negation: 'negation',
+  reflect: 'reflect',
 }
 
 export type BlendMode =
@@ -23,14 +23,14 @@ export type BlendMode =
   | 'add'
   | 'subtract'
   | 'multiply'
-  | 'addsub'
   | 'lighten'
   | 'darken'
-  | 'switch'
   | 'divide'
   | 'overlay'
   | 'screen'
   | 'softlight'
+  | 'reflect'
+  | 'negation'
 
 export const NoiseTypes: {
   [key: string]: string
@@ -85,8 +85,9 @@ export interface DepthProps extends LayerProps {
   alpha?: number
   near?: number
   far?: number
-  origin?: Vector3
+  origin?: Vector3 | [number, number, number]
   isVector?: boolean
+  mapping?: 'vector' | 'camera' | 'world'
 }
 
 export interface ColorProps extends LayerProps {

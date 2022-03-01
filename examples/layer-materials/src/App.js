@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows, Plane, Box, Stats } from '@react-three/drei'
-import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel, Shading } from 'lamina'
+import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel } from 'lamina'
 import { useControls } from 'leva'
 import { Vector3 } from 'three'
 
@@ -63,7 +63,6 @@ function Flower({ base, colorA, colorB }) {
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
       <LayerMaterial color={'#ff4eb8'} lighting={'none'} name={'Flower'}>
-        <Shading alpha={0.27} mode={'screen'} />
         <Depth far={3} origin={[1, 1, 1]} colorA={'#ff00e3'} colorB={'#00ffff'} alpha={0.5} mode={'multiply'} mapping={'vector'} />
         <Depth
           ref={depth}
