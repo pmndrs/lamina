@@ -3,9 +3,11 @@
   "properties": {
     "name": "Monkey w/ freckles",
     "lighting": "none",
+    "lightingProps": {},
     "color": "white",
     "alpha": 1
   },
+
   "layers": [
     {
       "constructor": "Depth",

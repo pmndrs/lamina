@@ -64,7 +64,8 @@ export default class Abstract {
     )
 
     for (const key in uniforms) {
-      if (props?.[key]) uniforms[key] = props[key]
+      const propName = key.split('_')[1]
+      if (props?.[propName] !== undefined) uniforms[key] = props[propName]
     }
 
     this.uniforms = {}

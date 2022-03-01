@@ -14,7 +14,7 @@ import Displace from './core/Displace'
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, SerializedLayer, ShadingType } from './types'
+import { LayerMaterialParameters, LayerMaterialProps, SerializedLayer, ShadingProps, ShadingType } from './types'
 import { MathUtils, UniformsUtils } from 'three'
 
 class LayerMaterial extends THREE.ShaderMaterial {
@@ -23,12 +23,19 @@ class LayerMaterial extends THREE.ShaderMaterial {
   color: THREE.ColorRepresentation
   alpha: number
   lighting: ShadingType
+  lightingProps: ShadingProps
   uuid: string
 
   static u_color = 'white'
   static u_alpha = 1
   static u_layers = []
   static u_lighting: ShadingType = 'phong'
+  static u_lightingProps: ShadingProps = {
+    shininess: 1,
+    color: 'white',
+    alpha: 1,
+    mode: 'normal',
+  }
   static u_name = 'LayerMaterial'
 
   constructor(props?: THREE.ShaderMaterialParameters & LayerMaterialParameters) {
@@ -39,6 +46,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
     this.alpha = props?.alpha ?? LayerMaterial.u_alpha
     this.layers = props?.layers || LayerMaterial.u_layers
     this.lighting = props?.lighting || LayerMaterial.u_lighting
+    this.lightingProps = props?.lightingProps || LayerMaterial.u_lightingProps
     this.name = props?.name || LayerMaterial.u_name
 
     this.customProgramCacheKey = () => {
@@ -49,19 +57,29 @@ class LayerMaterial extends THREE.ShaderMaterial {
   }
 
   forceShading() {
-    // Force shading as first layer. May change?
+    // Strip pre-existing  shading layers
+
+    // Force shading to be always on top. May change?
     switch (this.lighting) {
       default:
       case 'phong':
-        if (this.layers[0]?.name !== 'PresetShading') {
-          const s = new Shading()
+        if (this.layers[this.layers.length - 1]?.name !== 'PresetShading') {
+          this.layers = this.layers.filter((l) => {
+            if (l.constructor.name === 'Shading') {
+              return false
+            }
+
+            return true
+          })
+          const s = new Shading(this.lightingProps)
           s.name = 'PresetShading'
-          this.layers.unshift(s)
+          this.layers.push(s)
         }
+
         break
 
       case 'none':
-        if (this.layers[0]?.name === 'PresetShading') this.layers.shift()
+        if (this.layers[this.layers.length - 1]?.name === 'PresetShading') this.layers.pop()
         break
     }
   }
@@ -125,6 +143,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
     }
 
     this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
+
     return {
       uniforms: uniforms,
       vertexShader: /* glsl */ `
@@ -184,6 +203,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
         color: this.color,
         alpha: this.alpha,
         lighting: this.lighting,
+        lightingProps: this.lightingProps,
         name: this.name,
       },
     }

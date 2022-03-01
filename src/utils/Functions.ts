@@ -40,7 +40,6 @@ export function getLayerMaterialArgs(props: LayerMaterialProps) {
       alpha: props?.alpha,
       lighting: props?.lighting,
       name: props?.name,
-      layers: props?.layers,
     },
   ] as any
 }

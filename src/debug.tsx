@@ -63,12 +63,10 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       ref.current[t] = v
     }, [])
 
-    const p = useMemo(() => getLayerMaterialArgs(props), [])
-
     useControls(
       {
         'Copy JSX': button(() => {
-          const serialized = ref.current.layers.map((l) => l.serialize())
+          const serialized = ref.current.layers.map((l) => l.serialize()).filter((e) => e.constructor !== 'Shading')
           const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
           navigator.clipboard.writeText(jsx)
         }),
@@ -99,8 +97,9 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       layers.forEach((layer: any, i: number) => {
         if (layer.getSchema) schema[`${layer.name} ~${i}`] = layer.getSchema()
       })
+
       setLayers(schema)
-    }, [ref.current, children, props.layers])
+    }, [ref.current, children])
 
     React.useEffect(() => {
       const data = store.getData()
@@ -127,8 +126,6 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           if (uniform) {
             uniform.value = getUniform(updatedData.value)
           } else {
-            ref.current.layers[index].buildShaders(ref.current.layers[index].constructor)
-
             ref.current.update()
           }
         } else {
@@ -151,19 +148,15 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
     }, [path])
 
     React.useLayoutEffect(() => {
-      ref.current.layers = props.layers as LAYERS.Abstract[]
-      ref.current.update()
-    }, [props.layers])
-
-    React.useLayoutEffect(() => {
       ref.current.layers = (ref.current as any).__r3f.objects
       ref.current.update()
     }, [children])
 
     React.useLayoutEffect(() => {
       const root = document.body.querySelector('#root')
+      const div = document.createElement('div')
+
       if (root) {
-        const div = document.createElement('div')
         root.appendChild(div)
         ReactDOM.render(
           ReactDOM.createPortal(
@@ -178,6 +171,10 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           div
         )
       }
+
+      return () => {
+        div.remove()
+      }
     }, [props.name])
 
     return (
@@ -185,7 +182,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
         {Object.entries(layers).map(([name, layers], i) => (
           <DynamicLeva key={`${name} ~${i}`} name={name} layers={layers} store={store} setUpdate={setPath} />
         ))}
-        <layerMaterial args={p} ref={mergeRefs([ref, forwardRef])} {...props}>
+        <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
           {children}
         </layerMaterial>
       </>

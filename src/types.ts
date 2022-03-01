@@ -67,9 +67,10 @@ export interface LayerMaterialParameters {
   color?: ColorRepresentation
   alpha?: number
   lighting?: ShadingType
+  lightingProps?: ShadingProps
   name?: string
 }
-export type LayerMaterialProps = LayerMaterialParameters
+export type LayerMaterialProps = Omit<LayerMaterialParameters, 'layers'>
 
 export interface LayerProps {
   mode?: BlendMode

@@ -57,13 +57,10 @@ const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChil
     React.useLayoutEffect(() => {
       ref.current.layers = (ref.current as any).__r3f.objects
       ref.current.update()
-      setTimeout(() => {
-        ref.current.update()
-      }, 2000)
     }, [children])
 
     return (
-      <layerMaterial args={getLayerMaterialArgs(props)} ref={mergeRefs([ref, forwardRef])} {...props}>
+      <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
         {children}
       </layerMaterial>
     )
@@ -117,4 +114,4 @@ const Displace = React.forwardRef<LAYERS.Displace, DisplaceProps>((props, ref) =
   return <displace_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<DisplaceProps & React.RefAttributes<LAYERS.Displace>>
 
-export { DebugLayerMaterial, LayerMaterial, Depth, Color, Shading, Noise, Fresnel, Gradient, Matcap, Texture, Displace }
+export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace }
