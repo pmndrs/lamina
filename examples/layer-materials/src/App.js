@@ -56,8 +56,8 @@ function Flower({ base, colorA, colorB }) {
   const mesh = useRef()
   const depth = useRef()
   useFrame((state, delta) => {
-    // mesh.current.rotation.z += delta / 2
-    // depth.current.origin = vec.set(-state.mouse.y, state.mouse.x, 0)
+    mesh.current.rotation.z += delta / 2
+    depth.current.origin = vec.set(-state.mouse.y, state.mouse.x, 0)
   })
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>

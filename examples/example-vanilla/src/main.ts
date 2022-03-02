@@ -18,13 +18,13 @@ document.body.appendChild(renderer.domElement)
 const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
 const flowerMaterial = new LayerMaterial({
   lighting: 'none',
-  color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
+  color: '#ff4eb8',
   layers: [
     new Depth({
       far: 3,
       origin: [1, 1, 1],
-      colorA: new THREE.Color('#ff00e3').convertSRGBToLinear(),
-      colorB: new THREE.Color('#00ffff').convertSRGBToLinear(),
+      colorA: '#ff00e3',
+      colorB: '#00ffff',
       alpha: 0.5,
       mode: 'multiply',
       mapping: 'vector',
@@ -56,14 +56,14 @@ const material = new LayerMaterial({
   side: THREE.BackSide,
   layers: [
     new Color({
-      color: new THREE.Color('#b02ed2').convertSRGBToLinear(),
+      color: '#b02ed2',
     }),
     new Depth({
       near: 0,
       far: 300,
       origin: [100, 100, 100],
-      colorA: new THREE.Color('#ff0000').convertSRGBToLinear(),
-      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      colorA: '#ff0000',
+      colorB: '#00aaff',
       alpha: 0.5,
       mode: 'multiply',
     }),
@@ -107,7 +107,7 @@ window.addEventListener('mousemove', (e) => {
   )
 
   // @ts-ignore
-  // depthLayer.origin = vec.set(-m.y, m.x, 0)
+  depthLayer.origin = vec.set(-m.y, m.x, 0)
 })
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -121,8 +121,8 @@ function animate() {
   controls.update()
 
   const delta = clock.getDelta()
-  // mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
-  // flowerMesh.rotation.z += delta / 2
+  mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
+  flowerMesh.rotation.z += delta / 2
 }
 
 animate()
