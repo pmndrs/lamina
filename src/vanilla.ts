@@ -176,6 +176,9 @@ class LayerMaterial extends THREE.ShaderMaterial {
         ${fragmentShader}
 
         gl_FragColor = lamina_finalColor;
+
+        #include <tonemapping_fragment>
+	      #include <encodings_fragment>
       }
       `,
     }

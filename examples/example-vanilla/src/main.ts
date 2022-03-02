@@ -1,15 +1,14 @@
-import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
-import { Vector3 } from 'three'
+import { LayerMaterial, Color, Depth, Fresnel } from './lamina/vanilla'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.001, 1000)
 camera.position.set(2, 0, 0)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true })
-renderer.setClearColor('#ebebeb')
+renderer.outputEncoding = THREE.sRGBEncoding
+renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.domElement.style.width = '100%'
 renderer.domElement.style.height = '100%'
@@ -18,22 +17,23 @@ document.body.appendChild(renderer.domElement)
 const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
 const flowerMaterial = new LayerMaterial({
   lighting: 'none',
-  color: '#ff4eb8',
+  color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
   layers: [
     new Depth({
       far: 3,
       origin: [1, 1, 1],
-      colorA: '#ff00e3',
-      colorB: '#00ffff',
+      colorA: new THREE.Color('#ff00e3').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00ffff').convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'multiply',
+      mapping: 'vector',
     }),
     new Depth({
       name: 'MouseDepth',
       near: 0.25,
       far: 2,
       origin: [-0.9760456268614979, 0.48266696923176067, 0],
-      colorA: [1, 0.7607843137254902, 0] as any,
+      colorA: new THREE.Color(1, 0.7607843137254902, 0).convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'lighten',
       mapping: 'vector',
@@ -55,14 +55,14 @@ const material = new LayerMaterial({
   side: THREE.BackSide,
   layers: [
     new Color({
-      color: '#b02ed2',
+      color: new THREE.Color('#b02ed2').convertSRGBToLinear(),
     }),
     new Depth({
       near: 0,
       far: 300,
       origin: [100, 100, 100],
-      colorA: '#ff0000',
-      colorB: '#00aaff',
+      colorA: new THREE.Color('#ff0000').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'multiply',
     }),
@@ -91,7 +91,7 @@ const controls = new OrbitControls(camera, renderer.domElement)
 const pLight = new THREE.PointLight()
 pLight.position.set(10, 10, 5)
 scene.add(pLight)
-const pLight2 = new THREE.PointLight('#00ffff')
+const pLight2 = new THREE.PointLight(new THREE.Color('#00ffff').convertSRGBToLinear())
 pLight2.position.set(-10, -10, -5)
 scene.add(pLight2)
 

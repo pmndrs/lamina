@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows, Plane, Box, Stats } from '@react-three/drei'
-import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel } from 'lamina'
+import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel } from './lamina'
 import { useControls } from 'leva'
 import { Vector3 } from 'three'
 
@@ -44,8 +44,8 @@ function Bg({ base, colorA, colorB }) {
     <mesh ref={mesh} scale={100}>
       <sphereGeometry args={[1, 64, 64]} />
       <LayerMaterial attach="material" side={THREE.BackSide} lighting="none">
-        <Color color={'#b02ed2'} alpha={1} mode="normal" />
-        <Depth colorA={'#ff0000'} colorB={'#00aaff'} alpha={0.5} mode="multiply" near={0} far={300} origin={[100, 100, 100]} />
+        <Color color="#b02ed2" alpha={1} mode="normal" />
+        <Depth colorA="#ff0000" colorB="#00aaff" alpha={0.5} mode="multiply" near={0} far={300} origin={[100, 100, 100]} />
       </LayerMaterial>
     </mesh>
   )
@@ -62,14 +62,16 @@ function Flower({ base, colorA, colorB }) {
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
-      <LayerMaterial color={'#ff4eb8'} lighting={'none'} name={'Flower'}>
-        <Depth far={3} origin={[1, 1, 1]} colorA={'#ff00e3'} colorB={'#00ffff'} alpha={0.5} mode={'multiply'} mapping={'vector'} />
+      <LayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
+        <Color color="#ff4eb8" />
+        <Depth far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
         <Depth
           ref={depth}
           near={0.25}
           far={2}
           origin={[-0.9760456268614979, 0.48266696923176067, 0]}
           colorA={[1, 0.7607843137254902, 0]}
+          alpha={0.5}
           mode={'lighten'}
           mapping={'vector'}
         />
