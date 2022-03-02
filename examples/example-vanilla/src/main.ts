@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { LayerMaterial, Color, Depth, Fresnel } from 'lamina/vanilla'
+import './style.css'
 
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.001, 1000)
@@ -106,7 +107,12 @@ window.addEventListener('mousemove', (e) => {
   )
 
   // @ts-ignore
-  depthLayer.origin = vec.set(-m.y, m.x, 0)
+  // depthLayer.origin = vec.set(-m.y, m.x, 0)
+})
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
 })
 
 function animate() {
@@ -115,8 +121,8 @@ function animate() {
   controls.update()
 
   const delta = clock.getDelta()
-  mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
-  flowerMesh.rotation.z += delta / 2
+  // mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
+  // flowerMesh.rotation.z += delta / 2
 }
 
 animate()

@@ -3,7 +3,7 @@ import { LayerMaterialProps } from '../types'
 
 export function getUniform(value: any) {
   if (typeof value === 'string') {
-    return new Color(value)
+    return new Color(value).convertSRGBToLinear()
   }
 
   return value

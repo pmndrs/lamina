@@ -25,7 +25,9 @@ export default class Abstract {
   mode: BlendMode = 'normal'
   visible: boolean = true
   uniforms: {
-    [key: string]: IUniform<any>
+    [key: string]: IUniform<any> & {
+      raw?: any
+    }
   }
   events?: {
     onParse?: (self: Abstract) => void
@@ -74,6 +76,7 @@ export default class Abstract {
 
       this.uniforms[`u_${this.uuid}_${propName}`] = {
         value: getUniform(uniforms[key]),
+        raw: uniforms[key],
       }
 
       this.schema.push({
@@ -83,10 +86,11 @@ export default class Abstract {
 
       properties[propName] = {
         set: (v: any) => {
-          this.uniforms[`u_${this.uuid}_${propName}`].value = v
+          this.uniforms[`u_${this.uuid}_${propName}`].value = getUniform(v)
+          this.uniforms[`u_${this.uuid}_${propName}`].raw = v
         },
         get: () => {
-          return this.uniforms[`u_${this.uuid}_${propName}`].value
+          return this.uniforms[`u_${this.uuid}_${propName}`].raw
         },
       }
     })
@@ -288,7 +292,7 @@ export default class Abstract {
     const props: { [key: string]: any } = {}
     for (const key in this.uniforms) {
       const name = key.replace(`u_${this.uuid}_`, '')
-      props[name] = serializeProp(this.uniforms[key].value)
+      props[name] = serializeProp(this.uniforms[key].raw)
     }
 
     return {

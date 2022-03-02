@@ -56,15 +56,22 @@ function Flower({ base, colorA, colorB }) {
   const mesh = useRef()
   const depth = useRef()
   useFrame((state, delta) => {
-    mesh.current.rotation.z += delta / 2
-    depth.current.origin = vec.set(-state.mouse.y, state.mouse.x, 0)
+    // mesh.current.rotation.z += delta / 2
+    // depth.current.origin = vec.set(-state.mouse.y, state.mouse.x, 0)
   })
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
       <LayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
-        <Color color="#ff4eb8" />
-        <Depth far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
+        <Depth
+          far={3} //
+          origin={[1, 1, 1]}
+          colorA="#ff00e3"
+          colorB="#00ffff"
+          alpha={0.5}
+          mode={'multiply'}
+          mapping={'vector'}
+        />
         <Depth
           ref={depth}
           near={0.25}
