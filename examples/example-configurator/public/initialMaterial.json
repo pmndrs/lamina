@@ -13,10 +13,10 @@
       "constructor": "Depth",
       "properties": {
         "near": -0.06800000000000028,
-        "far": 10.015799999999972,
-        "origin": [0, 0, 2.4599999999999693],
+        "far": 5,
+        "origin": [0, 0, 3],
         "colorA": "#ff4eb8",
-        "colorB": "#0093ff",
+        "colorB": "#24dbf8",
         "alpha": 1,
         "name": "Depth",
         "mode": "normal",
@@ -28,9 +28,9 @@
       "constructor": "Depth",
       "properties": {
         "near": 1,
-        "far": 4,
+        "far": 3,
         "origin": [0, 0, -1.3670000000000089],
-        "colorA": "#ff8f00",
+        "colorA": "#ff7800",
         "colorB": "black",
         "alpha": 1,
         "name": "Depth",
@@ -55,7 +55,7 @@
     {
       "constructor": "Noise",
       "properties": {
-        "colorA": "#31d6ff",
+        "colorA": "#3bffd0",
         "colorB": "#4e4e4e",
         "colorC": "#000000",
         "colorD": "#000000",

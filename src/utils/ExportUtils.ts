@@ -28,7 +28,6 @@ function getPropsFromLayer(layer: SerializedLayer) {
 
 export function serializedLayersToJSX(layers: SerializedLayer[], material: SerializedLayer) {
   const materialProps = getPropsFromLayer(material)
-  console.log(layers)
 
   const jsx = `
     <LayerMaterial${materialProps}>
