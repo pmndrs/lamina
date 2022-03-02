@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Environment, ContactShadows, Plane, Box, Stats } from '@react-three/drei'
-import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel } from './lamina'
+import { LayerMaterial, DebugLayerMaterial, Depth, Color, Fresnel } from 'lamina'
 import { useControls } from 'leva'
 import { Vector3 } from 'three'
 
