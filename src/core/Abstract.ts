@@ -90,7 +90,7 @@ export default class Abstract {
           this.uniforms[`u_${this.uuid}_${propName}`].raw = v
         },
         get: () => {
-          return this.uniforms[`u_${this.uuid}_${propName}`].raw
+          return this.uniforms[`u_${this.uuid}_${propName}`].value
         },
       }
     })

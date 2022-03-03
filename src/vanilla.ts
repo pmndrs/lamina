@@ -134,7 +134,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
       ...THREE.UniformsLib.fog,
       ...{
         u_lamina_color: {
-          value: typeof this.color === 'string' ? new THREE.Color(this.color).convertSRGBToLinear() : this.color,
+          value: typeof this.color === 'string' ? new THREE.Color(this.color) : this.color,
         },
         u_lamina_alpha: {
           value: this.alpha,
