@@ -56,7 +56,7 @@ const material = new LayerMaterial({
   side: THREE.BackSide,
   layers: [
     new Color({
-      color: new THREE.Color('#b02ed2').convertSRGBToLinear(),
+      color: new THREE.Color('#f0aed2').convertSRGBToLinear(),
     }),
     new Depth({
       near: 0,
