@@ -15,7 +15,7 @@ import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
 import { LayerMaterialParameters, LayerMaterialProps, SerializedLayer, ShadingProps, ShadingType } from './types'
-import { MathUtils, UniformsUtils } from 'three'
+import { ColorRepresentation, MathUtils, UniformsUtils } from 'three'
 
 class LayerMaterial extends THREE.ShaderMaterial {
   shadingAdded: boolean = false
@@ -134,7 +134,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
       ...THREE.UniformsLib.fog,
       ...{
         u_lamina_color: {
-          value: typeof this.color === 'string' ? new THREE.Color(this.color) : this.color,
+          value: typeof this.color === 'string' ? new THREE.Color(this.color).convertSRGBToLinear() : this.color,
         },
         u_lamina_alpha: {
           value: this.alpha,

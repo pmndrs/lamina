@@ -1,5 +1,5 @@
 import { getSpecialParameters, getUniform, serializeProp } from '../utils/Functions'
-import { IUniform, MathUtils, Texture } from 'three'
+import { Color, IUniform, MathUtils, Texture } from 'three'
 import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../types'
 
 // @ts-ignore
@@ -29,6 +29,7 @@ export default class Abstract {
       raw?: any
     }
   }
+
   events?: {
     onParse?: (self: Abstract) => void
   } | null
@@ -94,6 +95,8 @@ export default class Abstract {
         },
       }
     })
+
+    console.log(this)
 
     if (props?.name) this.name = props.name
     if (props?.mode) this.mode = props.mode
@@ -258,7 +261,7 @@ export default class Abstract {
         ...getSpecialParameters(label),
         ...rest,
         // @ts-ignore
-        value: this[label],
+        value: serializeProp(this[label]),
       }
     })
 
@@ -292,7 +295,7 @@ export default class Abstract {
     const props: { [key: string]: any } = {}
     for (const key in this.uniforms) {
       const name = key.replace(`u_${this.uuid}_`, '')
-      props[name] = serializeProp(this.uniforms[key].raw)
+      props[name] = serializeProp(this.uniforms[key].value)
     }
 
     return {

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { LayerMaterial, Depth, Color, Fresnel } from 'lamina'
+import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel } from 'lamina'
 import { Vector3 } from 'three'
 
 export default function App() {
@@ -52,21 +52,21 @@ function Flower({ base, colorA, colorB }) {
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
-      <LayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
-        <Color color="#ff4eb8" />
+      <DebugLayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
+        <Color color={'#ff4eb8'} />
         <Depth far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
         <Depth
           ref={depth}
           near={0.25}
           far={2}
           origin={[-0.9760456268614979, 0.48266696923176067, 0]}
-          colorA={[1, 0.7607843137254902, 0]}
+          colorA={'#ffe100'}
           alpha={0.5}
           mode={'lighten'}
           mapping={'vector'}
         />
         <Fresnel mode={'softlight'} />
-      </LayerMaterial>
+      </DebugLayerMaterial>
     </mesh>
   )
 }

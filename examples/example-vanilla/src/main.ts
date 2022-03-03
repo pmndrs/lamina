@@ -34,7 +34,7 @@ const flowerMaterial = new LayerMaterial({
       near: 0.25,
       far: 2,
       origin: [-0.9760456268614979, 0.48266696923176067, 0],
-      colorA: new THREE.Color(1, 0.7607843137254902, 0).convertSRGBToLinear(),
+      colorA: new THREE.Color('#ffe100').convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'lighten',
       mapping: 'vector',

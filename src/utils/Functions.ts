@@ -1,4 +1,4 @@
-import { Color, Texture, Vector2, Vector3, Vector4 } from 'three'
+import { Color, Matrix3, Matrix4, Texture, Vector2, Vector3, Vector4 } from 'three'
 import { LayerMaterialProps } from '../types'
 
 export function getUniform(value: any) {
@@ -42,10 +42,16 @@ export function getLayerMaterialArgs(props: LayerMaterialProps) {
 }
 
 export function serializeProp(prop: any) {
-  if (prop instanceof Vector3 || prop instanceof Vector2 || prop instanceof Vector4) {
+  if (
+    prop instanceof Vector3 ||
+    prop instanceof Vector2 ||
+    prop instanceof Vector4 ||
+    prop instanceof Matrix3 ||
+    prop instanceof Matrix4
+  ) {
     return prop.toArray()
   } else if (prop instanceof Color) {
-    return prop.toArray()
+    return '#' + prop.clone().convertLinearToSRGB().getHexString()
   } else if (prop instanceof Texture) {
     return prop.image.src
   }
