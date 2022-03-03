@@ -96,8 +96,6 @@ export default class Abstract {
       }
     })
 
-    console.log(this)
-
     if (props?.name) this.name = props.name
     if (props?.mode) this.mode = props.mode
     if (props?.visible) this.visible = props.visible

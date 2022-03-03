@@ -48,6 +48,7 @@ class LayerMaterial extends THREE.ShaderMaterial {
     this.lighting = props?.lighting || LayerMaterial.u_lighting
     this.lightingProps = props?.lightingProps || LayerMaterial.u_lightingProps
     this.name = props?.name || LayerMaterial.u_name
+    this.fog = true
 
     this.customProgramCacheKey = () => {
       return this.uuid
@@ -89,6 +90,10 @@ class LayerMaterial extends THREE.ShaderMaterial {
     let fragmentVariables = ''
     let vertexShader = ''
     let fragmentShader = ''
+    let vertexChunks = ''
+    let fragmentChunks = ''
+    let vertexChunksTop = ''
+    let fragmentChunksTop = ''
 
     // Restrict to one shading layer
     let shadingAdded = false
@@ -144,13 +149,38 @@ class LayerMaterial extends THREE.ShaderMaterial {
 
     this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
 
+    if (this.fog && !shadingAdded) {
+      vertexVariables += THREE.ShaderChunk.fog_pars_vertex + '\n'
+      vertexChunks += `
+        vec4 worldPosition = gl_Position;
+        vec3 transformedNormal = lamina_finalNormal;
+        vec3 mvPosition = (modelViewMatrix * vec4(lamina_finalPosition, 1.0)).xyz;
+        ${THREE.ShaderChunk.fog_vertex}
+      `
+
+      fragmentVariables += THREE.ShaderChunk.fog_pars_fragment + '\n'
+      fragmentChunks += THREE.ShaderChunk.fog_fragment + '\n'
+    }
+
+    if (!shadingAdded) {
+      vertexChunksTop += `
+      #include <common>
+      `
+
+      fragmentChunksTop += `
+      #include <common>
+      #include <packing>
+      `
+    }
+
     return {
       uniforms: uniforms,
       vertexShader: /* glsl */ `
+      ${vertexChunksTop}
       ${HelpersChunk}
       ${NoiseChunk}
       ${vertexVariables}
-
+      
       void main() {
         vec3 lamina_finalPosition = position;
         vec3 lamina_finalNormal = normal;
@@ -159,10 +189,15 @@ class LayerMaterial extends THREE.ShaderMaterial {
         #ifdef vNormal
           vNormal = lamina_finalNormal;
         #endif
+
         gl_Position = projectionMatrix * modelViewMatrix * vec4(lamina_finalPosition, 1.0);
+
+        
+        ${vertexChunks}
       }
       `,
       fragmentShader: /* glsl */ `
+      ${fragmentChunksTop}
       ${HelpersChunk}
       ${NoiseChunk}
       ${BlendModesChunk}
@@ -178,7 +213,10 @@ class LayerMaterial extends THREE.ShaderMaterial {
         gl_FragColor = lamina_finalColor;
 
         #include <tonemapping_fragment>
-	      #include <encodings_fragment>
+        #include <encodings_fragment>
+        #include <premultiplied_alpha_fragment>
+        #include <dithering_fragment>
+        ${fragmentChunks}
       }
       `,
     }
