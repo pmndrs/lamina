@@ -113,10 +113,12 @@ export default class Abstract {
 
     this.buildShaders(c)
 
-    this.schema.push({
-      value: this.name,
-      label: 'name',
-    })
+    // Remove Name field from Debugger until a way to
+    // rename Leva folders is found
+    // this.schema.push({
+    //   value: this.name,
+    //   label: 'name',
+    // })
     this.schema.push({
       value: this.mode,
       label: 'mode',
