@@ -18,13 +18,13 @@ document.body.appendChild(renderer.domElement)
 const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
 const flowerMaterial = new LayerMaterial({
   lighting: 'none',
-  color: '#ff4eb8',
+  color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
   layers: [
     new Depth({
       far: 3,
       origin: [1, 1, 1],
-      colorA: '#ff00e3',
-      colorB: '#00ffff',
+      colorA: new THREE.Color('#ff00e3').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00ffff').convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'multiply',
       mapping: 'vector',
@@ -56,14 +56,14 @@ const material = new LayerMaterial({
   side: THREE.BackSide,
   layers: [
     new Color({
-      color: '#b02ed2',
+      color: new THREE.Color('#b02ed2').convertSRGBToLinear(),
     }),
     new Depth({
       near: 0,
       far: 300,
       origin: [100, 100, 100],
-      colorA: '#ff0000',
-      colorB: '#00aaff',
+      colorA: new THREE.Color('#ff0000').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
       alpha: 0.5,
       mode: 'multiply',
     }),
@@ -108,11 +108,6 @@ window.addEventListener('mousemove', (e) => {
 
   // @ts-ignore
   depthLayer.origin = vec.set(-m.y, m.x, 0)
-})
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
 })
 
 function animate() {

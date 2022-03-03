@@ -3055,10 +3055,10 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
-lamina@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.0.1.tgz#84849f6de35d617ff64836d32b4505cec6c07492"
-  integrity sha512-hyxxshs4kvYt5LQ0WoXSMeoNQc16hKrUXY0aYJUC+Xtdz5ZtkiXRS5wX7F6H2etEN+DFQa+bGa6QbzAm5ggGvA==
+lamina@^1.0.1:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.0.6.tgz#60118f1d05186979cd969c193de1cd5bc778be7e"
+  integrity sha512-m8FdpLfMEJqh6Ig47DfsLlUcQO7uCx1FA3sqNkaMDvHT8/JkL9CAaWzUVWmNk32UXJHVQ198lBF0zDdGxLibCw==
 
 leva@0.9.18:
   version "0.9.18"
