@@ -1,3 +1,4 @@
+import { Vector3 } from 'three'
 import { DepthProps } from '../types'
 import Abstract from './Abstract'
 
@@ -8,7 +9,7 @@ type AbstractExtended = Abstract & {
 export default class Depth extends Abstract {
   static u_near = 2
   static u_far = 10
-  static u_origin = [0, 0, 0]
+  static u_origin = new Vector3(0, 0, 0)
   static u_colorA = 'white'
   static u_colorB = 'black'
   static u_alpha = 1

@@ -47,7 +47,7 @@ function Flower({ base, colorA, colorB }) {
   const depth = useRef()
   useFrame((state, delta) => {
     mesh.current.rotation.z += delta / 2
-    depth.current.origin = vec.set(-state.mouse.y, state.mouse.x, 0)
+    depth.current.origin.set(-state.mouse.y, state.mouse.x, 0)
   })
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
@@ -55,16 +55,7 @@ function Flower({ base, colorA, colorB }) {
       <DebugLayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
         <Color color={'#ff4eb8'} />
         <Depth far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
-        <Depth
-          ref={depth}
-          near={0.25}
-          far={2}
-          origin={[-0.9760456268614979, 0.48266696923176067, 0]}
-          colorA={'#ffe100'}
-          alpha={0.5}
-          mode={'lighten'}
-          mapping={'vector'}
-        />
+        <Depth ref={depth} near={0.25} far={2} colorA={'#ffe100'} alpha={0.5} mode={'lighten'} mapping={'vector'} />
         <Fresnel mode={'softlight'} />
       </DebugLayerMaterial>
     </mesh>

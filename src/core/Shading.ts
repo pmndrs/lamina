@@ -54,8 +54,6 @@ export default class Shading extends Abstract {
             `
           )
 
-          console.log(self.uniforms)
-
           self.fragmentVariables += `
             uniform float u_${self.uuid}_shininess;
           `
