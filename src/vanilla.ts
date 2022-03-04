@@ -14,8 +14,8 @@ import Displace from './core/Displace'
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, LayerMaterialProps, SerializedLayer, ShadingProps, ShadingType } from './types'
-import { ColorRepresentation, MathUtils, UniformsUtils } from 'three'
+import { LayerMaterialParameters, SerializedLayer, ShadingProps, ShadingType } from './types'
+import { MathUtils } from 'three'
 
 class LayerMaterial extends THREE.ShaderMaterial {
   shadingAdded: boolean = false
