@@ -34,17 +34,16 @@
 `lamina` let's you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
-import { LayerMaterial, Base, Depth } from 'lamina'
+import { LayerMaterial, Color } from 'lamina'
 
 function GradientSphere() {
   return (
     <Sphere>
-      <LayerMaterial>
-        <Base color="#ffffff" alpha={1} mode="normal" />
+      <LayerMaterial color="#ffffff">
         <Depth
-          colorA="#810000"
+          colorA="#810000" //
           colorB="#ffd0d0"
-          alpha={1}
+          alpha={0.5}
           mode="multiply"
           near={0}
           far={2}
@@ -62,20 +61,16 @@ function GradientSphere() {
 Lamina can be used with vanilla Three.js. Each layer is just a class.
 
 ```js
-import { LayerMaterial, Base, Depth } from 'lamina/vanilla'
+import { LayerMaterial, Color } from 'lamina/vanilla'
 
 const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
+  color: '#d9d9d9',
   layers: [
-    new Base({
-      color: '#d9d9d9',
-      alpha: 1,
-      mode: 'normal',
-    }),
     new Depth({
       colorA: '#002f4b',
       colorB: '#f2fdff',
-      alpha: 1,
+      alpha: 0.5,
       mode: 'multiply',
       near: 0,
       far: 2,
@@ -87,146 +82,130 @@ const material = new LayerMaterial({
 const mesh = new THREE.Mesh(geometry, material)
 ```
 
+Note: To match the colors of the react example, you must convert all colors to Linear encoding like so:
+
+```js
+new Depth({
+  colorA: new THREE.Color('#002f4b').convertSRGBToLinear(),
+  colorB: new THREE.Color('#f2fdff').convertSRGBToLinear(),
+  alpha: 0.5,
+  mode: 'multiply',
+  near: 0,
+  far: 2,
+  origin: new THREE.Vector3(1, 1, 1),
+}),
+```
+
 </details>
 
 ## Layers
 
 ### Built-in layers
 
-Here are the layers that laminia currently provides
+Here are the layers that lamina currently provides
 
-| Name      | Function             |
-| --------- | -------------------- |
-| `Base`    | Flat color           |
-| `Depth`   | Depth based gradient |
-| `Fresnel` | Fresnel shading (strip or rim-lights) |
-| `Noise`   | White, perlin or simplex noise |
-| `Normals`   | Visualize vertex normals |
-| `Texture`   | Image texture |
+| Name       | Function                               |
+| ---------- | -------------------------------------- |
+| `Color`    | Flat color.                            |
+| `Depth`    | Depth based gradient.                  |
+| `Displace` | Displace vertices using. noise         |
+| `Fresnel`  | Fresnel shading (strip or rim-lights). |
+| `Gradient` | Linear gradient.                       |
+| `Matcap`   | Load in a Matcap.                      |
+| `Noise`    | White, perlin or simplex noise         |
+| `Normals`  | Visualize vertex normals               |
+| `Texture`  | Image texture                          |
 
-### Blendmodes
-
-| Name      | Function             |
-| --------- | -------------------- |
-| `normal`    | opaque |
-| `switch`   | skip layer |
-| `add`   | prev layer + current |
-| `subtract` | prev layer - current |
-| `multiply`   | prev layer * current |
-| `divide`   | prev laywer / current |
-| `addsub`   | prev layer > 0.5 ? prev layer + current : prev layer - current |
-| `lighten`   | lighter pixels only |
-| `darken`   | darker pixels only |
-| `screen`   | ... |
-| `overlay`   | ... |
-| `softlight`   | ... |
+See the section for each layer for the options on it.
 
 ### Writing your own layers
 
-You can write your own layers by extending the `Abstract` class.
+You can write your own layers by extending the `Abstract` class. The concept if simple:
+
+> Each layer can be treated as an isolated shader program that produces a `vec4` color.
+
+The color of each layer will be blended together using the specified blend mode. A list of all available blend modes can be found [here](https://github.com/pmndrs/lamina/blob/445ff4adc084f88865c2b3ffc801e2b4f83917ec/src/types.ts#L3).
 
 ```ts
+// Extend the Abstract layer
 class CustomLayer extends Abstract {
-  // Name of your layer
-  name: string = 'CustomLayer'
-  // Default blend mode
-  mode: BlendMode = 'normal'
-  // Give it an ID
-  protected uuid: string = Abstract.genID()
+  // Define stuff as static properties!
 
-  // Define your own uniforms
-  uniforms: {
-    [key: string]: IUniform<any>
-  }
-  constructor(props?: CustomLayerProps) {
-    super()
-    const { customUniform } = props || {}
+  // Uniforms: Must begin with prefix "u_".
+  // Assign them their default value
+  static u_color = 'red'
+  static u_alpha = 1
 
-    // Make your uniforms unique in the layer
-    // stack by appending the ID of the layer to it.
-    this.uniforms = {
-      [`u_${this.uuid}_customUniform`]: {
-        value: customUniform ?? defaultValue,
-      },
+  // Define your fragment shader just like you already do!
+  // Only difference is, you must return the final color of this layer
+  static fragmentShader = `   
+    uniform vec3 u_color;
+    uniform float u_alpha;
 
-      // We recommend having an alpha  defined
-      [`u_${this.uuid}_alpha`]: {
-        value: 1,
-      },
+    // Varyings must be prefixed by "v_"
+    varying vec3 v_Position;
+
+    vec4 main() {
+      // Local variables must be prefixed by "f_"
+      vec4 f_color = vec4(u_color, u_alpha)
+      return f_color;
     }
-  }
-
-  // Return a shader chunk that describes your variable
-  // in the Fragment shader.
-  getFragmentVariables() {
-    return /* glsl */ `    
-    // Lets assume this is a color
-    uniform vec3 u_${this.uuid}_customUniform;
-    uniform float u_${this.uuid}_alpha;
-`
-  }
-
-  // Return an shader chunk with your layer's implementation.
-  // Parameter `e` is the result of the previous layer.
-  // `sc_blend` is a blending function.
-  //
-  // vec4 e = vec4(0.);
-  // ...
-  // e = sc_blend(previousLayer(e), e, prevBlendMode);
-  // e = sc_blend(currentLayer(e), e, currentBlendMode);
-  // ...
-  // gl_FragColor = e;
-  //
-  // List of blend modes: https://github.com/pmndrs/lamina/blob/7246a43d411dd2d4c069c134a843a3f0bf40623a/src/types.ts#L3
-  getFragmentBody(e: string) {
-    return /* glsl */ `    
-      // Make sure to create unique local variables
-      // by appending the UUID to them
-      vec3 f_${this.uuid}_color = u_${this.uuid}_customUniform;
-
-     ${e} = ${this.getBlendMode(
-      BlendModes[this.mode] as number,
-      e,
-      `vec4(u_${this.uuid}_color, u_${this.uuid}_alpha)`
-    )};
   `
-  }
 
-  // Optionals
+  // Optionally Define a vertex shader!
+  // Same rules as fragment shaders, except no blend modes.
+  static vertexShader = `   
+    // Varyings must be prefixed by "v_"
+    varying vec3 v_Position;
 
-  // Return a shader chunk that describes your variables
-  // in the vertex shader.
-  // Mostly used to pass varyings to the Fragment shader
-  getVertexVariables(): string {
-    return /* glsl */ `
-    varying vec2 v_${this.uuid}_uv;
-    `
-  }
+    void main() {
+      v_Position = position;
+      return position * 2.;
+    }
+  `
 
-  // Return an shader chunk with your layer's of the vertex shader.
-  // Mostly used to assign varyings to values.
-  getVertexBody(): string {
-    return `
-    v_${this.uuid}_uv = uv;
-    `
+  constructor(props) {
+    // You MUST call `super` with the current constructor as the first argument.
+    // Second argument is optional and provides non-uniform parameters like blend mode, name and visibility.
+    super(Color, {
+      name: 'Color',
+      ...props,
+    })
   }
-
-  // Setters and getters for uniforms
-  set alpha(v) {
-    this.uniforms[`u_${this.uuid}_alpha`].value = v
-  }
-
-  get alpha() {
-    return this.uniforms[`u_${this.uuid}_alpha`].value
-  }
-
-  set customUniform(v) {
-    this.uniforms[`u_${this.uuid}_customUniform`].value = v
-  }
-
-  get customUniform() {
-    return this.uniforms[`u_${this.uuid}_customUniform`].value
-  }
-  // ...
 }
+```
+
+If you need a specialized or advance use-case, see the Advanced Usage section
+
+### Using your own layers
+
+<strong>Custom layers are Vanilla compatible by default.</strong>
+
+To use them with React-three-fiber, you must use the `extend` function to add the layer to your component library!
+
+```jsx
+import { extend } from "@react-three/fiber"
+
+extend({ CustomLayer })
+
+// ...
+const ref = useRef();
+
+// Animate uniforms using a ref
+useFrame(({ clock }) => {
+  ref.current.color.setRGB(
+    Math.sin(clock.elapsedTime),
+    Math.cos(clock.elapsedTime),
+    Math.sin(clock.elapsedTime),
+  )
+})
+
+<LayerMaterial>
+  <customLayer
+    ref={ref}     // Imperative instance of CustomLayer. Can be used to animate unifroms
+    args={[]}     // Non uniform arguments, i.e. props param on constructor
+    color="green" // Uniforms can be set directly
+    alpha={0.5}
+  />
+</LayerMaterial>
 ```

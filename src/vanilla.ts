@@ -3,7 +3,6 @@ import * as THREE from 'three'
 import Abstract from './core/Abstract'
 import Depth from './core/Depth'
 import Color from './core/Color'
-import Shading from './core/Shading'
 import Noise from './core/Noise'
 import Fresnel from './core/Fresnel'
 import Gradient from './core/Gradient'
@@ -134,4 +133,4 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Shading, Noise, Fresnel, Gradient, Matcap, Texture, Displace }
+export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace }

@@ -26,7 +26,6 @@ declare global {
       debuglayerMaterial: Node<typeof DebugLayerMaterial, typeof DebugLayerMaterial>
       depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
       color_: Node<LAYERS.Color, typeof LAYERS.Color>
-      shading_: Node<LAYERS.Shading, typeof LAYERS.Shading>
       noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
       fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
       gradient_: Node<LAYERS.Gradient, typeof LAYERS.Gradient>
@@ -41,7 +40,6 @@ extend({
   LayerMaterial: LAYERS.LayerMaterial,
   Depth_: LAYERS.Depth,
   Color_: LAYERS.Color,
-  Shading_: LAYERS.Shading,
   Noise_: LAYERS.Noise,
   Fresnel_: LAYERS.Fresnel,
   Gradient_: LAYERS.Gradient,
@@ -88,10 +86,6 @@ const Depth = React.forwardRef<LAYERS.Depth, DepthProps>((props, forwardRef) => 
 const Color = React.forwardRef<LAYERS.Color, ColorProps>((props, forwardRef) => {
   return <color_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
 }) as React.ForwardRefExoticComponent<ColorProps & React.RefAttributes<LAYERS.Color>>
-
-const Shading = React.forwardRef<LAYERS.Shading, ShadingProps>((props, forwardRef) => {
-  return <shading_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
-}) as React.ForwardRefExoticComponent<ShadingProps & React.RefAttributes<LAYERS.Shading>>
 
 const Noise = React.forwardRef<LAYERS.Noise, NoiseProps>((props, ref) => {
   return <noise_ ref={ref} args={getNonUniformArgs(props)} {...props} />
