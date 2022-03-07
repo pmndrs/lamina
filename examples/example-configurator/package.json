@@ -26,13 +26,14 @@
     "@react-three/drei": "^8.8.1",
     "@react-three/fiber": "^7.0.26",
     "@types/styled-components": "^5.1.23",
+    "@types/three": "^0.138.0",
     "framer-motion": "^6.2.1",
     "lamina": "^1.0.5",
     "leva": "^0.9.18",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.3",
-    "three": "^0.137.5"
+    "three": "^0.138.3"
   },
   "scripts": {
     "start": "webpack-cli serve --mode=development --env development --open --hot",

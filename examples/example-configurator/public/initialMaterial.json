@@ -2,8 +2,7 @@
   "version": 1,
   "properties": {
     "name": "Monkey w/ freckles",
-    "lighting": "none",
-    "lightingProps": {},
+    "lighting": "basic",
     "color": "white",
     "alpha": 1
   },

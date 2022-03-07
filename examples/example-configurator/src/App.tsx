@@ -19,11 +19,9 @@ export default function App() {
         </Suspense>
         <axesHelper args={[5]} />
 
-        <pointLight castShadow position={[10, 10, 5]} intensity={0.5} />
-        <pointLight castShadow position={[-10, -10, -5]} />
+        <directionalLight intensity={1} castShadow shadow-mapSize-height={1024} shadow-mapSize-width={1024} />
 
         <ambientLight intensity={0.4} />
-        {/* <gridHelper /> */}
       </Canvas>
     </>
   )

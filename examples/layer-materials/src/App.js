@@ -50,13 +50,13 @@ function Flower({ base, colorA, colorB }) {
   })
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
-      <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
-      <DebugLayerMaterial color="#ff4eb8" name={'Flower'}>
+      <torusKnotGeometry args={[0.4, 0.05, 400, 8, 3, 7]} />
+      <LayerMaterial color="#ff4eb8" name={'Flower'}>
         <Color color={'#ff4eb8'} />
         <Depth name="this" far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
         <Depth ref={depth} near={0.25} far={2} colorA={'#ffe100'} alpha={0.5} mode={'lighten'} mapping={'vector'} />
         <Fresnel mode={'softlight'} />
-      </DebugLayerMaterial>
+      </LayerMaterial>
     </mesh>
   )
 }

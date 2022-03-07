@@ -50,7 +50,7 @@ class LayerMaterial extends CustomShaderMaterial {
     this.layers
       .filter((l) => l.visible)
       .forEach((l) => {
-        l.buildShaders(l.constructor)
+        // l.buildShaders(l.constructor)
 
         vertexVariables += l.vertexVariables + '\n'
         fragmentVariables += l.fragmentVariables + '\n'

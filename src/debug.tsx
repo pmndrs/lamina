@@ -66,7 +66,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       { store }
     )
 
-    useControls(
+    const { Lighting } = useControls(
       'Base',
       {
         Color: {
@@ -86,29 +86,17 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
             ref.current.uniformsNeedUpdate = true
             ref.current['alpha'] = v
             ref.current.transparent = Boolean(v !== undefined && v < 1)
+            ref.current.needsUpdate = true
           },
         },
         Lighting: {
           value: ref.current?.lighting || props?.lighting || 'basic',
           options: Object.keys(ShadingTypes),
-          onChange: (v: ShadingType) => {
-            const base = new ShadingTypes[v]()
-
-            for (const key in base) {
-              // @ts-ignore
-              if (ref.current[key] === undefined) ref.current[key] = 0
-              // @ts-ignore
-              ref.current[key] = base[key]
-            }
-
-            ref.current.lighting = v
-            // ref.current.refresh()
-          },
         },
       },
       { store }
     )
-    const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs({ ...props, lighting: Lighting }), [props, Lighting])
 
     React.useEffect(() => {
       const layers = ref.current.layers
@@ -135,6 +123,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
         const layer = ref.current.layers[index] as LAYERS.Abstract & {
           [key: string]: any
         }
+
         if (property !== 'map') {
           layer[property] = updatedData.value
           if (uniform) {
