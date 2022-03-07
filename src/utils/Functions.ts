@@ -5,6 +5,7 @@ export function getUniform(value: any) {
   if (typeof value === 'string') {
     return new Color(value)
   }
+
   return value
 }
 
@@ -30,25 +31,30 @@ export function getSpecialParameters(label: string) {
   }
 }
 
-export function getLayerMaterialArgs(props: LayerMaterialProps) {
+export function getLayerMaterialArgs({ color, alpha, lighting, name, ...rest }: LayerMaterialProps & any = {}) {
   return [
     {
-      color: props?.color,
-      alpha: props?.alpha,
-      lighting: props?.lighting,
-      name: props?.name,
+      color,
+      alpha,
+      lighting,
+      name,
     },
+    rest,
   ] as any
 }
 
-export function serializeProp(prop: any) {
-  if (
+export function isSerializableType(prop: any) {
+  return (
     prop instanceof Vector3 ||
     prop instanceof Vector2 ||
     prop instanceof Vector4 ||
     prop instanceof Matrix3 ||
     prop instanceof Matrix4
-  ) {
+  )
+}
+
+export function serializeProp(prop: any) {
+  if (isSerializableType(prop)) {
     return prop.toArray()
   } else if (prop instanceof Color) {
     return '#' + prop.clone().convertLinearToSRGB().getHexString()

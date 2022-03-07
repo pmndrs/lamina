@@ -17,7 +17,6 @@ document.body.appendChild(renderer.domElement)
 
 const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
 const flowerMaterial = new LayerMaterial({
-  lighting: 'none',
   color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
   layers: [
     new Depth({
@@ -52,11 +51,19 @@ scene.add(flowerMesh)
 
 const geometry = new THREE.SphereGeometry(1, 64, 64)
 const material = new LayerMaterial({
-  lighting: 'none',
   side: THREE.BackSide,
   layers: [
     new Color({
       color: new THREE.Color('#f0aed2').convertSRGBToLinear(),
+    }),
+    new Depth({
+      near: 0,
+      far: 300,
+      origin: [10, 10, 10],
+      colorA: new THREE.Color('blue').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      alpha: 0.5,
+      mode: 'multiply',
     }),
     new Depth({
       near: 0,
@@ -89,12 +96,10 @@ scene.add(mesh)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 
-const pLight = new THREE.PointLight()
-pLight.position.set(10, 10, 5)
+const pLight = new THREE.DirectionalLight()
+pLight.intensity = 2
+pLight.shadow.mapSize.set(1024, 1024)
 scene.add(pLight)
-const pLight2 = new THREE.PointLight(new THREE.Color('#00ffff').convertSRGBToLinear())
-pLight2.position.set(-10, -10, -5)
-scene.add(pLight2)
 
 const clock = new THREE.Clock()
 
@@ -107,7 +112,7 @@ window.addEventListener('mousemove', (e) => {
   )
 
   // @ts-ignore
-  depthLayer.origin = vec.set(-m.y, m.x, 0)
+  // depthLayer.origin = vec.set(-m.y, m.x, 0)
 })
 
 function animate() {
@@ -116,8 +121,8 @@ function animate() {
   controls.update()
 
   const delta = clock.getDelta()
-  mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
-  flowerMesh.rotation.z += delta / 2
+  // mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
+  // flowerMesh.rotation.z += delta / 2
 }
 
 animate()

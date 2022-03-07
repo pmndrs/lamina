@@ -15,7 +15,7 @@
     "@babel/preset-react": "^7.16.7",
     "@react-three/drei": "8.8.1",
     "@react-three/fiber": "7.0.25",
-    "@types/three": "0.136.1",
+    "@types/three": "^0.138.0",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
     "html-webpack-plugin": "^5.5.0",
@@ -24,7 +24,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "style-loader": "^3.3.1",
-    "three": "0.137.5",
+    "three": "^0.138.3",
     "webpack": "^5.68.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"

@@ -1,4 +1,4 @@
-import { ColorRepresentation, Texture, Vector3 } from 'three'
+import * as THREE from 'three'
 import { Abstract } from './vanilla'
 
 export const BlendModes: {
@@ -54,20 +54,31 @@ export const MappingTypes: {
 
 export type MappingType = 'local' | 'world' | 'uv'
 
-export type ShadingType = 'phong' | 'none'
+export const ShadingTypes: {
+  [key: string]: new () => THREE.Material
+} = {
+  phong: THREE.MeshPhongMaterial,
+  physical: THREE.MeshPhysicalMaterial,
+  toon: THREE.MeshToonMaterial,
+  basic: THREE.MeshBasicMaterial,
+  depth: THREE.MeshDepthMaterial,
+  lambert: THREE.MeshLambertMaterial,
+  standard: THREE.MeshStandardMaterial,
+}
+
+export type ShadingType = 'none' | 'phong' | 'physical' | 'toon' | 'basic' | 'depth' | 'lambert' | 'standard'
 
 export interface BaseProps {
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   name?: string
 }
 
 export interface LayerMaterialParameters {
   layers?: Abstract[]
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   lighting?: ShadingType
-  lightingProps?: ShadingProps
   name?: string
 }
 export type LayerMaterialProps = Omit<LayerMaterialParameters, 'layers'>
@@ -80,30 +91,30 @@ export interface LayerProps {
 }
 
 export interface DepthProps extends LayerProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
+  colorA?: THREE.ColorRepresentation | THREE.Color
+  colorB?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   near?: number
   far?: number
-  origin?: Vector3 | [number, number, number]
+  origin?: THREE.Vector3 | [number, number, number]
   isVector?: boolean
   mapping?: 'vector' | 'camera' | 'world'
 }
 
 export interface ColorProps extends LayerProps {
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
 }
 export interface ShadingProps extends LayerProps {
   shininess?: number
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation | THREE.Color
 }
 
 export interface NoiseProps extends LayerProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
-  colorC?: ColorRepresentation
-  colorD?: ColorRepresentation
+  colorA?: THREE.ColorRepresentation | THREE.Color
+  colorB?: THREE.ColorRepresentation | THREE.Color
+  colorC?: THREE.ColorRepresentation | THREE.Color
+  colorD?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   mapping?: MappingType
   type?: NoiseType
@@ -117,15 +128,15 @@ export interface DisplaceProps extends LayerProps {
 }
 
 export interface FresnelProps extends LayerProps {
-  color?: ColorRepresentation
+  color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   power?: number
   intensity?: number
   bias?: number
 }
 export interface GradientProps extends LayerProps {
-  colorA?: ColorRepresentation
-  colorB?: ColorRepresentation
+  colorA?: THREE.ColorRepresentation | THREE.Color
+  colorB?: THREE.ColorRepresentation | THREE.Color
   axes?: 'x' | 'y' | 'z'
   alpha?: number
   contrast?: number
@@ -135,10 +146,10 @@ export interface GradientProps extends LayerProps {
 }
 
 export interface MatcapProps extends LayerProps {
-  map?: Texture
+  map?: THREE.Texture
 }
 export interface TextureProps extends LayerProps {
-  map?: Texture
+  map?: THREE.Texture
 }
 
 export interface SerializedLayer {

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel } from 'lamina'
+import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel, Noise } from 'lamina'
 import { Vector3 } from 'three'
 
 export default function App() {
@@ -17,8 +17,7 @@ export default function App() {
           <meshPhysicalMaterial transmission={1} thickness={10} roughness={0.2} />
         </mesh>
         <OrbitControls />
-        <pointLight castShadow position={[10, 10, 5]} />
-        <pointLight castShadow position={[-10, -10, -5]} color={props.colorA} />
+        <directionalLight intensity={2} castShadow shadow-mapSize-height={1024} shadow-mapSize-width={1024} />
         <ambientLight intensity={0.4} />
       </Suspense>
     </Canvas>
@@ -33,8 +32,8 @@ function Bg() {
   return (
     <mesh ref={mesh} scale={100}>
       <sphereGeometry args={[1, 64, 64]} />
-      <LayerMaterial attach="material" side={THREE.BackSide} lighting="none">
-        <Color color="#f0aed2" alpha={1} mode="normal" />
+      <LayerMaterial color="#f0aed2" attach="material" side={THREE.BackSide}>
+        <Depth colorA="blue" colorB="#00aaff" alpha={0.5} mode="multiply" near={0} far={300} origin={[10, 10, 10]} />
         <Depth colorA="#ff0000" colorB="#00aaff" alpha={0.5} mode="multiply" near={0} far={300} origin={[100, 100, 100]} />
       </LayerMaterial>
     </mesh>
@@ -52,9 +51,9 @@ function Flower({ base, colorA, colorB }) {
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 32, 3, 7]} />
-      <DebugLayerMaterial color="#ff4eb8" lighting={'none'} name={'Flower'}>
+      <DebugLayerMaterial color="#ff4eb8" name={'Flower'}>
         <Color color={'#ff4eb8'} />
-        <Depth far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
+        <Depth name="this" far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
         <Depth ref={depth} near={0.25} far={2} colorA={'#ffe100'} alpha={0.5} mode={'lighten'} mapping={'vector'} />
         <Fresnel mode={'softlight'} />
       </DebugLayerMaterial>

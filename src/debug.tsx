@@ -8,7 +8,7 @@ import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { serializedLayersToJSX } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
 import { Color, TextureLoader } from 'three'
-import { LayerMaterialProps } from './types'
+import { LayerMaterialProps, ShadingType, ShadingTypes } from './types'
 
 extend({
   LayerMaterial: LAYERS.LayerMaterial,
@@ -55,14 +55,6 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
     const [path, setPath] = React.useState(['', ''])
     const textureLoader = useMemo(() => new TextureLoader(), [])
 
-    const onBasePropsChange = React.useCallback((t, v) => {
-      ref.current.uniforms[`u_lamina_${t}`].value = getUniform(v)
-      ref.current.uniformsNeedUpdate = true
-      if (t === 'alpha') ref.current.transparent = Boolean(v !== undefined && v < 1)
-
-      ref.current[t] = v
-    }, [])
-
     useControls(
       {
         'Copy JSX': button(() => {
@@ -78,55 +70,77 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       'Base',
       {
         Color: {
-          value: '#' + new Color(ref.current?.color || props?.color || 'white').getHexString(),
-          onChange: (v) => onBasePropsChange('color', v),
+          value: '#' + new Color(ref.current?.baseColor || props?.color || 'white').getHexString(),
+          onChange: (v) => {
+            ref.current.uniforms[`u_lamina_color`].value = getUniform(v)
+            ref.current.uniformsNeedUpdate = true
+            ref.current['baseColor'] = v
+          },
         },
         Alpha: {
           value: ref.current?.alpha || props?.alpha || 1,
           min: 0,
           max: 1,
-          onChange: (v) => onBasePropsChange('alpha', v),
+          onChange: (v) => {
+            ref.current.uniforms[`u_lamina_alpha`].value = getUniform(v)
+            ref.current.uniformsNeedUpdate = true
+            ref.current['alpha'] = v
+            ref.current.transparent = Boolean(v !== undefined && v < 1)
+          },
+        },
+        Lighting: {
+          value: ref.current?.lighting || props?.lighting || 'basic',
+          options: Object.keys(ShadingTypes),
+          onChange: (v: ShadingType) => {
+            const base = new ShadingTypes[v]()
+
+            for (const key in base) {
+              // @ts-ignore
+              if (ref.current[key] === undefined) ref.current[key] = 0
+              // @ts-ignore
+              ref.current[key] = base[key]
+            }
+
+            ref.current.lighting = v
+            // ref.current.refresh()
+          },
         },
       },
       { store }
     )
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
 
     React.useEffect(() => {
       const layers = ref.current.layers
+
       const schema: { [name: string]: any[] } = {}
       layers.forEach((layer: any, i: number) => {
         if (layer.getSchema) schema[`${layer.name} ~${i}`] = layer.getSchema()
       })
 
       setLayers(schema)
-    }, [ref.current, children])
+    }, [children])
 
     React.useEffect(() => {
       const data = store.getData()
       const updatedData = data[path[0]] as DataItem & {
         value: any
       }
-
       if (updatedData) {
         const split = path[0].split('.')
         const index = parseInt(split[0].split(' ~')[1])
-
         const property = path[1]
-
         const id = ref.current.layers[index].uuid
         const uniform = ref.current.uniforms[`u_${id}_${property}`]
-
         const layer = ref.current.layers[index] as LAYERS.Abstract & {
           [key: string]: any
         }
-
         if (property !== 'map') {
           layer[property] = updatedData.value
-
           if (uniform) {
             uniform.value = getUniform(updatedData.value)
           } else {
-            ref.current.update()
+            ref.current.refresh()
           }
         } else {
           ;(async () => {
@@ -149,8 +163,8 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
 
     React.useLayoutEffect(() => {
       ref.current.layers = (ref.current as any).__r3f.objects
-      ref.current.update()
-    }, [children])
+      ref.current.refresh()
+    }, [children, args])
 
     React.useLayoutEffect(() => {
       const root = document.body.querySelector('#root')
@@ -182,7 +196,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
         {Object.entries(layers).map(([name, layers], i) => (
           <DynamicLeva key={`${name} ~${i}`} name={name} layers={layers} store={store} setUpdate={setPath} />
         ))}
-        <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
+        <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
           {children}
         </layerMaterial>
       </>

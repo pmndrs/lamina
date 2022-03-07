@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { extend, Node } from '@react-three/fiber'
-import React from 'react'
+import React, { useMemo } from 'react'
 import mergeRefs from 'react-merge-refs'
 import {
   DepthProps,
@@ -56,11 +56,13 @@ const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChil
 
     React.useLayoutEffect(() => {
       ref.current.layers = (ref.current as any).__r3f.objects
-      ref.current.update()
+      ref.current.refresh()
     }, [children])
 
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
+
     return (
-      <layerMaterial ref={mergeRefs([ref, forwardRef])} {...props}>
+      <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
         {children}
       </layerMaterial>
     )

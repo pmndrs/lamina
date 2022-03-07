@@ -1,5 +1,5 @@
-import { getSpecialParameters, getUniform, serializeProp } from '../utils/Functions'
-import { Color, IUniform, MathUtils, Texture } from 'three'
+import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../utils/Functions'
+import { Color, IUniform, MathUtils, Texture, Vector3 } from 'three'
 import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../types'
 
 // @ts-ignore
@@ -25,9 +25,7 @@ export default class Abstract {
   mode: BlendMode = 'normal'
   visible: boolean = true
   uniforms: {
-    [key: string]: IUniform<any> & {
-      raw?: any
-    }
+    [key: string]: IUniform<any>
   }
 
   events?: {
@@ -56,13 +54,16 @@ export default class Abstract {
     } | null
   ) {
     const defaults = Object.getOwnPropertyNames(c).filter((e) => e.startsWith('u_'))
-    const uniforms: { [key: string]: any } = defaults.reduce(
-      (a, v) => ({
+    const uniforms: { [key: string]: any } = defaults.reduce((a, v) => {
+      let value = Object.getOwnPropertyDescriptor(c, v)?.value
+
+      if (isSerializableType(value) || value instanceof Color) value = value.clone()
+
+      return {
         ...a,
-        [v.slice(1)]: Object.getOwnPropertyDescriptor(c, v)?.value,
-      }),
-      {}
-    )
+        [v.slice(1)]: value,
+      }
+    }, {})
 
     for (const key in uniforms) {
       const propName = key.split('_')[1]
@@ -77,7 +78,6 @@ export default class Abstract {
 
       this.uniforms[`u_${this.uuid}_${propName}`] = {
         value: getUniform(uniforms[key]),
-        raw: uniforms[key],
       }
 
       this.schema.push({
@@ -88,7 +88,6 @@ export default class Abstract {
       properties[propName] = {
         set: (v: any) => {
           this.uniforms[`u_${this.uuid}_${propName}`].value = getUniform(v)
-          this.uniforms[`u_${this.uuid}_${propName}`].raw = v
         },
         get: () => {
           return this.uniforms[`u_${this.uuid}_${propName}`].value

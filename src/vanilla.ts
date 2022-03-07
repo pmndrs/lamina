@@ -14,75 +14,30 @@ import Displace from './core/Displace'
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, SerializedLayer, ShadingProps, ShadingType } from './types'
-import { MathUtils } from 'three'
+import { LayerMaterialParameters, SerializedLayer, ShadingProps, ShadingType, ShadingTypes } from './types'
+import { MaterialParameters, MathUtils } from 'three'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
-class LayerMaterial extends THREE.ShaderMaterial {
-  shadingAdded: boolean = false
-  layers: Abstract[]
-  color: THREE.ColorRepresentation
-  alpha: number
-  lighting: ShadingType
-  lightingProps: ShadingProps
-  uuid: string
+class LayerMaterial extends CustomShaderMaterial {
+  name: string = 'LayerMaterial'
+  layers: Abstract[] = []
+  baseColor: THREE.ColorRepresentation = 'white'
+  alpha: number = 1
+  lighting: ShadingType = 'basic'
 
-  static u_color = 'white'
-  static u_alpha = 1
-  static u_layers = []
-  static u_lighting: ShadingType = 'phong'
-  static u_lightingProps: ShadingProps = {
-    shininess: 1,
-    color: 'white',
-    alpha: 1,
-    mode: 'normal',
-  }
-  static u_name = 'LayerMaterial'
+  // Defaults for debugger
+  static u_lighting = 'basic'
 
-  constructor(props?: THREE.ShaderMaterialParameters & LayerMaterialParameters) {
-    super(props)
+  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & MaterialParameters = {}) {
+    super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
 
-    this.uuid = MathUtils.generateUUID()
-    this.color = props?.color || LayerMaterial.u_color
-    this.alpha = props?.alpha ?? LayerMaterial.u_alpha
-    this.layers = props?.layers || LayerMaterial.u_layers
-    this.lighting = props?.lighting || LayerMaterial.u_lighting
-    this.lightingProps = props?.lightingProps || LayerMaterial.u_lightingProps
-    this.name = props?.name || LayerMaterial.u_name
-    this.fog = true
+    this.baseColor = color || this.baseColor
+    this.alpha = alpha ?? this.alpha
+    this.layers = layers || this.layers
+    this.lighting = lighting || this.lighting
+    this.name = name || this.name
 
-    this.customProgramCacheKey = () => {
-      return this.uuid
-    }
-
-    this.update()
-  }
-
-  forceShading() {
-    // Strip pre-existing  shading layers
-
-    // Force shading to be always on top. May change?
-    switch (this.lighting) {
-      default:
-      case 'phong':
-        if (this.layers[this.layers.length - 1]?.name !== 'PresetShading') {
-          this.layers = this.layers.filter((l) => {
-            if (l.constructor.name === 'Shading') {
-              return false
-            }
-
-            return true
-          })
-          const s = new Shading(this.lightingProps)
-          s.name = 'PresetShading'
-          this.layers.push(s)
-        }
-
-        break
-
-      case 'none':
-        if (this.layers[this.layers.length - 1]?.name === 'PresetShading') this.layers.pop()
-        break
-    }
+    this.refresh()
   }
 
   genShaders() {
@@ -90,34 +45,13 @@ class LayerMaterial extends THREE.ShaderMaterial {
     let fragmentVariables = ''
     let vertexShader = ''
     let fragmentShader = ''
-    let vertexChunks = ''
-    let fragmentChunks = ''
-    let vertexChunksTop = ''
-    let fragmentChunksTop = ''
-
-    // Restrict to one shading layer
-    let shadingAdded = false
-
-    this.layers = this.layers.filter((l) => {
-      if (l.constructor.name === 'Shading') {
-        if (shadingAdded) {
-          return false
-        } else {
-          shadingAdded = true
-        }
-      }
-
-      return true
-    })
-
-    this.layers.forEach((layer) => {
-      layer.buildShaders(layer.constructor)
-    })
-
     let uniforms: any = {}
+
     this.layers
       .filter((l) => l.visible)
       .forEach((l) => {
+        l.buildShaders(l.constructor)
+
         vertexVariables += l.vertexVariables + '\n'
         fragmentVariables += l.fragmentVariables + '\n'
         vertexShader += l.vertexShader + '\n'
@@ -127,19 +61,14 @@ class LayerMaterial extends THREE.ShaderMaterial {
           ...uniforms,
           ...l.uniforms,
         }
-
-        for (const key in l.attribs) {
-          // @ts-ignore
-          this[key] = l.attribs[key]
-        }
       })
 
     uniforms = {
       ...uniforms,
-      ...THREE.UniformsLib.fog,
       ...{
         u_lamina_color: {
-          value: typeof this.color === 'string' ? new THREE.Color(this.color).convertSRGBToLinear() : this.color,
+          value:
+            typeof this.baseColor === 'string' ? new THREE.Color(this.baseColor).convertSRGBToLinear() : this.baseColor,
         },
         u_lamina_alpha: {
           value: this.alpha,
@@ -149,103 +78,57 @@ class LayerMaterial extends THREE.ShaderMaterial {
 
     this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
 
-    if (this.fog && !shadingAdded) {
-      vertexVariables += THREE.ShaderChunk.fog_pars_vertex + '\n'
-      vertexChunks += `
-        vec4 worldPosition = gl_Position;
-        vec3 transformedNormal = lamina_finalNormal;
-        vec3 mvPosition = (modelViewMatrix * vec4(lamina_finalPosition, 1.0)).xyz;
-        ${THREE.ShaderChunk.fog_vertex}
-      `
-
-      fragmentVariables += THREE.ShaderChunk.fog_pars_fragment + '\n'
-      fragmentChunks += THREE.ShaderChunk.fog_fragment + '\n'
-    }
-
-    if (!shadingAdded) {
-      vertexChunksTop += `
-      #include <common>
-      `
-
-      fragmentChunksTop += `
-      #include <common>
-      #include <packing>
-      `
-    }
-
     return {
-      uniforms: uniforms,
-      vertexShader: /* glsl */ `
-      ${vertexChunksTop}
-      ${HelpersChunk}
-      ${NoiseChunk}
-      ${vertexVariables}
-      
-      void main() {
-        vec3 lamina_finalPosition = position;
-        vec3 lamina_finalNormal = normal;
-        ${vertexShader}
+      uniforms,
+      vertexShader: `
+        ${HelpersChunk}
+        ${NoiseChunk}
+        ${vertexVariables}
 
-        #ifdef vNormal
-          vNormal = lamina_finalNormal;
-        #endif
+        void main() {
+          vec3 lamina_finalPosition = position;
+          vec3 lamina_finalNormal = normal;
 
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(lamina_finalPosition, 1.0);
+          ${vertexShader}
 
-        
-        ${vertexChunks}
-      }
-      `,
-      fragmentShader: /* glsl */ `
-      ${fragmentChunksTop}
-      ${HelpersChunk}
-      ${NoiseChunk}
-      ${BlendModesChunk}
-      ${fragmentVariables}
+          csm_Position = lamina_finalPosition;
+          csm_Normal = lamina_finalNormal;
+        }
+        `,
+      fragmentShader: `
+        ${HelpersChunk}
+        ${NoiseChunk}
+        ${BlendModesChunk}
+        ${fragmentVariables}
 
-      uniform vec3 u_lamina_color;
-      uniform float u_lamina_alpha;
+        uniform vec3 u_lamina_color;
+        uniform float u_lamina_alpha;
 
-      void main() {
-        vec4 lamina_finalColor = vec4(u_lamina_color, u_lamina_alpha);
-        ${fragmentShader}
+        void main() {
+          vec4 lamina_finalColor = vec4(u_lamina_color, u_lamina_alpha);
 
-        gl_FragColor = lamina_finalColor;
+          ${fragmentShader}
 
-        #include <tonemapping_fragment>
-        #include <encodings_fragment>
-        #include <premultiplied_alpha_fragment>
-        #include <dithering_fragment>
-        ${fragmentChunks}
-      }
-      `,
+          csm_DiffuseColor = lamina_finalColor;
+         
+        }
+        `,
     }
   }
 
-  update() {
-    // Force shading as first layer
-    this.forceShading()
-
-    const { uniforms, ...rest } = this.genShaders()
-    Object.assign(this, rest)
-
-    for (const key in uniforms) {
-      this.uniforms[key] = uniforms[key]
-    }
-
-    this.uniformsNeedUpdate = true
-    this.needsUpdate = true
+  refresh() {
+    const { uniforms, fragmentShader, vertexShader } = this.genShaders()
+    super.update(fragmentShader, vertexShader, uniforms)
   }
 
   serialize(): SerializedLayer {
     return {
       constructor: 'LayerMaterial',
       properties: {
-        color: this.color,
+        color: this.baseColor,
         alpha: this.alpha,
-        lighting: this.lighting,
-        lightingProps: this.lightingProps,
         name: this.name,
+        lighting: this.lighting,
       },
     }
   }
