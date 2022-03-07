@@ -9,24 +9,24 @@ function InstancedPlane() {
   const ref = useRef<InstancedMesh>(null!)
   const n = useMemo(() => 3000, [])
 
-  // useEffect(() => {
-  //   for (let i = 0; i < n; i++) {
-  //     obj.position.set(MathUtils.randFloat(-5, 5), MathUtils.randFloat(-5, 5), MathUtils.randFloat(-5, 5))
-  //     obj.updateMatrix()
+  useEffect(() => {
+    for (let i = 0; i < n; i++) {
+      obj.position.set(MathUtils.randFloat(-5, 5), MathUtils.randFloat(-5, 5), MathUtils.randFloat(-5, 5))
+      obj.updateMatrix()
 
-  //     ref.current.setMatrixAt(i, obj.matrix)
-  //   }
-  //   ref.current.instanceMatrix.needsUpdate = true
-  // }, [n])
+      ref.current.setMatrixAt(i, obj.matrix)
+    }
+    ref.current.instanceMatrix.needsUpdate = true
+  }, [n])
 
   return (
-    <mesh>
-      <sphereGeometry args={[1, 64, 64]} />
+    <instancedMesh ref={ref} args={[null!, null!, n]}>
+      <sphereGeometry args={[0.1, 64, 64]} />
       <LayerMaterial lighting="phong">
         <Color color={'blue'} />
-        <Displace />
+        <Displace strength={0.1} scale={10} mapping="world" />
       </LayerMaterial>
-    </mesh>
+    </instancedMesh>
   )
 }
 
