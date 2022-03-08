@@ -1,20 +1,14 @@
-import { Vector3 } from "three";
-import { GradientProps, MappingTypes } from "../types";
-import Abstract from "./Abstract";
-
-type AbstractExtended = Abstract & {
-  axes: GradientProps["axes"];
-  mapping: GradientProps["mapping"];
-};
+import { GradientProps, MappingType, MappingTypes } from '../types'
+import Abstract from './Abstract'
 
 export default class Gradient extends Abstract {
-  static u_colorA = "white";
-  static u_colorB = "black";
-  static u_alpha = 1;
+  static u_colorA = 'white'
+  static u_colorB = 'black'
+  static u_alpha = 1
 
-  static u_start = 1;
-  static u_end = -1;
-  static u_contrast = 1;
+  static u_start = 1
+  static u_end = -1
+  static u_contrast = 1
 
   static vertexShader = `
 		varying vec3 v_position;
@@ -22,7 +16,7 @@ export default class Gradient extends Abstract {
 		vod main() {
       v_position = lamina_mapping_template;
 		}
-  `;
+  `
 
   static fragmentShader = `   
     uniform vec3 u_colorA;
@@ -42,62 +36,48 @@ export default class Gradient extends Abstract {
 
       return vec4(f_color, u_alpha);
     }
-  `;
+  `
+
+  mapping: MappingType = 'local'
+  axes: 'x' | 'y' | 'z' = 'x'
 
   constructor(props?: GradientProps) {
     super(
       Gradient,
       {
-        name: "Gradient",
+        name: 'Gradient',
         ...props,
       },
-      null,
-      {
-        onParse: (self) => {
-          const extendedSelf = self as AbstractExtended;
+      (self: Gradient) => {
+        self.schema.push({
+          value: self.axes,
+          label: 'axes',
+          options: ['x', 'y', 'z'],
+        })
 
-          if (!extendedSelf.axes) {
-            extendedSelf.axes = props?.axes || "x";
-            self.schema.push({
-              value: extendedSelf.axes,
-              label: "axes",
-              options: ["x", "y", "z"],
-            });
-          }
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: Object.values(MappingTypes),
+        })
 
-          if (!extendedSelf.mapping) {
-            extendedSelf.mapping = props?.mapping || "local";
-            self.schema.push({
-              value: extendedSelf.mapping,
-              label: "mapping",
-              options: Object.values(MappingTypes),
-            });
-          }
+        const mapping = Gradient.getMapping(self.mapping)
 
-          const mapping = Gradient.getMapping(extendedSelf.mapping);
-
-          self.vertexShader = self.vertexShader.replace(
-            "lamina_mapping_template",
-            mapping
-          );
-          self.fragmentShader = self.fragmentShader.replace(
-            "axes_template",
-            extendedSelf.axes
-          );
-        },
+        self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
+        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes)
       }
-    );
+    )
   }
 
   private static getMapping(type?: string) {
     switch (type) {
       default:
-      case "local":
-        return `position`;
-      case "world":
-        return `(modelMatrix * vec4(position,1.0)).xyz`;
-      case "uv":
-        return `vec3(uv, 0.)`;
+      case 'local':
+        return `position`
+      case 'world':
+        return `(modelMatrix * vec4(position,1.0)).xyz`
+      case 'uv':
+        return `vec3(uv, 0.)`
     }
   }
 }

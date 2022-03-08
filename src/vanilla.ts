@@ -13,7 +13,7 @@ import Displace from './core/Displace'
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, SerializedLayer, ShadingProps, ShadingType, ShadingTypes } from './types'
+import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
 import { MaterialParameters, MathUtils } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
@@ -22,18 +22,18 @@ class LayerMaterial extends CustomShaderMaterial {
   layers: Abstract[] = []
   baseColor: THREE.ColorRepresentation = 'white'
   alpha: number = 1
-  lighting: ShadingType = 'basic'
+  shading: ShadingType = 'basic'
 
   // Defaults for debugger
-  static u_lighting = 'basic'
+  static u_shading = 'basic'
 
-  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & MaterialParameters = {}) {
-    super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
+  constructor({ color, alpha, shading, layers, name, ...props }: LayerMaterialParameters & any = {}) {
+    super(ShadingTypes[shading || 'basic'], undefined, undefined, undefined, props)
 
     this.baseColor = color || this.baseColor
     this.alpha = alpha ?? this.alpha
     this.layers = layers || this.layers
-    this.lighting = lighting || this.lighting
+    this.shading = shading || this.shading
     this.name = name || this.name
 
     this.refresh()
@@ -127,7 +127,7 @@ class LayerMaterial extends CustomShaderMaterial {
         color: this.baseColor,
         alpha: this.alpha,
         name: this.name,
-        lighting: this.lighting,
+        lighting: this.shading,
       },
     }
   }

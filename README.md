@@ -39,7 +39,11 @@ import { LayerMaterial, Color } from 'lamina'
 function GradientSphere() {
   return (
     <Sphere>
-      <LayerMaterial color="#ffffff">
+      <LayerMaterial
+        color="#ffffff" //
+        shading="physical"
+        transmission={1}
+      >
         <Depth
           colorA="#810000" //
           colorB="#ffd0d0"
@@ -66,6 +70,8 @@ import { LayerMaterial, Color } from 'lamina/vanilla'
 const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
   color: '#d9d9d9',
+  shading: 'physical',
+  transmission: 1,
   layers: [
     new Depth({
       colorA: '#002f4b',
@@ -100,23 +106,61 @@ new Depth({
 
 ## Layers
 
+### `LayerMaterial`
+
+`LayerMaterial` can take in the following parameters:
+
+| Prop       | Type                                                                               | Default           |
+| ---------- | ---------------------------------------------------------------------------------- | ----------------- |
+| `name`     | `string`                                                                           | `"LayerMaterial"` |
+| `color`    | `THREE.ColorRepresentation \| THREE.Color`                                         | `"white"`         |
+| `alpha`    | `number`                                                                           | `1`               |
+| `shading`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'depth' \| 'lambert' \| 'standard'` | `'basic'`         |
+| `layers`\* | `Abstract[]`                                                                       | `[]`              |
+
+The `shading` prop controls the shading that is applied on the material. The material then accepts all the material properties supported by ThreeJS of the material type specified by the `shading` prop.
+
+\* Note: the `layers` prop is only available on the `LayerMaterial` class, not the component. <strong>Pass in layers as children in React.</strong>
+
 ### Built-in layers
 
 Here are the layers that lamina currently provides
 
-| Name       | Function                               |
-| ---------- | -------------------------------------- |
-| `Color`    | Flat color.                            |
-| `Depth`    | Depth based gradient.                  |
-| `Displace` | Displace vertices using. noise         |
-| `Fresnel`  | Fresnel shading (strip or rim-lights). |
-| `Gradient` | Linear gradient.                       |
-| `Matcap`   | Load in a Matcap.                      |
-| `Noise`    | White, perlin or simplex noise         |
-| `Normals`  | Visualize vertex normals               |
-| `Texture`  | Image texture                          |
+| Name                    | Function                               |
+| ----------------------- | -------------------------------------- |
+| [`Color`](#color)       | Flat color.                            |
+| [`Depth`](#depth)       | Depth based gradient.                  |
+| [`Displace`](#displace) | Displace vertices using. noise         |
+| [`Fresnel`](#fresnel)   | Fresnel shading (strip or rim-lights). |
+| [`Gradient`](#gradient) | Linear gradient.                       |
+| [`Matcap`](#matcap)     | Load in a Matcap.                      |
+| [`Noise`](#noise)       | White, perlin or simplex noise         |
+| [`Normals`](#normals)   | Visualize vertex normals               |
+| [`Texture`](#texture)   | Image texture                          |
 
 See the section for each layer for the options on it.
+
+### Debugger
+
+Lamina comes with a handy debugger that lets you tweek parameters till you're satisfied with the result! Then, just copy the JSX and paste!
+
+Replace `LayerMaterial` with `DebugLayerMaterial` to enable it.
+
+```jsx
+<DebugLayerMaterial color="#ffffff">
+  <Depth
+    colorA="#810000" //
+    colorB="#ffd0d0"
+    alpha={0.5}
+    mode="multiply"
+    near={0}
+    far={2}
+    origin={[1, 1, 1]}
+  />
+</DebugLayerMaterial>
+```
+
+Any custom layers are automatically compatible with the debugger. However, for advanced inputs, see the [Advanced Usage](#advanced-usage) section.
 
 ### Writing your own layers
 
@@ -124,7 +168,7 @@ You can write your own layers by extending the `Abstract` class. The concept if 
 
 > Each layer can be treated as an isolated shader program that produces a `vec4` color.
 
-The color of each layer will be blended together using the specified blend mode. A list of all available blend modes can be found [here](https://github.com/pmndrs/lamina/blob/445ff4adc084f88865c2b3ffc801e2b4f83917ec/src/types.ts#L3).
+The color of each layer will be blended together using the specified blend mode. A list of all available blend modes can be found [here](#blendmode)
 
 ```ts
 // Extend the Abstract layer
@@ -167,15 +211,15 @@ class CustomLayer extends Abstract {
   constructor(props) {
     // You MUST call `super` with the current constructor as the first argument.
     // Second argument is optional and provides non-uniform parameters like blend mode, name and visibility.
-    super(Color, {
-      name: 'Color',
+    super(CustomLayer, {
+      name: 'CustomLayer',
       ...props,
     })
   }
 }
 ```
 
-If you need a specialized or advance use-case, see the Advanced Usage section
+If you need a specialized or advance use-case, see the [Advanced Usage](#advanced-usage) section
 
 ### Using your own layers
 
@@ -209,3 +253,192 @@ useFrame(({ clock }) => {
   />
 </LayerMaterial>
 ```
+
+## Advanced Usage
+
+For more advanced custom layers, lamina provides the `onParse` event.
+
+> This event runs after the layer's shader and uniforms are parsed.
+
+This means you can use it to inject functionality that isn't by the basic layer extension syntax.
+
+Here is a common use case - Adding non-uniform options to layers that directly sub out shader code.
+
+```ts
+class CustomLayer extends Abstract {
+  static u_color = 'red'
+  static u_alpha = 1
+
+  static vertexShader = `...`
+  static fragmentShader = `
+    // ...
+    float f_dist = lamina_mapping_template; // Temp value, will be used to inject code later on.
+    // ...
+  `
+
+  // Non uniform parameter
+  mapping: 'uv' | 'world' = 'uv'
+
+  // Get some shader code based off mapping parameter
+  static getMapping(mapping) {
+    switch (mapping) {
+      default:
+      case 'uv':
+        return `some_shader_code`
+
+      case 'world':
+        return `some_other_shader_code`
+    }
+  }
+
+  constructor(props) {
+    super(
+      CustomLayer,
+      {
+        name: 'CustomLayer',
+        ...props,
+      },
+      // This is onParse callback
+      (self: CustomLayer) => {
+        // Add to Leva (debugger) schema.
+        // This will create a dropdown select component on the debugger.
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: ['uv', 'world'],
+        })
+
+        // Get shader chunk based off selected mapping value
+        const mapping = CustomLayer.getMapping(self.mapping)
+
+        // Inject shader chunk in current layer's shader code
+        self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
+      }
+    )
+  }
+}
+```
+
+## Layers
+
+Every layer has these props in common.
+
+| Prop      | Type                      | Default                   |
+| --------- | ------------------------- | ------------------------- |
+| `mode`    | [`BlendMode`](#blendmode) | `"normal"`                |
+| `name`    | `string`                  | `<this.constructor.name>` |
+| `visible` | `boolean`                 | `true`                    |
+
+All props are optional.
+
+### `Color`
+
+Flat color.
+
+| Prop    | Type                                       | Default |
+| ------- | ------------------------------------------ | ------- |
+| `color` | `THREE.ColorRepresentation \| THREE.Color` | `"red"` |
+| `alpha` | `number`                                   | `1`     |
+
+### `Depth`
+
+Depth based gradient. Colors are lerp-ed based on `mapping` props which may have the following values:
+
+- `vector`: distance from `origin` to fragment's world position.
+- `camera`: distance from camera to fragment's world position.
+- `world`: distance from fragment to center (0, 0, 0).
+
+| Prop      | Type                                       | Default     |
+| --------- | ------------------------------------------ | ----------- |
+| `colorA`  | `THREE.ColorRepresentation \| THREE.Color` | `"white"`   |
+| `colorB`  | `THREE.ColorRepresentation \| THREE.Color` | `"black"`   |
+| `alpha`   | `number`                                   | `1`         |
+| `near`    | `number`                                   | `2`         |
+| `far`     | `number`                                   | `10`        |
+| `origin`  | `THREE.Vector3 \| [number,number,number]`  | `[0, 0, 0]` |
+| `mapping` | `"vector" \| "camera" \| "world"`          | `"vector"`  |
+
+### `Displace`
+
+Displace vertices with various noise.
+
+| Prop       | Type                                        | Default     |
+| ---------- | ------------------------------------------- | ----------- |
+| `strength` | `number`                                    | `1`         |
+| `scale`    | `number`                                    | `1`         |
+| `mapping`  | `"local" \| "world" \| "uv"`                | `"local"`   |
+| `type`     | `"perlin' \| "simplex" \| "cell" \| "curl"` | `"perlin"`  |
+| `offset`   | `THREE.Vector3 \| [number,number,number]`   | `[0, 0, 0]` |
+
+### `Fresnel`
+
+Fresnel shading.
+
+| Prop        | Type                                       | Default   |
+| ----------- | ------------------------------------------ | --------- |
+| `color`     | `THREE.ColorRepresentation \| THREE.Color` | `"white"` |
+| `alpha`     | `number`                                   | `1`       |
+| `power`     | `number`                                   | `0`       |
+| `intensity` | `number`                                   | `1`       |
+| `bias`      | `number`                                   | `2`       |
+
+### `Gradient`
+
+Linear gradient based off distance from `start` to `end` in a specified `axes`.
+
+| Prop       | Type                                       | Default   |
+| ---------- | ------------------------------------------ | --------- |
+| `colorA`   | `THREE.ColorRepresentation \| THREE.Color` | `"white"` |
+| `colorB`   | `THREE.ColorRepresentation \| THREE.Color` | `"black"` |
+| `alpha`    | `number`                                   | `1`       |
+| `contrast` | `number`                                   | `1`       |
+| `start`    | `number`                                   | `1`       |
+| `end`      | `number`                                   | `-1`      |
+| `axes`     | `"x" \| "y" \| "z"`                        | `"x"`     |
+| `mapping`  | `"local" \| "world" \| "uv"`               | `"local"` |
+
+### `Noise`
+
+Various noise functions.
+
+| Prop      | Type                                        | Default     |
+| --------- | ------------------------------------------- | ----------- |
+| `colorA`  | `THREE.ColorRepresentation \| THREE.Color`  | `"white"`   |
+| `colorB`  | `THREE.ColorRepresentation \| THREE.Color`  | `"black"`   |
+| `colorC`  | `THREE.ColorRepresentation \| THREE.Color`  | `"white"`   |
+| `colorD`  | `THREE.ColorRepresentation \| THREE.Color`  | `"black"`   |
+| `alpha`   | `number`                                    | `1`         |
+| `scale`   | `number`                                    | `1`         |
+| `offset`  | `THREE.Vector3 \| [number, number, number]` | `[0, 0, 0]` |
+| `mapping` | `"local" \| "world" \| "uv"`                | `"local"`   |
+| `type`    | `"perlin' \| "simplex" \| "cell" \| "curl"` | `"perlin"`  |
+
+### `Matcap`
+
+Set a Matcap texture.
+
+| Prop    | Type            | Default     |
+| ------- | --------------- | ----------- |
+| `map`   | `THREE.Texture` | `undefined` |
+| `alpha` | `number`        | `1`         |
+
+### `Texture`
+
+Set a texture.
+
+| Prop    | Type            | Default     |
+| ------- | --------------- | ----------- |
+| `map`   | `THREE.Texture` | `undefined` |
+| `alpha` | `number`        | `1`         |
+
+### `BlendMode`
+
+Blend modes currently available in lamina
+
+| `normal`   | `divide`    |
+| ---------- | ----------- |
+| `add`      | `overlay`   |
+| `subtract` | `screen`    |
+| `multiply` | `softlight` |
+| `lighten`  | `reflect`   |
+| `darken`   | `negation`  |

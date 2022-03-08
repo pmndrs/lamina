@@ -66,7 +66,7 @@ export const ShadingTypes: {
   standard: THREE.MeshStandardMaterial,
 }
 
-export type ShadingType = 'none' | 'phong' | 'physical' | 'toon' | 'basic' | 'depth' | 'lambert' | 'standard'
+export type ShadingType = 'phong' | 'physical' | 'toon' | 'basic' | 'depth' | 'lambert' | 'standard'
 
 export interface BaseProps {
   color?: THREE.ColorRepresentation | THREE.Color
@@ -78,7 +78,7 @@ export interface LayerMaterialParameters {
   layers?: Abstract[]
   color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
-  lighting?: ShadingType
+  shading?: ShadingType
   name?: string
 }
 export type LayerMaterialProps = Omit<LayerMaterialParameters, 'layers'>
@@ -90,6 +90,11 @@ export interface LayerProps {
   [key: string]: any
 }
 
+export interface ColorProps extends LayerProps {
+  color?: THREE.ColorRepresentation | THREE.Color
+  alpha?: number
+}
+
 export interface DepthProps extends LayerProps {
   colorA?: THREE.ColorRepresentation | THREE.Color
   colorB?: THREE.ColorRepresentation | THREE.Color
@@ -97,17 +102,7 @@ export interface DepthProps extends LayerProps {
   near?: number
   far?: number
   origin?: THREE.Vector3 | [number, number, number]
-  isVector?: boolean
-  mapping?: 'vector' | 'camera' | 'world'
-}
-
-export interface ColorProps extends LayerProps {
-  color?: THREE.ColorRepresentation | THREE.Color
-  alpha?: number
-}
-export interface ShadingProps extends LayerProps {
-  shininess?: number
-  color?: THREE.ColorRepresentation | THREE.Color
+  mapping?: 'vector' | 'world' | 'camera'
 }
 
 export interface NoiseProps extends LayerProps {
@@ -119,12 +114,14 @@ export interface NoiseProps extends LayerProps {
   mapping?: MappingType
   type?: NoiseType
   scale?: number
+  offset?: THREE.Vector3 | [number, number, number]
 }
 export interface DisplaceProps extends LayerProps {
   strength?: number
   scale?: number
   mapping?: MappingType
   type?: NoiseType
+  offset?: THREE.Vector3 | [number, number, number]
 }
 
 export interface FresnelProps extends LayerProps {
@@ -147,9 +144,11 @@ export interface GradientProps extends LayerProps {
 
 export interface MatcapProps extends LayerProps {
   map?: THREE.Texture
+  alpha?: number
 }
 export interface TextureProps extends LayerProps {
   map?: THREE.Texture
+  alpha?: number
 }
 
 export interface SerializedLayer {

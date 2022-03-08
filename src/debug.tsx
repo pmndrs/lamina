@@ -66,7 +66,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       { store }
     )
 
-    const { Lighting } = useControls(
+    const { Shading } = useControls(
       'Base',
       {
         Color: {
@@ -89,14 +89,14 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
             ref.current.needsUpdate = true
           },
         },
-        Lighting: {
-          value: ref.current?.lighting || props?.lighting || 'basic',
+        Shading: {
+          value: ref.current?.shading || props?.shading || 'basic',
           options: Object.keys(ShadingTypes),
         },
       },
       { store }
     )
-    const [args, otherProps] = useMemo(() => getLayerMaterialArgs({ ...props, lighting: Lighting }), [props, Lighting])
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs({ ...props, shading: Shading }), [props, Shading])
 
     React.useEffect(() => {
       const layers = ref.current.layers

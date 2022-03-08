@@ -7,7 +7,6 @@ import {
   DepthProps,
   ColorProps,
   LayerMaterialProps,
-  ShadingProps,
   NoiseProps,
   FresnelProps,
   GradientProps,

@@ -16,10 +16,6 @@ export default class Abstract {
     return MathUtils.generateUUID().replaceAll('-', '_')
   }
 
-  attribs: {
-    [name: string]: any
-  }
-
   uuid: string = MathUtils.generateUUID().replaceAll('-', '_')
   name: string = 'LayerMaterial'
   mode: BlendMode = 'normal'
@@ -28,9 +24,7 @@ export default class Abstract {
     [key: string]: IUniform<any>
   }
 
-  events?: {
-    onParse?: (self: Abstract) => void
-  } | null
+  onParse?: (self: Abstract & any) => void
 
   fragmentShader: string
   vertexShader: string
@@ -43,16 +37,7 @@ export default class Abstract {
     options?: any[]
   }[]
 
-  constructor(
-    c: any,
-    props?: LayerProps | null,
-    attribs?: {
-      [name: string]: any
-    } | null,
-    events?: {
-      onParse?: (self: Abstract) => void
-    } | null
-  ) {
+  constructor(c: new () => Abstract, props?: LayerProps | null, onParse?: (self: Abstract & any) => void) {
     const defaults = Object.getOwnPropertyNames(c).filter((e) => e.startsWith('u_'))
     const uniforms: { [key: string]: any } = defaults.reduce((a, v) => {
       let value = Object.getOwnPropertyDescriptor(c, v)?.value
@@ -105,8 +90,7 @@ export default class Abstract {
     this.fragmentShader = ''
     this.vertexVariables = ''
     this.fragmentVariables = ''
-    this.attribs = attribs || {}
-    this.events = events
+    this.onParse = onParse
 
     this.buildShaders(c)
 
@@ -184,7 +168,7 @@ export default class Abstract {
     this.vertexVariables = variables.vert
     this.fragmentVariables = variables.frag
 
-    this.events?.onParse?.(this)
+    this.onParse?.(this)
   }
 
   renameTokens(name: string) {

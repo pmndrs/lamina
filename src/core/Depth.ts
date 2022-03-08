@@ -2,10 +2,6 @@ import { Vector3 } from 'three'
 import { DepthProps } from '../types'
 import Abstract from './Abstract'
 
-type AbstractExtended = Abstract & {
-  mapping: DepthProps['mapping']
-}
-
 export default class Depth extends Abstract {
   static u_near = 2
   static u_far = 10
@@ -46,6 +42,8 @@ export default class Depth extends Abstract {
     }
   `
 
+  mapping: 'vector' | 'world' | 'camera' = 'vector'
+
   constructor(props?: DepthProps) {
     super(
       Depth,
@@ -53,24 +51,16 @@ export default class Depth extends Abstract {
         name: 'Depth',
         ...props,
       },
-      null,
-      {
-        onParse: (self) => {
-          const extendedSelf = self as AbstractExtended
+      (self: Depth) => {
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: ['vector', 'world', 'camera'],
+        })
 
-          if (!extendedSelf.mapping) {
-            extendedSelf.mapping = props?.mapping || 'vector'
-            self.schema.push({
-              value: extendedSelf.mapping,
-              label: 'mapping',
-              options: ['vector', 'world', 'camera'],
-            })
-          }
+        const mapping = Depth.getMapping(self.uuid, self.mapping)
 
-          const mapping = Depth.getMapping(self.uuid, extendedSelf.mapping)
-
-          self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
-        },
+        self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
       }
     )
   }

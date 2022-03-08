@@ -22,7 +22,7 @@ function InstancedPlane() {
   return (
     <instancedMesh ref={ref} args={[null!, null!, n]}>
       <sphereGeometry args={[0.1, 64, 64]} />
-      <LayerMaterial lighting="phong">
+      <LayerMaterial shading="phong">
         <Color color={'blue'} />
         <Displace strength={0.1} scale={10} mapping="world" />
       </LayerMaterial>
