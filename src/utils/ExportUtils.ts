@@ -4,9 +4,10 @@ import * as LAYERS from '../vanilla'
 function getPropsFromLayer(layer: SerializedLayer) {
   // @ts-ignore
   const constructor = LAYERS[layer.constructor]
+  const instance = new constructor()
   let props = ''
   Object.entries(layer.properties).forEach(([key, val]) => {
-    const defaultVal = constructor['u_' + key]
+    const defaultVal = constructor['u_' + key] ?? instance[key]
 
     switch (key) {
       case 'name':

@@ -1,6 +1,13 @@
-/* eslint-disable */
-
-import { extend, Node } from '@react-three/fiber'
+import {
+  extend,
+  Node,
+  MeshPhongMaterialProps,
+  MeshPhysicalMaterialProps,
+  MeshToonMaterialProps,
+  MeshBasicMaterialProps,
+  MeshLambertMaterialProps,
+  MeshStandardMaterialProps,
+} from '@react-three/fiber'
 import React, { useMemo } from 'react'
 import mergeRefs from 'react-merge-refs'
 import {
@@ -47,24 +54,33 @@ extend({
   Displace_: LAYERS.Displace,
 })
 
-const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps & any>>(
-  ({ children, ...props }, forwardRef) => {
-    const ref = React.useRef<LAYERS.LayerMaterial>(null!)
+type AllMaterialProps =
+  | MeshPhongMaterialProps
+  | MeshPhysicalMaterialProps
+  | MeshToonMaterialProps
+  | MeshBasicMaterialProps
+  | MeshLambertMaterialProps
+  | MeshStandardMaterialProps
 
-    React.useLayoutEffect(() => {
-      ref.current.layers = (ref.current as any).__r3f.objects
-      ref.current.refresh()
-    }, [children])
+const LayerMaterial = React.forwardRef<
+  LAYERS.LayerMaterial,
+  React.PropsWithChildren<LayerMaterialProps & AllMaterialProps>
+>(({ children, ...props }, forwardRef) => {
+  const ref = React.useRef<LAYERS.LayerMaterial>(null!)
 
-    const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
+  React.useLayoutEffect(() => {
+    ref.current.layers = (ref.current as any).__r3f.objects
+    ref.current.refresh()
+  }, [children])
 
-    return (
-      <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
-        {children}
-      </layerMaterial>
-    )
-  }
-)
+  const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
+
+  return (
+    <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
+      {children}
+    </layerMaterial>
+  )
+})
 
 function getNonUniformArgs(props: any) {
   return [

@@ -34,7 +34,15 @@ function Bg() {
       <sphereGeometry args={[1, 64, 64]} />
       <LayerMaterial color="#f0aed2" attach="material" side={THREE.BackSide}>
         <Depth colorA="blue" colorB="#00aaff" alpha={0.5} mode="multiply" near={0} far={300} origin={[10, 10, 10]} />
-        <Depth colorA="#ff0000" colorB="#00aaff" alpha={0.5} mode="multiply" near={0} far={300} origin={[100, 100, 100]} />
+        <Depth
+          colorA="#ff0000"
+          colorB="#00aaff"
+          alpha={0.5}
+          mode="multiply"
+          near={0}
+          far={300}
+          origin={[100, 100, 100]}
+        />
       </LayerMaterial>
     </mesh>
   )
@@ -51,12 +59,20 @@ function Flower({ base, colorA, colorB }) {
   return (
     <mesh castShadow receiveShadow rotation-y={Math.PI / 2} scale={[2, 2, 2]} ref={mesh}>
       <torusKnotGeometry args={[0.4, 0.05, 400, 8, 3, 7]} />
-      <LayerMaterial color="#ff4eb8" name={'Flower'}>
+      <DebugLayerMaterial color="#ff4eb8" name={'Flower'}>
         <Color color={'#ff4eb8'} />
-        <Depth name="this" far={3} origin={[1, 1, 1]} colorA="#ff00e3" colorB="#00ffff" alpha={0.5} mode={'multiply'} mapping={'vector'} />
+        <Depth
+          far={3}
+          origin={[1, 1, 1]}
+          colorA="#ff00e3"
+          colorB="#00ffff"
+          alpha={0.5}
+          mode={'multiply'}
+          mapping="camera"
+        />
         <Depth ref={depth} near={0.25} far={2} colorA={'#ffe100'} alpha={0.5} mode={'lighten'} mapping={'vector'} />
         <Fresnel mode={'softlight'} />
-      </LayerMaterial>
+      </DebugLayerMaterial>
     </mesh>
   )
 }

@@ -110,13 +110,13 @@ new Depth({
 
 `LayerMaterial` can take in the following parameters:
 
-| Prop       | Type                                                                               | Default           |
-| ---------- | ---------------------------------------------------------------------------------- | ----------------- |
-| `name`     | `string`                                                                           | `"LayerMaterial"` |
-| `color`    | `THREE.ColorRepresentation \| THREE.Color`                                         | `"white"`         |
-| `alpha`    | `number`                                                                           | `1`               |
-| `shading`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'depth' \| 'lambert' \| 'standard'` | `'basic'`         |
-| `layers`\* | `Abstract[]`                                                                       | `[]`              |
+| Prop       | Type                                                                    | Default           |
+| ---------- | ----------------------------------------------------------------------- | ----------------- |
+| `name`     | `string`                                                                | `"LayerMaterial"` |
+| `color`    | `THREE.ColorRepresentation \| THREE.Color`                              | `"white"`         |
+| `alpha`    | `number`                                                                | `1`               |
+| `shading`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'lambert' \| 'standard'` | `'basic'`         |
+| `layers`\* | `Abstract[]`                                                            | `[]`              |
 
 The `shading` prop controls the shading that is applied on the material. The material then accepts all the material properties supported by ThreeJS of the material type specified by the `shading` prop.
 
@@ -288,6 +288,9 @@ class CustomLayer extends Abstract {
     }
   }
 
+  // Set non-uniform defaults
+  mapping: 'uv' | 'world' = 'uv'
+
   constructor(props) {
     super(
       CustomLayer,
@@ -299,15 +302,11 @@ class CustomLayer extends Abstract {
       (self: CustomLayer) => {
         // Add to Leva (debugger) schema.
         // This will create a dropdown select component on the debugger.
-        if (!self.mapping) {
-          // Set default value
-          self.mapping = props?.mapping || 'uv'
-          self.schema.push({
-            value: self.mapping,
-            label: 'mapping',
-            options: ['uv', 'world'],
-          })
-        }
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: ['uv', 'world'],
+        })
 
         // Get shader chunk based off selected mapping value
         const mapping = CustomLayer.getMapping(self.mapping)

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { LayerMaterial, Color, Depth, Fresnel } from 'lamina/vanilla'
+import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
 import './style.css'
 
 const scene = new THREE.Scene()
@@ -112,7 +112,7 @@ window.addEventListener('mousemove', (e) => {
   )
 
   // @ts-ignore
-  // depthLayer.origin = vec.set(-m.y, m.x, 0)
+  depthLayer.origin = vec.set(-m.y, m.x, 0)
 })
 
 function animate() {
@@ -121,8 +121,8 @@ function animate() {
   controls.update()
 
   const delta = clock.getDelta()
-  // mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
-  // flowerMesh.rotation.z += delta / 2
+  mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
+  flowerMesh.rotation.z += delta / 2
 }
 
 animate()

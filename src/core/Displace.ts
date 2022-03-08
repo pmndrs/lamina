@@ -54,6 +54,9 @@ export default class Displace extends Abstract {
       }
     `
 
+  type: NoiseType = 'perlin'
+  mapping: MappingType = 'local'
+
   constructor(props?: DisplaceProps) {
     super(
       Displace,
@@ -61,28 +64,21 @@ export default class Displace extends Abstract {
         name: 'Displace',
         ...props,
       },
-      (self) => {
-        const extendedSelf = self as AbstractExtended
-        if (!extendedSelf.type) {
-          extendedSelf.type = props?.type || 'perlin'
-          self.schema.push({
-            value: extendedSelf.type,
-            label: 'type',
-            options: Object.values(NoiseTypes),
-          })
-        }
+      (self: Displace) => {
+        self.schema.push({
+          value: self.type,
+          label: 'type',
+          options: Object.values(NoiseTypes),
+        })
 
-        if (!extendedSelf.mapping) {
-          extendedSelf.mapping = props?.mapping || 'local'
-          self.schema.push({
-            value: extendedSelf.mapping,
-            label: 'mapping',
-            options: Object.values(MappingTypes),
-          })
-        }
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: Object.values(MappingTypes),
+        })
 
-        const noiseFunc = Displace.getNoiseFunction(extendedSelf.type)
-        const mapping = Displace.getMapping(extendedSelf.mapping)
+        const noiseFunc = Displace.getNoiseFunction(self.type)
+        const mapping = Displace.getMapping(self.mapping)
 
         self.vertexVariables = self.vertexVariables.replace('lamina_mapping_template', mapping)
         self.vertexVariables = self.vertexVariables.replace('lamina_noise_template', noiseFunc)

@@ -14,8 +14,23 @@ import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
 import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
-import { MaterialParameters, MathUtils } from 'three'
+import {
+  MeshBasicMaterialParameters,
+  MeshLambertMaterialParameters,
+  MeshPhongMaterialParameters,
+  MeshPhysicalMaterialParameters,
+  MeshStandardMaterialParameters,
+  MeshToonMaterialParameters,
+} from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+
+type AllMaterialParams =
+  | MeshPhongMaterialParameters
+  | MeshPhysicalMaterialParameters
+  | MeshToonMaterialParameters
+  | MeshBasicMaterialParameters
+  | MeshLambertMaterialParameters
+  | MeshStandardMaterialParameters
 
 class LayerMaterial extends CustomShaderMaterial {
   name: string = 'LayerMaterial'
@@ -24,10 +39,7 @@ class LayerMaterial extends CustomShaderMaterial {
   alpha: number = 1
   lighting: ShadingType = 'basic'
 
-  // Defaults for debugger
-  static u_lighting = 'basic'
-
-  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & any = {}) {
+  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & AllMaterialParams = {}) {
     super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
 
     this.baseColor = color || this.baseColor
@@ -49,7 +61,7 @@ class LayerMaterial extends CustomShaderMaterial {
     this.layers
       .filter((l) => l.visible)
       .forEach((l) => {
-        l.buildShaders(l.constructor)
+        // l.buildShaders(l.constructor)
 
         vertexVariables += l.vertexVariables + '\n'
         fragmentVariables += l.fragmentVariables + '\n'

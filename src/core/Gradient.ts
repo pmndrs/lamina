@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { GradientProps, MappingTypes } from '../types'
+import { GradientProps, MappingType, MappingTypes } from '../types'
 import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {
@@ -44,6 +44,9 @@ export default class Gradient extends Abstract {
     }
   `
 
+  axes: 'x' | 'y' | 'z' = 'x'
+  mapping: MappingType = 'local'
+
   constructor(props?: GradientProps) {
     super(
       Gradient,
@@ -51,31 +54,23 @@ export default class Gradient extends Abstract {
         name: 'Gradient',
         ...props,
       },
-      (self) => {
-        const extendedSelf = self as AbstractExtended
+      (self: Gradient) => {
+        self.schema.push({
+          value: self.axes,
+          label: 'axes',
+          options: ['x', 'y', 'z'],
+        })
 
-        if (!extendedSelf.axes) {
-          extendedSelf.axes = props?.axes || 'x'
-          self.schema.push({
-            value: extendedSelf.axes,
-            label: 'axes',
-            options: ['x', 'y', 'z'],
-          })
-        }
+        self.schema.push({
+          value: self.mapping,
+          label: 'mapping',
+          options: Object.values(MappingTypes),
+        })
 
-        if (!extendedSelf.mapping) {
-          extendedSelf.mapping = props?.mapping || 'local'
-          self.schema.push({
-            value: extendedSelf.mapping,
-            label: 'mapping',
-            options: Object.values(MappingTypes),
-          })
-        }
-
-        const mapping = Gradient.getMapping(extendedSelf.mapping)
+        const mapping = Gradient.getMapping(self.mapping)
 
         self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
-        self.fragmentShader = self.fragmentShader.replace('axes_template', extendedSelf.axes)
+        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes)
       }
     )
   }

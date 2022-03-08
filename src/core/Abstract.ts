@@ -54,9 +54,14 @@ export default class Abstract {
       const propName = key.split('_')[1]
       if (props?.[propName] !== undefined) uniforms[key] = props[propName]
     }
-    for (const key in props) {
-      // @ts-ignore
-      this[key] = props[key]
+
+    if (props) {
+      Object.keys(props).map((key) => {
+        if (props[key] !== undefined) {
+          // @ts-ignore
+          this[key] = props[key]
+        }
+      })
     }
 
     this.uniforms = {}
@@ -94,7 +99,7 @@ export default class Abstract {
     this.fragmentShader = ''
     this.vertexVariables = ''
     this.fragmentVariables = ''
-    this.onParse = onParse?.bind(this)
+    this.onParse = onParse
 
     this.buildShaders(c)
 
@@ -173,6 +178,15 @@ export default class Abstract {
     this.fragmentVariables = variables.frag
 
     this.onParse?.(this)
+    this.schema = this.schema.filter((value, index) => {
+      const _value = value.label
+      return (
+        index ===
+        this.schema.findIndex((obj) => {
+          return obj.label === _value
+        })
+      )
+    })
   }
 
   renameTokens(name: string) {
@@ -258,6 +272,8 @@ export default class Abstract {
   serialize(): SerializedLayer {
     const name = this.constructor.name.split('$')[0]
     let nonUniformPropKeys = Object.keys(this)
+
+    console.log(nonUniformPropKeys)
     nonUniformPropKeys = nonUniformPropKeys.filter(
       (e) =>
         ![
@@ -271,6 +287,7 @@ export default class Abstract {
           'attribs',
           'events',
           '__r3f',
+          'onParse',
         ].includes(e)
     )
     const nonUniformProps = {}

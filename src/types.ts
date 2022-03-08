@@ -61,12 +61,11 @@ export const ShadingTypes: {
   physical: THREE.MeshPhysicalMaterial,
   toon: THREE.MeshToonMaterial,
   basic: THREE.MeshBasicMaterial,
-  depth: THREE.MeshDepthMaterial,
   lambert: THREE.MeshLambertMaterial,
   standard: THREE.MeshStandardMaterial,
 }
 
-export type ShadingType = 'phong' | 'physical' | 'toon' | 'basic' | 'depth' | 'lambert' | 'standard'
+export type ShadingType = 'phong' | 'physical' | 'toon' | 'basic' | 'lambert' | 'standard'
 
 export interface BaseProps {
   color?: THREE.ColorRepresentation | THREE.Color
