@@ -134,9 +134,9 @@ Here are the layers that lamina currently provides
 | [`Fresnel`](#fresnel)   | Fresnel shading (strip or rim-lights). |
 | [`Gradient`](#gradient) | Linear gradient.                       |
 | [`Matcap`](#matcap)     | Load in a Matcap.                      |
-| [`Noise`](#noise)       | White, perlin or simplex noise         |
-| [`Normals`](#normals)   | Visualize vertex normals               |
-| [`Texture`](#texture)   | Image texture                          |
+| [`Noise`](#noise)       | White, perlin or simplex noise .       |
+| [`Normal`](#normal)     | Visualize vertex normals.              |
+| [`Texture`](#texture)   | Image texture.                         |
 
 See the section for each layer for the options on it.
 
@@ -339,6 +339,15 @@ Flat color.
 | ------- | ------------------------------------------ | ------- |
 | `color` | `THREE.ColorRepresentation \| THREE.Color` | `"red"` |
 | `alpha` | `number`                                   | `1`     |
+
+### `Normal`
+
+Visualize vertex normals
+
+| Prop        | Type                                      | Default     |
+| ----------- | ----------------------------------------- | ----------- |
+| `direction` | `THREE.Vector3 \| [number,number,number]` | `[0, 0, 0]` |
+| `alpha`     | `number`                                  | `1`         |
 
 ### `Depth`
 

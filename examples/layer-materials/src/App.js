@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel, Noise } from 'lamina'
+import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel, Noise, Normal } from 'lamina'
 import { Vector3 } from 'three'
 
 export default function App() {
@@ -72,6 +72,7 @@ function Flower({ base, colorA, colorB }) {
         />
         <Depth ref={depth} near={0.25} far={2} colorA={'#ffe100'} alpha={0.5} mode={'lighten'} mapping={'vector'} />
         <Fresnel mode={'softlight'} />
+        <Normal />
       </DebugLayerMaterial>
     </mesh>
   )

@@ -93,6 +93,10 @@ export interface ColorProps extends LayerProps {
   color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
 }
+export interface NormalProps extends LayerProps {
+  direction?: THREE.Vector3 | [number, number, number]
+  alpha?: number
+}
 
 export interface DepthProps extends LayerProps {
   colorA?: THREE.ColorRepresentation | THREE.Color

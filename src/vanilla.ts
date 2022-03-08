@@ -9,6 +9,7 @@ import Gradient from './core/Gradient'
 import Matcap from './core/Matcap'
 import Texture from './core/Texture'
 import Displace from './core/Displace'
+import Normal from './core/Normal'
 
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
@@ -145,4 +146,4 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace }
+export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }

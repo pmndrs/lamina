@@ -20,6 +20,7 @@ import {
   MatcapProps,
   TextureProps,
   DisplaceProps,
+  NormalProps,
 } from './types'
 import * as LAYERS from './vanilla'
 import DebugLayerMaterial from './debug'
@@ -38,6 +39,7 @@ declare global {
       matcap_: Node<LAYERS.Matcap, typeof LAYERS.Matcap>
       texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
       displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>
+      normal_: Node<LAYERS.Normal, typeof LAYERS.Normal>
     }
   }
 }
@@ -52,6 +54,7 @@ extend({
   Matcap_: LAYERS.Matcap,
   Texture_: LAYERS.Texture,
   Displace_: LAYERS.Displace,
+  Normal_: LAYERS.Normal,
 })
 
 type AllMaterialProps =
@@ -125,4 +128,8 @@ const Displace = React.forwardRef<LAYERS.Displace, DisplaceProps>((props, ref) =
   return <displace_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<DisplaceProps & React.RefAttributes<LAYERS.Displace>>
 
-export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace }
+const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
+  return <normal_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
+
+export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
