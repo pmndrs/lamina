@@ -272,8 +272,6 @@ export default class Abstract {
   serialize(): SerializedLayer {
     const name = this.constructor.name.split('$')[0]
     let nonUniformPropKeys = Object.keys(this)
-
-    console.log(nonUniformPropKeys)
     nonUniformPropKeys = nonUniformPropKeys.filter(
       (e) =>
         ![
