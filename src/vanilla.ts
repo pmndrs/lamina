@@ -22,18 +22,18 @@ class LayerMaterial extends CustomShaderMaterial {
   layers: Abstract[] = []
   baseColor: THREE.ColorRepresentation = 'white'
   alpha: number = 1
-  shading: ShadingType = 'basic'
+  lighting: ShadingType = 'basic'
 
   // Defaults for debugger
-  static u_shading = 'basic'
+  static u_lighting = 'basic'
 
-  constructor({ color, alpha, shading, layers, name, ...props }: LayerMaterialParameters & any = {}) {
-    super(ShadingTypes[shading || 'basic'], undefined, undefined, undefined, props)
+  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & any = {}) {
+    super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
 
     this.baseColor = color || this.baseColor
     this.alpha = alpha ?? this.alpha
     this.layers = layers || this.layers
-    this.shading = shading || this.shading
+    this.lighting = lighting || this.lighting
     this.name = name || this.name
 
     this.refresh()
@@ -49,7 +49,7 @@ class LayerMaterial extends CustomShaderMaterial {
     this.layers
       .filter((l) => l.visible)
       .forEach((l) => {
-        // l.buildShaders(l.constructor)
+        l.buildShaders(l.constructor)
 
         vertexVariables += l.vertexVariables + '\n'
         fragmentVariables += l.fragmentVariables + '\n'
@@ -127,7 +127,7 @@ class LayerMaterial extends CustomShaderMaterial {
         color: this.baseColor,
         alpha: this.alpha,
         name: this.name,
-        lighting: this.shading,
+        lighting: this.lighting,
       },
     }
   }

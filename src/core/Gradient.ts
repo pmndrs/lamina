@@ -1,5 +1,11 @@
-import { GradientProps, MappingType, MappingTypes } from '../types'
+import { Vector3 } from 'three'
+import { GradientProps, MappingTypes } from '../types'
 import Abstract from './Abstract'
+
+type AbstractExtended = Abstract & {
+  axes: GradientProps['axes']
+  mapping: GradientProps['mapping']
+}
 
 export default class Gradient extends Abstract {
   static u_colorA = 'white'
@@ -38,9 +44,6 @@ export default class Gradient extends Abstract {
     }
   `
 
-  mapping: MappingType = 'local'
-  axes: 'x' | 'y' | 'z' = 'x'
-
   constructor(props?: GradientProps) {
     super(
       Gradient,
@@ -48,23 +51,31 @@ export default class Gradient extends Abstract {
         name: 'Gradient',
         ...props,
       },
-      (self: Gradient) => {
-        self.schema.push({
-          value: self.axes,
-          label: 'axes',
-          options: ['x', 'y', 'z'],
-        })
+      (self) => {
+        const extendedSelf = self as AbstractExtended
 
-        self.schema.push({
-          value: self.mapping,
-          label: 'mapping',
-          options: Object.values(MappingTypes),
-        })
+        if (!extendedSelf.axes) {
+          extendedSelf.axes = props?.axes || 'x'
+          self.schema.push({
+            value: extendedSelf.axes,
+            label: 'axes',
+            options: ['x', 'y', 'z'],
+          })
+        }
 
-        const mapping = Gradient.getMapping(self.mapping)
+        if (!extendedSelf.mapping) {
+          extendedSelf.mapping = props?.mapping || 'local'
+          self.schema.push({
+            value: extendedSelf.mapping,
+            label: 'mapping',
+            options: Object.values(MappingTypes),
+          })
+        }
+
+        const mapping = Gradient.getMapping(extendedSelf.mapping)
 
         self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
-        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes)
+        self.fragmentShader = self.fragmentShader.replace('axes_template', extendedSelf.axes)
       }
     )
   }

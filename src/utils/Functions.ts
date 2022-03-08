@@ -31,12 +31,12 @@ export function getSpecialParameters(label: string) {
   }
 }
 
-export function getLayerMaterialArgs({ color, alpha, shading, name, ...rest }: LayerMaterialProps & any = {}) {
+export function getLayerMaterialArgs({ color, alpha, lighting, name, ...rest }: LayerMaterialProps & any = {}) {
   return [
     {
       color,
       alpha,
-      shading,
+      lighting,
       name,
     },
     rest,

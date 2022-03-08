@@ -276,9 +276,6 @@ class CustomLayer extends Abstract {
     // ...
   `
 
-  // Non uniform parameter
-  mapping: 'uv' | 'world' = 'uv'
-
   // Get some shader code based off mapping parameter
   static getMapping(mapping) {
     switch (mapping) {
@@ -302,11 +299,15 @@ class CustomLayer extends Abstract {
       (self: CustomLayer) => {
         // Add to Leva (debugger) schema.
         // This will create a dropdown select component on the debugger.
-        self.schema.push({
-          value: self.mapping,
-          label: 'mapping',
-          options: ['uv', 'world'],
-        })
+        if (!self.mapping) {
+          // Set default value
+          self.mapping = props?.mapping || 'uv'
+          self.schema.push({
+            value: self.mapping,
+            label: 'mapping',
+            options: ['uv', 'world'],
+          })
+        }
 
         // Get shader chunk based off selected mapping value
         const mapping = CustomLayer.getMapping(self.mapping)

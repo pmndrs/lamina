@@ -54,6 +54,10 @@ export default class Abstract {
       const propName = key.split('_')[1]
       if (props?.[propName] !== undefined) uniforms[key] = props[propName]
     }
+    for (const key in props) {
+      // @ts-ignore
+      this[key] = props[key]
+    }
 
     this.uniforms = {}
     this.schema = []
@@ -90,7 +94,7 @@ export default class Abstract {
     this.fragmentShader = ''
     this.vertexVariables = ''
     this.fragmentVariables = ''
-    this.onParse = onParse
+    this.onParse = onParse?.bind(this)
 
     this.buildShaders(c)
 

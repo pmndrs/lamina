@@ -43,7 +43,7 @@ function DynamicLeva({
   return null
 }
 
-const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps>>(
+const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps & any>>(
   ({ children, ...props }, forwardRef) => {
     const ref = React.useRef<
       LAYERS.LayerMaterial & {
@@ -66,7 +66,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       { store }
     )
 
-    const { Shading } = useControls(
+    const { Lighting } = useControls(
       'Base',
       {
         Color: {
@@ -89,14 +89,14 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
             ref.current.needsUpdate = true
           },
         },
-        Shading: {
-          value: ref.current?.shading || props?.shading || 'basic',
+        Lighting: {
+          value: ref.current?.lighting || props?.lighting || 'basic',
           options: Object.keys(ShadingTypes),
         },
       },
       { store }
     )
-    const [args, otherProps] = useMemo(() => getLayerMaterialArgs({ ...props, shading: Shading }), [props, Shading])
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs({ ...props, lighting: Lighting }), [props, Lighting])
 
     React.useEffect(() => {
       const layers = ref.current.layers

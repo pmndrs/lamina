@@ -78,7 +78,7 @@ export interface LayerMaterialParameters {
   layers?: Abstract[]
   color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
-  shading?: ShadingType
+  lighting?: ShadingType
   name?: string
 }
 export type LayerMaterialProps = Omit<LayerMaterialParameters, 'layers'>

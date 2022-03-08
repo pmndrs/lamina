@@ -47,7 +47,7 @@ extend({
   Displace_: LAYERS.Displace,
 })
 
-const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps>>(
+const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps & any>>(
   ({ children, ...props }, forwardRef) => {
     const ref = React.useRef<LAYERS.LayerMaterial>(null!)
 

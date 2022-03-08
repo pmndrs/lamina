@@ -1307,10 +1307,10 @@
   resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.4.3.tgz#8926d7a09812374127b1f8a904a755c7579124e6"
   integrity sha512-dzJrPvUc42K2un9y6D1IsrPQO5tKsbWwUo+wsATnXjG3ePWyuDBIOMJuPe605NhIXUmPH+Vik2wMoZz06hD1uA==
 
-"@react-three/drei@^8.12.0":
-  version "8.12.0"
-  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.12.0.tgz#edb268cc13c1512359d854c942817a69dcd5d90b"
-  integrity sha512-NLM0R8+OuKBdZxCZmT2uiSlj0m3CPVhGrBXbA8UnkxVrAnaJC9JD0n/RGnMAqQsLbPrwroGJ3B+cWzXcI1GWuQ==
+"@react-three/drei@^8.16.1":
+  version "8.16.1"
+  resolved "https://registry.yarnpkg.com/@react-three/drei/-/drei-8.16.1.tgz#10f5a2861c2308744c0a6de5d4b0514e8105a31f"
+  integrity sha512-YWJD9lPM5J80yX8gBE0ayYwHHNU0+YLABJGyNWH4nD3WzDqFiwKSxIcQ3hPJJjfLVYnYvGbQWkf6u9SmG5tLgQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@react-spring/three" "^9.3.1"
@@ -1325,7 +1325,7 @@
     suspend-react "^0.0.8"
     three-mesh-bvh "^0.5.4"
     three-stdlib "^2.8.7"
-    troika-three-text "^0.45.0"
+    troika-three-text "^0.46.2"
     utility-types "^3.10.0"
     zustand "^3.5.13"
 
@@ -5748,24 +5748,25 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-troika-three-text@^0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.45.0.tgz#d3e4f1f0637d3dea5735e9887a77d9a010b1c041"
-  integrity sha512-s/MhDYJm0+aiQU8fjO1TXl1UZESY52GMJgzyMB0HHnh2iADy+WY00oVgNsW6lU7XmC2g8MU81nV5egCDAS4/Pg==
+troika-three-text@^0.46.2:
+  version "0.46.2"
+  resolved "https://registry.yarnpkg.com/troika-three-text/-/troika-three-text-0.46.2.tgz#8d860e79ad9abd31e9a3addf59c7e90fca0b15e5"
+  integrity sha512-x7GKVFshQ0YTXdb4iQKA6hoNKC5XT8AdcZW9T6QZEHJX69TXE5o5et39c8jZZeZzCqCZrk8ouOQBi6Aa0E2Atg==
   dependencies:
     bidi-js "^1.0.2"
-    troika-three-utils "^0.45.0"
-    troika-worker-utils "^0.45.0"
+    troika-three-utils "^0.46.0"
+    troika-worker-utils "^0.46.0"
+    webgl-sdf-generator "1.1.1"
 
-troika-three-utils@^0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/troika-three-utils/-/troika-three-utils-0.45.0.tgz#d624e4d2427275fd2750d542766635be37042920"
-  integrity sha512-VJqEx8aww2El/zSbbnmjdhaAOQ4LM0CVJmKh385Vi/CzruhMmWEaunMRI/J1vh4MbbGo+dREu73FkMkr/PXypA==
+troika-three-utils@^0.46.0:
+  version "0.46.0"
+  resolved "https://registry.yarnpkg.com/troika-three-utils/-/troika-three-utils-0.46.0.tgz#6d97a9bf08f2260285edf2bb0be6328dd3d50eec"
+  integrity sha512-llHyrXAcwzr0bpg80GxsIp73N7FuImm4WCrKDJkAqcAsWmE5pfP9+Qzw+oMWK1P/AdHQ79eOrOl9NjyW4aOw0w==
 
-troika-worker-utils@^0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/troika-worker-utils/-/troika-worker-utils-0.45.0.tgz#94a7b5c7f6f54c81f229eafae2224259e182c010"
-  integrity sha512-pEO8u7+29dG5SbmGUg0wqXPEe+r+Hd0ibKf75tjH2aoR7ZPlRwUzRTvPURDlDNFF4KysDLvMCdHnyslG9IG5Hw==
+troika-worker-utils@^0.46.0:
+  version "0.46.0"
+  resolved "https://registry.yarnpkg.com/troika-worker-utils/-/troika-worker-utils-0.46.0.tgz#1b698090af78b51a27e03881c90237a2e648d6c4"
+  integrity sha512-bzOx5f2ZBxkFhXtIvDJlLn2AI3bzCkGVbCndl/2dL5QZrwHEKl45OEIilCxYQQWJG1rEbOD9O80tMjoYjw19OA==
 
 tsconfig-paths@^3.12.0:
   version "3.12.0"
@@ -5989,6 +5990,11 @@ webgl-constants@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/webgl-constants/-/webgl-constants-1.1.1.tgz#f9633ee87fea56647a60b9ce735cbdfb891c6855"
   integrity sha512-LkBXKjU5r9vAW7Gcu3T5u+5cvSvh5WwINdr0C+9jpzVB41cjQAP5ePArDtk/WHYdVj0GefCgM73BA7FlIiNtdg==
+
+webgl-sdf-generator@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/webgl-sdf-generator/-/webgl-sdf-generator-1.1.1.tgz#3e1b422b3d87cd3cc77f2602c9db63bc0f6accbd"
+  integrity sha512-9Z0JcMTFxeE+b2x1LJTdnaT8rT8aEp7MVxkNwoycNmJWwPdzoXzMh0BjJSh/AEFP+KPYZUli814h8bJZFIZ2jA==
 
 webpack-sources@^1.4.0, webpack-sources@^1.4.1:
   version "1.4.3"
