@@ -128,15 +128,17 @@ Here are the layers that lamina currently provides
 
 | Name                    | Function                               |
 | ----------------------- | -------------------------------------- |
+| Fragment Layers         |                                        |
 | [`Color`](#color)       | Flat color.                            |
 | [`Depth`](#depth)       | Depth based gradient.                  |
-| [`Displace`](#displace) | Displace vertices using. noise         |
 | [`Fresnel`](#fresnel)   | Fresnel shading (strip or rim-lights). |
 | [`Gradient`](#gradient) | Linear gradient.                       |
 | [`Matcap`](#matcap)     | Load in a Matcap.                      |
 | [`Noise`](#noise)       | White, perlin or simplex noise .       |
 | [`Normal`](#normal)     | Visualize vertex normals.              |
 | [`Texture`](#texture)   | Image texture.                         |
+| Vertex Layers           |                                        |
+| [`Displace`](#displace) | Displace vertices using. noise         |
 
 See the section for each layer for the options on it.
 
@@ -367,18 +369,6 @@ Depth based gradient. Colors are lerp-ed based on `mapping` props which may have
 | `origin`  | `THREE.Vector3 \| [number,number,number]`  | `[0, 0, 0]` |
 | `mapping` | `"vector" \| "camera" \| "world"`          | `"vector"`  |
 
-### `Displace`
-
-Displace vertices with various noise.
-
-| Prop       | Type                                        | Default     |
-| ---------- | ------------------------------------------- | ----------- |
-| `strength` | `number`                                    | `1`         |
-| `scale`    | `number`                                    | `1`         |
-| `mapping`  | `"local" \| "world" \| "uv"`                | `"local"`   |
-| `type`     | `"perlin' \| "simplex" \| "cell" \| "curl"` | `"perlin"`  |
-| `offset`   | `THREE.Vector3 \| [number,number,number]`   | `[0, 0, 0]` |
-
 ### `Fresnel`
 
 Fresnel shading.
@@ -393,7 +383,7 @@ Fresnel shading.
 
 ### `Gradient`
 
-Linear gradient based off distance from `start` to `end` in a specified `axes`.
+Linear gradient based off distance from `start` to `end` in a specified `axes`. `start` and `end` are points on the `axes` selected. The distance between `start` and `end` is used to lerp the colors.
 
 | Prop       | Type                                       | Default   |
 | ---------- | ------------------------------------------ | --------- |
@@ -451,3 +441,19 @@ Blend modes currently available in lamina
 | `multiply` | `softlight` |
 | `lighten`  | `reflect`   |
 | `darken`   | `negation`  |
+
+## Vertex layers
+
+Layers that affect the vertex shader
+
+### `Displace`
+
+Displace vertices with various noise.
+
+| Prop       | Type                                        | Default     |
+| ---------- | ------------------------------------------- | ----------- |
+| `strength` | `number`                                    | `1`         |
+| `scale`    | `number`                                    | `1`         |
+| `mapping`  | `"local" \| "world" \| "uv"`                | `"local"`   |
+| `type`     | `"perlin' \| "simplex" \| "cell" \| "curl"` | `"perlin"`  |
+| `offset`   | `THREE.Vector3 \| [number,number,number]`   | `[0, 0, 0]` |
