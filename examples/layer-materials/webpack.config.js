@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const webpackConfig = (env) => ({
+  devtool: 'source-map',
   entry: './src/index.js',
   ...(env.production || !env.development ? {} : { devtool: 'eval-source-map' }),
   resolve: {

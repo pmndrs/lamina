@@ -32,21 +32,11 @@
     "3d"
   ],
   "scripts": {
-    "start": "rollup -c -w",
+    "start": "tsc --emitDeclarationOnly && rollup -c -w",
     "build": "rollup -c",
     "postbuild": "tsc --emitDeclarationOnly && cp package.json dist/package.json",
     "release": "chmod +x ./scripts/publish.sh && ./scripts/publish.sh",
     "patchJSON": "json -I -f dist/package.json -e \"this.private=false;\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
-    ]
   },
   "repository": {
     "type": "git",
@@ -70,29 +60,28 @@
     "@react-three/fiber": "^7.0.26",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "@types/react": "^17.0.39",
-    "@types/three": "^0.137.0",
-    "@typescript-eslint/eslint-plugin": "^5.3.0",
-    "@typescript-eslint/parser": "^5.3.0",
-    "eslint": "^8.1.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-jest": "^25.2.2",
-    "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.4",
+    "@types/react-dom": "^17.0.11",
+    "@types/three": "^0.138.0",
+    "glsl-token-functions": "^1.0.1",
+    "glsl-token-string": "^1.0.1",
+    "glsl-tokenizer": "^2.1.5",
+    "glsl-token-descope": "^1.0.2",
     "json": "^11.0.0",
+    "leva": "^0.9.20",
     "lint-staged": "^11.2.6",
     "prettier": "^2.4.1",
     "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-merge-refs": "^1.1.0",
     "rollup": "^2.59.0",
     "rollup-plugin-size-snapshot": "^0.12.0",
     "rollup-plugin-terser": "^7.0.2",
-    "three": "^0.137.5",
-    "typescript": "^4.4.4"
+    "three": "^0.138.3",
+    "typescript": "^4.4.4",
+    "zustand": "^3.7.0",
+    "three-custom-shader-material": "^3.2.7"
   },
   "dependencies": {}
 }

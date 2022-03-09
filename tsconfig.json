@@ -3,7 +3,7 @@
     "module": "esnext",
     "target": "es2018",
     "allowSyntheticDefaultImports": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "dom"],
     "jsx": "react",
     "strict": true,
     "preserveSymlinks": true,
@@ -15,5 +15,5 @@
     "removeComments": false,
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }

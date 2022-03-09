@@ -1,83 +1,128 @@
-import './style.css'
 import * as THREE from 'three'
-import { LayerMaterial, Base, Depth, Fresnel, Noise } from 'lamina/vanilla'
-import { Vector3 } from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
+import './style.css'
 
 const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
+const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.001, 1000)
+camera.position.set(2, 0, 0)
 
-const renderer = new THREE.WebGLRenderer()
-renderer.setClearColor('#ebebeb')
+const renderer = new THREE.WebGLRenderer({ antialias: true })
+renderer.outputEncoding = THREE.sRGBEncoding
+renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.domElement.style.width = '100%'
 renderer.domElement.style.height = '100%'
 document.body.appendChild(renderer.domElement)
 
-const randomProps = new Array(20).fill(0).map(() => {
-  return {
-    position: [
-      THREE.MathUtils.randFloat(-5, 5), //
-      THREE.MathUtils.randFloat(-5, 5),
-      THREE.MathUtils.randFloat(-20, 5),
-    ],
-    rotation: [
-      THREE.MathUtils.randFloat(-10, 10), //
-      THREE.MathUtils.randFloat(-10, 10),
-      THREE.MathUtils.randFloat(-20, 10),
-    ],
-    scale: THREE.MathUtils.randFloat(0.05, 1),
-  }
+const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
+const flowerMaterial = new LayerMaterial({
+  color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
+  layers: [
+    new Depth({
+      far: 3,
+      origin: [1, 1, 1],
+      colorA: new THREE.Color('#ff00e3').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00ffff').convertSRGBToLinear(),
+      alpha: 0.5,
+      mode: 'multiply',
+      mapping: 'vector',
+    }),
+    new Depth({
+      name: 'MouseDepth',
+      near: 0.25,
+      far: 2,
+      origin: [-0.9760456268614979, 0.48266696923176067, 0],
+      colorA: new THREE.Color('#ffe100').convertSRGBToLinear(),
+      alpha: 0.5,
+      mode: 'lighten',
+      mapping: 'vector',
+    }),
+    new Fresnel({
+      mode: 'softlight',
+    }),
+  ],
 })
 
-randomProps.forEach((prop) => {
-  const geometry = new THREE.SphereGeometry(1, 128, 64)
-  const material = new LayerMaterial({
-    layers: [
-      new Base({
-        color: '#d9d9d9',
-        alpha: 1,
-        mode: 'normal',
-      }),
-      new Depth({
-        colorA: '#002f4b',
-        colorB: '#f2fdff',
-        alpha: 1,
-        mode: 'multiply',
-        near: 0,
-        far: 2,
-        origin: new Vector3(1, 1, 1),
-      }),
-      new Fresnel({
-        color: '#bffbff',
-        alpha: 1,
-        mode: 'softlight',
-        power: 2,
-        intensity: 1,
-        bias: 0.1,
-      }),
-      new Noise({
-        colorA: '#a3a3a3',
-        alpha: 0.1,
-        mode: 'normal',
-        scale: 1,
-      }),
-    ],
+const flowerMesh = new THREE.Mesh(flowerGeometry, flowerMaterial)
+flowerMesh.rotateY(Math.PI / 2)
+flowerMesh.scale.setScalar(2)
+scene.add(flowerMesh)
+
+const geometry = new THREE.SphereGeometry(1, 64, 64)
+const material = new LayerMaterial({
+  side: THREE.BackSide,
+  layers: [
+    new Color({
+      color: new THREE.Color('#f0aed2').convertSRGBToLinear(),
+    }),
+    new Depth({
+      near: 0,
+      far: 300,
+      origin: [10, 10, 10],
+      colorA: new THREE.Color('blue').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      alpha: 0.5,
+      mode: 'multiply',
+    }),
+    new Depth({
+      near: 0,
+      far: 300,
+      origin: [100, 100, 100],
+      colorA: new THREE.Color('#ff0000').convertSRGBToLinear(),
+      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      alpha: 0.5,
+      mode: 'multiply',
+    }),
+  ],
+})
+
+const mesh = new THREE.Mesh(geometry, material)
+mesh.scale.setScalar(100)
+scene.add(mesh)
+
+{
+  const geometry = new THREE.SphereGeometry(0.2, 64, 64)
+  const material = new THREE.MeshPhysicalMaterial({
+    transmission: 1,
+    // @ts-ignore
+    thickness: 10,
+    roughness: 0.2,
   })
 
   const mesh = new THREE.Mesh(geometry, material)
+  scene.add(mesh)
+}
 
-  const group = new THREE.Group()
-  group.add(mesh)
-  group.position.fromArray(prop.position)
-  group.rotation.fromArray(prop.rotation)
-  group.scale.setScalar(prop.scale)
+const controls = new OrbitControls(camera, renderer.domElement)
 
-  scene.add(group)
+const pLight = new THREE.DirectionalLight()
+pLight.intensity = 2
+pLight.shadow.mapSize.set(1024, 1024)
+scene.add(pLight)
+
+const clock = new THREE.Clock()
+
+const depthLayer = flowerMaterial.layers.find((e) => e.name === 'MouseDepth')
+const vec = new THREE.Vector3()
+window.addEventListener('mousemove', (e) => {
+  const m = new THREE.Vector2(
+    THREE.MathUtils.mapLinear(e.x / window.innerWidth, 0, 1, 1, -1),
+    THREE.MathUtils.mapLinear(e.y / window.innerHeight, 0, 1, 1, -1)
+  )
+
+  // @ts-ignore
+  depthLayer.origin = vec.set(-m.y, m.x, 0)
 })
 
 function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
+  controls.update()
+
+  const delta = clock.getDelta()
+  mesh.rotation.x = mesh.rotation.y = mesh.rotation.z += delta
+  flowerMesh.rotation.z += delta / 2
 }
 
 animate()
