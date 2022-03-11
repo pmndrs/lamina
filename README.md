@@ -178,7 +178,8 @@ class CustomLayer extends Abstract {
   // Define stuff as static properties!
 
   // Uniforms: Must begin with prefix "u_".
-  // Assign them their default value
+  // Assign them their default value.
+  // Any unifroms here will automatically be set as props on thhe layer in react.
   static u_color = 'red'
   static u_alpha = 1
 
