@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Loader, OrbitControls } from '@react-three/drei'
+import { Bounds, Loader, OrbitControls } from '@react-three/drei'
 import Bunny from './Bunny'
 import Blob from './Blob'
 import Marble from './Marble'
@@ -32,11 +32,13 @@ function App() {
 
         <Suspense fallback={null}>
           <Physics>
-            <Bunny />
+            <Bounds fit>
+              <Bunny />
+              <TextComponent />
+            </Bounds>
+
             <Floor />
             <Marble setLoaded={setLoaded} />
-
-            <TextComponent />
           </Physics>
 
           <Blob position={[-2, -0.5, -3]} />
