@@ -178,9 +178,11 @@ class CustomLayer extends Abstract {
   // Define stuff as static properties!
 
   // Uniforms: Must begin with prefix "u_".
-  // Assign them their default value
-  static u_color = 'red'
-  static u_alpha = 1
+  // Assign them their default value.
+  // Any unifroms here will automatically be set as properties on the class as setters and getters.
+  // There setters and getters will update the underlying unifrom.
+  static u_color = 'red' // Can be accessed as CustomLayer.color
+  static u_alpha = 1     // Can be accessed as CustomLayer.alpha
 
   // Define your fragment shader just like you already do!
   // Only difference is, you must return the final color of this layer
@@ -237,7 +239,7 @@ extend({ CustomLayer })
 // ...
 const ref = useRef();
 
-// Animate uniforms using a ref
+// Animate uniforms using a ref.
 useFrame(({ clock }) => {
   ref.current.color.setRGB(
     Math.sin(clock.elapsedTime),
@@ -249,7 +251,6 @@ useFrame(({ clock }) => {
 <LayerMaterial>
   <customLayer
     ref={ref}     // Imperative instance of CustomLayer. Can be used to animate unifroms
-    args={[]}     // Non uniform arguments, i.e. props param on constructor
     color="green" // Uniforms can be set directly
     alpha={0.5}
   />
@@ -290,9 +291,10 @@ class CustomLayer extends Abstract {
     }
   }
 
-  // Set non-uniform defaults
+  // Set non-uniform defaults.
   mapping: 'uv' | 'world' = 'uv'
 
+  // Non unifrom params must be passed to the constructor
   constructor(props) {
     super(
       CustomLayer,
@@ -319,6 +321,21 @@ class CustomLayer extends Abstract {
     )
   }
 }
+```
+
+In react...
+
+```jsx
+// ...
+<LayerMaterial>
+  <customLayer
+    ref={ref} 
+    color="green"
+    alpha={0.5}
+
+    args={[mapping]} // Non unifrom params must be passed to the constructor using `args`
+  />
+</LayerMaterial>
 ```
 
 ## Layers
