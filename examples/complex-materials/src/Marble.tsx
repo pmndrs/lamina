@@ -1,21 +1,23 @@
-import { Sphere } from '@react-three/drei'
-import { GroupProps, useFrame } from '@react-three/fiber'
-import { Color, DebugLayerMaterial, Depth, Displace, Fresnel, LayerMaterial, Noise } from 'lamina'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { MathUtils, Mesh, Vector2, Vector3 } from 'three'
-import { useSpring } from '@react-spring/three'
-import { Displace as DisplaceType } from 'lamina/vanilla'
-import { DisplaceProps } from 'lamina/types'
-import { Triplet, useSphere } from '@react-three/cannon'
+import { Depth, Fresnel, LayerMaterial } from 'lamina'
+import { useLayoutEffect, useState } from 'react'
 
-export default function Marble() {
+import { useBox, useSphere, usePlane } from '@react-three/cannon'
+import { Box, Plane } from '@react-three/drei'
+import { BackSide } from 'three'
+
+export default function Marble({ setLoaded }: { setLoaded: any }) {
   const [number] = useState(200)
 
-  const [ref, { at }] = useSphere(() => ({
+  const [ref] = useSphere(() => ({
     args: [0.1],
     mass: 1,
-    position: [Math.random() - 0.5, Math.random() * 2 + 2, Math.random() - 0.5],
+    position: [Math.random() - 0.5, Math.random() * 2 + 4, Math.random() - 0.5],
   }))
+
+  useLayoutEffect(() => {
+    setLoaded(true)
+  }, [])
+
   return (
     <group>
       <instancedMesh castShadow ref={ref} args={[undefined, undefined, number]}>

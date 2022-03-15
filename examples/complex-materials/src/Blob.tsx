@@ -1,9 +1,8 @@
 import { Sphere } from '@react-three/drei'
 import { GroupProps, useFrame } from '@react-three/fiber'
-import { DebugLayerMaterial, Depth, Displace, Fresnel, LayerMaterial } from 'lamina'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { DoubleSide, MathUtils, Mesh, Vector2, Vector3 } from 'three'
-import { useSpring } from '@react-spring/three'
+import { Depth, Displace, Fresnel, LayerMaterial } from 'lamina'
+import { useMemo, useRef } from 'react'
+import { MathUtils, Mesh, Vector3 } from 'three'
 import { Displace as DisplaceType } from 'lamina/vanilla'
 import { DisplaceProps } from 'lamina/types'
 
