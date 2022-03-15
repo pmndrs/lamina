@@ -7,14 +7,16 @@ export default class Fresnel extends Abstract {
   static u_bias = 0
   static u_intensity = 1
   static u_power = 2
+  static u_factor = 1
 
   static vertexShader = `
     varying vec3 v_worldPosition;
     varying vec3 v_worldNormal;
 
     void main() {
-        v_worldPosition = normalize(vec3(modelViewMatrix * vec4(position, 1.0)).xyz);
-        v_worldNormal = normalize(normalMatrix * normal);
+        v_worldPosition = vec3(-viewMatrix[0][2], -viewMatrix[1][2], -viewMatrix[2][2]);
+        v_worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
+        
     }
   `
 
@@ -24,14 +26,16 @@ export default class Fresnel extends Abstract {
     uniform float u_bias;
     uniform float u_intensity;
     uniform float u_power;
+    uniform float u_factor;
 
     varying vec3 v_worldPosition;
     varying vec3 v_worldNormal;
 
     void main() {
-        float f_a = ( 1.0 - -min(dot(v_worldPosition, normalize(v_worldNormal) ), 0.0) );
-        float f_fresnel = u_bias + (u_intensity * pow(f_a, u_power));
+        float f_a = (u_factor  + dot(v_worldPosition, v_worldNormal));
+        float f_fresnel = u_bias + u_intensity * pow(abs(f_a), u_power);
 
+        f_fresnel = clamp(f_fresnel, 0.0, 1.0);
         return vec4(f_fresnel * u_color, u_alpha);
     }
   `

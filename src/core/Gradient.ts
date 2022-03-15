@@ -2,11 +2,6 @@ import { Vector3 } from 'three'
 import { GradientProps, MappingType, MappingTypes } from '../types'
 import Abstract from './Abstract'
 
-type AbstractExtended = Abstract & {
-  axes: GradientProps['axes']
-  mapping: GradientProps['mapping']
-}
-
 export default class Gradient extends Abstract {
   static u_colorA = 'white'
   static u_colorB = 'black'
@@ -69,8 +64,8 @@ export default class Gradient extends Abstract {
 
         const mapping = Gradient.getMapping(self.mapping)
 
-        self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
-        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes)
+        self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping || 'local')
+        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes || 'x')
       }
     )
   }

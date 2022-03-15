@@ -25,6 +25,7 @@ import {
 import * as LAYERS from './vanilla'
 import DebugLayerMaterial from './debug'
 import { getLayerMaterialArgs } from './utils/Functions'
+import { ColorRepresentation } from 'three'
 
 declare global {
   namespace JSX {
@@ -57,17 +58,16 @@ extend({
   Normal_: LAYERS.Normal,
 })
 
-type AllMaterialProps =
-  | MeshPhongMaterialProps
-  | MeshPhysicalMaterialProps
-  | MeshToonMaterialProps
-  | MeshBasicMaterialProps
-  | MeshLambertMaterialProps
-  | MeshStandardMaterialProps
+type AllMaterialProps = MeshPhongMaterialProps & //
+  MeshPhysicalMaterialProps &
+  MeshToonMaterialProps &
+  MeshBasicMaterialProps &
+  MeshLambertMaterialProps &
+  MeshStandardMaterialProps
 
 const LayerMaterial = React.forwardRef<
   LAYERS.LayerMaterial,
-  React.PropsWithChildren<LayerMaterialProps & AllMaterialProps>
+  React.PropsWithChildren<LayerMaterialProps & Omit<AllMaterialProps, 'color'>>
 >(({ children, ...props }, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
 
@@ -93,6 +93,7 @@ function getNonUniformArgs(props: any) {
       type: props?.type,
       mapping: props?.mapping,
       map: props?.map,
+      axes: props?.axes,
     },
   ] as any
 }
@@ -101,13 +102,14 @@ const Depth = React.forwardRef<LAYERS.Depth, DepthProps>((props, forwardRef) => 
   return <depth_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
 }) as React.ForwardRefExoticComponent<DepthProps & React.RefAttributes<LAYERS.Depth>>
 
-const Color = React.forwardRef<LAYERS.Color, ColorProps>((props, forwardRef) => {
-  return <color_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
+const Color = React.forwardRef<LAYERS.Color, ColorProps>((props, ref) => {
+  return <color_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<ColorProps & React.RefAttributes<LAYERS.Color>>
 
 const Noise = React.forwardRef<LAYERS.Noise, NoiseProps>((props, ref) => {
   return <noise_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NoiseProps & React.RefAttributes<LAYERS.Noise>>
+
 const Fresnel = React.forwardRef<LAYERS.Fresnel, FresnelProps>((props, ref) => {
   return <fresnel_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<FresnelProps & React.RefAttributes<LAYERS.Fresnel>>

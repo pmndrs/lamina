@@ -15,7 +15,7 @@ import mergeRefs from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { serializedLayersToJSX } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
-import { Color, TextureLoader } from 'three'
+import { Color, ColorRepresentation, TextureLoader } from 'three'
 import { LayerMaterialProps, ShadingType, ShadingTypes } from './types'
 
 extend({
@@ -51,17 +51,16 @@ function DynamicLeva({
   return null
 }
 
-type AllMaterialProps =
-  | MeshPhongMaterialProps
-  | MeshPhysicalMaterialProps
-  | MeshToonMaterialProps
-  | MeshBasicMaterialProps
-  | MeshLambertMaterialProps
-  | MeshStandardMaterialProps
+type AllMaterialProps = MeshPhongMaterialProps & //
+  MeshPhysicalMaterialProps &
+  MeshToonMaterialProps &
+  MeshBasicMaterialProps &
+  MeshLambertMaterialProps &
+  MeshStandardMaterialProps
 
 const DebugLayerMaterial = React.forwardRef<
   LAYERS.LayerMaterial,
-  React.PropsWithChildren<LayerMaterialProps & AllMaterialProps>
+  React.PropsWithChildren<LayerMaterialProps & Omit<AllMaterialProps, 'color'>>
 >(({ children, ...props }, forwardRef) => {
   const ref = React.useRef<
     LAYERS.LayerMaterial & {
