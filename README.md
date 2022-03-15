@@ -23,7 +23,7 @@
 <br />
 
 <p align="center">
-  <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/example-configurator" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/configurator.png?raw=true"  /></a>
+  <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/complex-materials" target="_blank"><img width="400" src="https://raw.githubusercontent.com/pmndrs/lamina/main/examples/complex-materials/thumbnail.png"  /></a>
   <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/layer-materials" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
 </p>
 <p align="middle">
