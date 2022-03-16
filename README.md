@@ -34,7 +34,7 @@
 `lamina` let's you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
-import { LayerMaterial, Color } from 'lamina'
+import { LayerMaterial, Depth } from 'lamina'
 
 function GradientSphere() {
   return (
@@ -65,7 +65,7 @@ function GradientSphere() {
 Lamina can be used with vanilla Three.js. Each layer is just a class.
 
 ```js
-import { LayerMaterial, Color } from 'lamina/vanilla'
+import { LayerMaterial, Depth } from 'lamina/vanilla'
 
 const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
