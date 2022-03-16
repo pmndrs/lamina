@@ -12,11 +12,7 @@ import stringify from 'glsl-token-string'
 import tokenFunctions from 'glsl-token-functions'
 
 export default class Abstract {
-  static genID() {
-    return MathUtils.generateUUID().replaceAll('-', '_')
-  }
-
-  uuid: string = MathUtils.generateUUID().replaceAll('-', '_')
+  uuid: string = MathUtils.generateUUID().replace(/-/g, '_')
   name: string = 'LayerMaterial'
   mode: BlendMode = 'normal'
   visible: boolean = true
@@ -205,7 +201,7 @@ export default class Abstract {
   }
 
   processFinal(shader: string, isVertex?: boolean) {
-    const s: string = shader.replaceAll(/\sf_/gm, ` f_${this.uuid}_`).replaceAll(/\(f_/gm, `(f_${this.uuid}_`)
+    const s: string = shader.replace(/\sf_/gm, ` f_${this.uuid}_`).replace(/\(f_/gm, `(f_${this.uuid}_`)
 
     const returnValue = s.match(/^.*return.*$/gm)
     let sReplaced = s.replace(/^.*return.*$/gm, '')
