@@ -41,7 +41,7 @@ function GradientSphere() {
     <Sphere>
       <LayerMaterial
         color="#ffffff" //
-        shading="physical"
+        lighting="physical"
         transmission={1}
       >
         <Depth
@@ -70,7 +70,7 @@ import { LayerMaterial, Depth } from 'lamina/vanilla'
 const geometry = new THREE.SphereGeometry(1, 128, 64)
 const material = new LayerMaterial({
   color: '#d9d9d9',
-  shading: 'physical',
+  lighting: 'physical',
   transmission: 1,
   layers: [
     new Depth({
@@ -115,10 +115,10 @@ new Depth({
 | `name`     | `string`                                                                | `"LayerMaterial"` |
 | `color`    | `THREE.ColorRepresentation \| THREE.Color`                              | `"white"`         |
 | `alpha`    | `number`                                                                | `1`               |
-| `shading`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'lambert' \| 'standard'` | `'basic'`         |
+| `lighting`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'lambert' \| 'standard'` | `'basic'`         |
 | `layers`\* | `Abstract[]`                                                            | `[]`              |
 
-The `shading` prop controls the shading that is applied on the material. The material then accepts all the material properties supported by ThreeJS of the material type specified by the `shading` prop.
+The `lighting` prop controls the shading that is applied on the material. The material then accepts all the material properties supported by ThreeJS of the material type specified by the `lighting` prop.
 
 \* Note: the `layers` prop is only available on the `LayerMaterial` class, not the component. <strong>Pass in layers as children in React.</strong>
 
