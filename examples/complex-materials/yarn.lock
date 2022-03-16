@@ -6011,17 +6011,17 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
-lamina@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.5.tgz#4d3c686cf6805fd23b0a7f09e3ecf30fbd56413d"
-  integrity sha512-jbZHiSZYe6WOG0eNFSLSXYqyR+g18ycRp0Y+jW0phg1VsfG31bnEMqnAEOMtB5N6XwNW8Kld7SwzMGTuBhZufQ==
+lamina@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.6.tgz#d6a093bd2f6a03bf0d0ec4994901052f0d3f0d65"
+  integrity sha512-T3kg5xTzoeaXAW/y0cPspfCxFZMuqMnE+Tcbsik9KJgWUxCG5joBKA5sWMXoTYgwNlTx2gqxOH1szx7sGUGMpA==
   dependencies:
     glsl-token-descope "^1.0.2"
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"
     glsl-tokenizer "^2.1.5"
     leva "^0.9.20"
-    three-custom-shader-material "^3.2.7"
+    three-custom-shader-material "^3.2.8"
 
 language-subtag-registry@~0.3.2:
   version "0.3.21"
@@ -8586,13 +8586,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three-custom-shader-material@^3.2.7:
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.2.7.tgz#8bad22604dc6ed69658e4012a160f2fb7fba45c5"
-  integrity sha512-VixYdsUzMWOnQxd7qOiQS2ISrmBA0uKEVSlaabwy4eOB7yQfPg5iQsRykUYawgWf1wUYRjwBSP18GJbGzl8LBA==
-  dependencies:
-    "@react-three/fiber" "^7.0.26"
-    three "^0.137.5"
+three-custom-shader-material@^3.2.8:
+  version "3.2.8"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.2.8.tgz#7d4455da06d317048aec6a3c68cf2635fb8de8ca"
+  integrity sha512-uUF3CrM0CrRsBwPs8BZIw7HHmi7tdICsoJ8cq6KSE61ejItEVIhuEsAw+Mk3SByVgLFD5tcC6KZAiQCllY1+CQ==
 
 three-mesh-bvh@^0.5.4:
   version "0.5.6"
@@ -8615,7 +8612,7 @@ three-stdlib@^2.8.7:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.137.0, three@^0.137.5:
+three@^0.137.0:
   version "0.137.5"
   resolved "https://registry.yarnpkg.com/three/-/three-0.137.5.tgz#a1e34bedd0412f2d8797112973dfadac78022ce6"
   integrity sha512-rTyr+HDFxjnN8+N/guZjDgfVxgHptZQpf6xfL/Mo7a5JYIFwK6tAq3bzxYYB4Ae0RosDZlDuP+X5aXDXz+XnHQ==
