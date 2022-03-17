@@ -173,6 +173,8 @@ You can write your own layers by extending the `Abstract` class. The concept if 
 The color of each layer will be blended together using the specified blend mode. A list of all available blend modes can be found [here](#blendmode)
 
 ```ts
+import { Abstract } from "lamina/vanilla"
+
 // Extend the Abstract layer
 class CustomLayer extends Abstract {
   // Define stuff as static properties!
