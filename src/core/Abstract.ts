@@ -210,7 +210,7 @@ export default class Abstract {
       const returnVariable = returnValue[0].replace('return', '').trim().replace(';', '')
 
       const blendMode = this.getBlendMode(returnVariable, 'lamina_finalColor')
-      sReplaced += isVertex ? `lamina_finalPosition = ${returnVariable}.xyz;` : `lamina_finalColor = ${blendMode};`
+      sReplaced += isVertex ? `lamina_finalPosition = ${returnVariable};` : `lamina_finalColor = ${blendMode};`
     }
 
     return sReplaced
