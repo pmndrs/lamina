@@ -1,14 +1,5 @@
-import {
-  extend,
-  Node,
-  MeshPhongMaterialProps,
-  MeshPhysicalMaterialProps,
-  MeshToonMaterialProps,
-  MeshBasicMaterialProps,
-  MeshLambertMaterialProps,
-  MeshStandardMaterialProps,
-} from '@react-three/fiber'
-import React, { useMemo } from 'react'
+import { extend, Node, useLoader } from '@react-three/fiber'
+import React, { useLayoutEffect, useMemo, useRef } from 'react'
 import mergeRefs from 'react-merge-refs'
 import {
   DepthProps,
@@ -21,11 +12,11 @@ import {
   TextureProps,
   DisplaceProps,
   NormalProps,
+  LayerProps,
 } from './types'
 import * as LAYERS from './vanilla'
 import DebugLayerMaterial from './debug'
 import { getLayerMaterialArgs } from './utils/Functions'
-import { ColorRepresentation } from 'three'
 
 declare global {
   namespace JSX {
@@ -58,32 +49,28 @@ extend({
   Normal_: LAYERS.Normal,
 })
 
-type AllMaterialProps = MeshPhongMaterialProps & //
-  MeshPhysicalMaterialProps &
-  MeshToonMaterialProps &
-  MeshBasicMaterialProps &
-  MeshLambertMaterialProps &
-  MeshStandardMaterialProps
+const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps>>(
+  ({ children, debug, ...props }, forwardRef) => {
+    const ref = React.useRef<LAYERS.LayerMaterial>(null!)
 
-const LayerMaterial = React.forwardRef<
-  LAYERS.LayerMaterial,
-  React.PropsWithChildren<LayerMaterialProps & Omit<AllMaterialProps, 'color'>>
->(({ children, ...props }, forwardRef) => {
-  const ref = React.useRef<LAYERS.LayerMaterial>(null!)
+    React.useLayoutEffect(() => {
+      ref.current.layers = (ref.current as any).__r3f.objects
+      ref.current.refresh()
+    }, [children])
 
-  React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects
-    ref.current.refresh()
-  }, [children])
+    const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
 
-  const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
-
-  return (
-    <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
-      {children}
-    </layerMaterial>
-  )
-})
+    return debug ? (
+      <DebugLayerMaterial ref={mergeRefs([ref, forwardRef])} {...args} {...otherProps}>
+        {children}
+      </DebugLayerMaterial>
+    ) : (
+      <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
+        {children}
+      </layerMaterial>
+    )
+  }
+)
 
 function getNonUniformArgs(props: any) {
   return [
@@ -134,4 +121,43 @@ const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
   return <normal_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
 
-export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+function useLamina(url: string) {
+  const material = useLoader(LAYERS.LaminaLoader as any, url) as LAYERS.LayerMaterial
+
+  return React.forwardRef<LAYERS.LayerMaterial, Omit<LayerMaterialProps, 'ref'>>((props, forwardRef) => {
+    const ref = useRef<LAYERS.LayerMaterial>(null!)
+
+    return (
+      <LayerMaterial ref={mergeRefs([ref, forwardRef])} {...material.serialize().properties} {...props}>
+        {material.layers.map((e) => (
+          <primitive key={e.uuid} object={e} />
+        ))}
+        {props.children}
+      </LayerMaterial>
+    )
+  })
+}
+
+function useLaminaLayer<T extends LayerProps>(url: string) {
+  const layer = useLoader(LAYERS.LaminaLoader as any, url) as LAYERS.Abstract
+
+  return React.forwardRef<LAYERS.Abstract, T>((props, ref) => {
+    return <primitive ref={ref} object={layer} {...props} />
+  })
+}
+
+export {
+  useLamina,
+  useLaminaLayer,
+  DebugLayerMaterial,
+  LayerMaterial,
+  Depth,
+  Color,
+  Noise,
+  Fresnel,
+  Gradient,
+  Matcap,
+  Texture,
+  Displace,
+  Normal,
+}

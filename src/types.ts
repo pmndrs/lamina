@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import * as FIBER from '@react-three/fiber'
 import { Abstract } from './vanilla'
 
 export const BlendModes: {
@@ -52,6 +53,20 @@ export const MappingTypes: {
   uv: 'uv',
 }
 
+type AllMaterialParams = THREE.MeshPhongMaterialParameters &
+  THREE.MeshPhysicalMaterialParameters &
+  THREE.MeshToonMaterialParameters &
+  THREE.MeshBasicMaterialParameters &
+  THREE.MeshLambertMaterialParameters &
+  THREE.MeshStandardMaterialParameters
+
+type AllMaterialProps = FIBER.MeshPhongMaterialProps & //
+  FIBER.MeshPhysicalMaterialProps &
+  FIBER.MeshToonMaterialProps &
+  FIBER.MeshBasicMaterialProps &
+  FIBER.MeshLambertMaterialProps &
+  FIBER.MeshStandardMaterialProps
+
 export type MappingType = 'local' | 'world' | 'uv'
 
 export const ShadingTypes: {
@@ -73,14 +88,17 @@ export interface BaseProps {
   name?: string
 }
 
-export interface LayerMaterialParameters {
+interface MaterialParams {
   layers?: Abstract[]
   color?: THREE.ColorRepresentation | THREE.Color
   alpha?: number
   lighting?: ShadingType
   name?: string
+  debug?: boolean
 }
-export type LayerMaterialProps = Omit<LayerMaterialParameters, 'layers'>
+export type LayerMaterialParameters = MaterialParams & Omit<AllMaterialParams, 'color'>
+
+export type LayerMaterialProps = Omit<MaterialParams, 'layers'> & Omit<AllMaterialProps, 'color'>
 
 export interface LayerProps {
   mode?: BlendMode
@@ -160,3 +178,21 @@ export interface SerializedLayer {
     [name: string]: any
   }
 }
+
+// Loader stuff
+
+interface LaminaFileFragment {
+  version: number
+  type: 'material' | 'layer'
+}
+
+export interface LaminaMaterialFile extends LaminaFileFragment {
+  properties: Partial<LayerMaterialParameters>
+  layers: SerializedLayer[]
+  type: 'material'
+}
+
+export type LaminaLayerFile = LaminaFileFragment &
+  SerializedLayer & {
+    type: 'layer'
+  }

@@ -1,19 +1,23 @@
 {
   "version": 1,
+  "type": "material",
   "properties": {
     "name": "Monkey w/ freckles",
-    "shading": "basic",
+    "lighting": "basic",
     "color": "white",
     "alpha": 1
   },
-
   "layers": [
     {
       "constructor": "Depth",
       "properties": {
         "near": -0.06800000000000028,
         "far": 5,
-        "origin": [0, 0, 3],
+        "origin": [
+          0,
+          0,
+          3
+        ],
         "colorA": "#ff4eb8",
         "colorB": "#24dbf8",
         "alpha": 1,
@@ -28,7 +32,11 @@
       "properties": {
         "near": 1,
         "far": 3,
-        "origin": [0, 0, -1.3670000000000089],
+        "origin": [
+          0,
+          0,
+          -1.3670000000000089
+        ],
         "colorA": "#ff7800",
         "colorB": "black",
         "alpha": 1,

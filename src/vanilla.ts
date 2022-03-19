@@ -1,46 +1,29 @@
-import * as THREE from 'three'
+// TODO Remove ts-ignore
 
-import Abstract from './core/Abstract'
-import Depth from './core/Depth'
-import Color from './core/Color'
-import Noise from './core/Noise'
-import Fresnel from './core/Fresnel'
-import Gradient from './core/Gradient'
-import Matcap from './core/Matcap'
-import Texture from './core/Texture'
-import Displace from './core/Displace'
-import Normal from './core/Normal'
+import * as THREE from 'three'
+import * as LAYERS from './core'
 
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
 import {
-  MeshBasicMaterialParameters,
-  MeshLambertMaterialParameters,
-  MeshPhongMaterialParameters,
-  MeshPhysicalMaterialParameters,
-  MeshStandardMaterialParameters,
-  MeshToonMaterialParameters,
-} from 'three'
+  LayerMaterialParameters,
+  SerializedLayer,
+  ShadingType,
+  ShadingTypes,
+  LaminaMaterialFile,
+  LaminaLayerFile,
+} from './types'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
-
-type AllMaterialParams =
-  | MeshPhongMaterialParameters
-  | MeshPhysicalMaterialParameters
-  | MeshToonMaterialParameters
-  | MeshBasicMaterialParameters
-  | MeshLambertMaterialParameters
-  | MeshStandardMaterialParameters
 
 class LayerMaterial extends CustomShaderMaterial {
   name: string = 'LayerMaterial'
-  layers: Abstract[] = []
+  layers: LAYERS.Abstract[] = []
   baseColor: THREE.ColorRepresentation = 'white'
   alpha: number = 1
   lighting: ShadingType = 'basic'
 
-  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & AllMaterialParams = {}) {
+  constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters = {}) {
     super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
 
     this.baseColor = color || this.baseColor
@@ -87,8 +70,6 @@ class LayerMaterial extends CustomShaderMaterial {
         },
       },
     }
-
-    this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
 
     return {
       uniforms,
@@ -146,4 +127,81 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+function getExt(url: string) {
+  return (url = url.substring(1 + url.lastIndexOf('/')).split('?')[0]).split('#')[0].substr(url.lastIndexOf('.'))
+}
+
+class LaminaLoader extends THREE.Loader {
+  constructor(manager?: THREE.LoadingManager) {
+    super(manager)
+  }
+
+  load<T extends LayerMaterial | LAYERS.Abstract = LayerMaterial>(
+    url: string,
+    onLoad?: (event: T) => void,
+    onError?: (event: Error) => void
+  ) {
+    const _onError = function (e: Error) {
+      if (onError) {
+        onError(e)
+      } else {
+        console.error(e)
+      }
+    }
+
+    const ext = getExt(url)
+    if (!['.lamina', '.json'].includes(ext)) {
+      _onError(new Error('Lamina Loader can only load .lamina or .json files.'))
+      return null
+    }
+
+    fetch(url)
+      .then((response) => {
+        response
+          .json()
+          .then((json: LaminaMaterialFile | LaminaLayerFile) => {
+            if (json.type === 'material') {
+              const material = new LayerMaterial({
+                ...json.properties,
+                layers: json.layers.map((l) => {
+                  // @ts-ignore
+                  return new LAYERS[l.constructor](l.properties)
+                }),
+              })
+              // @ts-ignore
+              onLoad?.(material)
+            } else {
+              // @ts-ignore
+              onLoad?.(new LAYERS[json.constructor](json.properties) as LAYERS.Abstract)
+            }
+          })
+          .catch((e) => _onError(e))
+      })
+      .catch((e) => _onError(e))
+  }
+
+  async loadAsync<T extends LayerMaterial | LAYERS.Abstract = LayerMaterial>(url: string): Promise<T> {
+    const ext = getExt(url)
+    if (!['.lamina', '.json'].includes(ext)) {
+      throw new Error('Lamina Loader can only load .lamina or .json files.')
+    }
+
+    const json: LaminaMaterialFile | LaminaLayerFile = await (await fetch(url)).json()
+    if (json.type === 'material') {
+      // @ts-ignore
+      return new LayerMaterial({
+        ...json.properties,
+        layers: json.layers.map((l) => {
+          // @ts-ignore
+          return new LAYERS[l.constructor](l.properties)
+        }),
+      })
+    } else {
+      // @ts-ignore
+      return new LAYERS[json.constructor](json.properties) as LAYERS.Abstract
+    }
+  }
+}
+
+export { LayerMaterial, LaminaLoader }
+export * from './core'

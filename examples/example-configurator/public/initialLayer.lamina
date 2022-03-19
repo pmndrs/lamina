@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "type": "layer",
+  "constructor": "Depth",
+  "properties": {
+    "near": -0.06800000000000028,
+    "far": 5,
+    "origin": [0, 0, 3],
+    "colorA": "#ff4eb8",
+    "colorB": "#24dbf8",
+    "alpha": 1,
+    "name": "Depth",
+    "mode": "multiply",
+    "visible": true,
+    "mapping": "vector"
+  }
+}

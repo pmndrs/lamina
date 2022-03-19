@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
+import { LayerMaterial, Color, Depth, Fresnel, Noise, LaminaLoader } from 'lamina/vanilla'
 import './style.css'
 
 const scene = new THREE.Scene()
