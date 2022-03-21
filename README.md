@@ -166,7 +166,7 @@ Any custom layers are automatically compatible with the debugger. However, for a
 
 ### Writing your own layers
 
-You can write your own layers by extending the `Abstract` class. The concept if simple:
+You can write your own layers by extending the `Abstract` class. The concept is simple:
 
 > Each layer can be treated as an isolated shader program that produces a `vec4` color.
 
@@ -197,13 +197,14 @@ class CustomLayer extends Abstract {
 
     vec4 main() {
       // Local variables must be prefixed by "f_"
-      vec4 f_color = vec4(u_color, u_alpha)
+      vec4 f_color = vec4(u_color, u_alpha);
       return f_color;
     }
   `
 
   // Optionally Define a vertex shader!
   // Same rules as fragment shaders, except no blend modes.
+  // Return a non-transformed vec3 position.
   static vertexShader = `   
     // Varyings must be prefixed by "v_"
     varying vec3 v_Position;
@@ -224,6 +225,10 @@ class CustomLayer extends Abstract {
   }
 }
 ```
+
+👉 Note: The vertex shader must return a vec3. You do not need to set `gl_Position` or transform the model view. lamina will handle this automatically down the chain.
+
+👉 Note: You can use lamina's noise functions inside of your own layer without any additional imports: `lamina_noise_perlin()`, `lamina_noise_simplex()`,  `lamina_noise_worley()`, `lamina_noise_white()`, `lamina_noise_swirl()`.
 
 If you need a specialized or advance use-case, see the [Advanced Usage](#advanced-usage) section
 
