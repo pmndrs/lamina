@@ -6,8 +6,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^17.0.21",
-    "@types/react": "^17.0.40",
-    "@types/react-dom": "^17.0.13",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^4.7.2",
     "css-loader": "^6.7.1",
@@ -23,12 +23,12 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
-    "@react-three/drei": "^8.16.5",
+    "@react-three/drei": "^8.18.5",
     "@react-three/fiber": "^7.0.26",
     "@types/styled-components": "^5.1.24",
     "@types/three": "^0.138.0",
     "framer-motion": "^6.2.8",
-    "lamina": "^1.1.2",
+    "lamina": "^1.1.8",
     "leva": "^0.9.23",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
