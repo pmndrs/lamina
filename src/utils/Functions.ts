@@ -57,7 +57,7 @@ export function serializeProp(prop: any) {
   if (isSerializableType(prop)) {
     return prop.toArray()
   } else if (prop instanceof Color) {
-    return '#' + prop.clone().convertLinearToSRGB().getHexString()
+    return '#' + prop.clone().getHexString()
   } else if (prop instanceof Texture) {
     return prop.image.src
   }

@@ -1,11 +1,11 @@
 import { extend } from '@react-three/fiber'
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
-import React, { useMemo } from 'react'
+import React, { MutableRefObject, useMemo } from 'react'
 import ReactDOM from 'react-dom'
 import mergeRefs from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
-import { serializedLayersToJSX } from './utils/ExportUtils'
+import { downloadObjectAsJson, serializedLayersToJSX } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
 import { Color, TextureLoader } from 'three'
 import { LayerMaterialProps, ShadingTypes } from './types'
@@ -19,8 +19,10 @@ function DynamicLeva({
   layers,
   store,
   setUpdate,
+  matRef,
 }: {
   setUpdate: any
+  matRef: MutableRefObject<LAYERS.LayerMaterial>
   name: string
   layers: any[]
   store: StoreType
@@ -33,6 +35,16 @@ function DynamicLeva({
         const n = `${layer.label} ~${i}`
         o[n] = layer
         o[n].onChange = () => setUpdate([`${name}.${n}`, layer.label])
+      })
+      o['Download Layer'] = button(() => {
+        const i = Number(name.split('~')[1])
+        const layer = matRef.current.layers[i]
+        const json = {
+          version: 1,
+          type: 'layer',
+          ...layer.serialize(),
+        }
+        downloadObjectAsJson(json, layer.name)
       })
       return o
     },
@@ -62,7 +74,20 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
           navigator.clipboard.writeText(jsx)
         }),
+        'Download material': button(() => {
+          const serializedLayers = ref.current.layers.map((l) => l.serialize())
+          const serialized = ref.current.serialize()
+          console.log(serialized)
+          const json = {
+            version: 1,
+            type: 'material',
+            properties: serialized.properties,
+            layers: serializedLayers,
+          }
+          downloadObjectAsJson(json, ref.current.name)
+        }),
       },
+
       { store }
     )
 
@@ -183,7 +208,14 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
     return (
       <>
         {Object.entries(layers).map(([name, layers], i) => (
-          <DynamicLeva key={`${name} ~${i}`} name={name} layers={layers} store={store} setUpdate={setPath} />
+          <DynamicLeva
+            matRef={ref}
+            key={`${name} ~${i}`}
+            name={name}
+            layers={layers}
+            store={store}
+            setUpdate={setPath}
+          />
         ))}
         <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
           {children}

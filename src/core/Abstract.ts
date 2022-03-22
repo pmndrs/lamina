@@ -299,8 +299,8 @@ export default class Abstract {
     return {
       constructor: name,
       properties: {
-        ...props,
         ...nonUniformProps,
+        ...props,
       },
     }
   }
