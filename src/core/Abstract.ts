@@ -195,6 +195,9 @@ export default class Abstract {
     } else if (name.startsWith('f_')) {
       const slice = name.slice(2)
       return `f_${this.uuid}_${slice}`
+    } else if (name.startsWith('func_')) {
+      const slice = name.slice(2)
+      return `func_${this.uuid}_${slice}`
     } else {
       return name
     }

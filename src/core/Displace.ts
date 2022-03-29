@@ -18,7 +18,7 @@ export default class Displace extends Abstract {
       uniform float u_scale;
       uniform vec3 u_offset;
 
-      vec3 displace(vec3 p) {
+      vec3 func_displace(vec3 p) {
 				vec3 f_position = lamina_mapping_template;
         float f_n = lamina_noise_template((f_position + u_offset) * u_scale) * u_strength;
         vec3 f_newPosition = p + (f_n * normal);
@@ -27,18 +27,18 @@ export default class Displace extends Abstract {
       }
 
       
-			vec3 orthogonal(vec3 v) {
+			vec3 func_orthogonal(vec3 v) {
   		  return normalize(abs(v.x) > abs(v.z) ? vec3(-v.y, v.x, 0.0)
   		  : vec3(0.0, -v.z, v.y));
   		}
-  		vec3 recalcNormals(vec3 newPos) {
+  		vec3 func_recalcNormals(vec3 newPos) {
   		  float offset = 0.001;
-  		  vec3 tangent = orthogonal(normal);
+  		  vec3 tangent = func_orthogonal(normal);
   		  vec3 bitangent = normalize(cross(normal, tangent));
   		  vec3 neighbour1 = position + tangent * offset;
   		  vec3 neighbour2 = position + bitangent * offset;
-  		  vec3 displacedNeighbour1 = displace(neighbour1);
-  		  vec3 displacedNeighbour2 = displace(neighbour2);
+  		  vec3 displacedNeighbour1 = func_displace(neighbour1);
+  		  vec3 displacedNeighbour2 = func_displace(neighbour2);
   		  vec3 displacedTangent = displacedNeighbour1 - newPos;
   		  vec3 displacedBitangent = displacedNeighbour2 - newPos;
   		  return normalize(cross(displacedTangent, displacedBitangent));
@@ -47,8 +47,8 @@ export default class Displace extends Abstract {
   
       void main() {
        
-				vec3 f_newPosition = displace(position);
-        lamina_finalNormal = recalcNormals(f_newPosition);
+				vec3 f_newPosition = func_displace(position);
+        lamina_finalNormal = func_recalcNormals(f_newPosition);
 
         return f_newPosition;
       }
