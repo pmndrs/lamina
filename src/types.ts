@@ -42,7 +42,7 @@ export const NoiseTypes: {
   white: 'white',
 }
 
-export type NoiseType = 'perlin' | 'simplex' | 'cell' | 'curl'
+export type NoiseType = 'perlin' | 'simplex' | 'cell' | 'curl' | 'white'
 
 export const MappingTypes: {
   [key: string]: string
