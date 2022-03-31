@@ -4,6 +4,7 @@ import { Leva } from 'leva'
 import Monkey from './Monkey'
 import styled from 'styled-components'
 import { Environment, Stats } from '@react-three/drei'
+import { Color } from 'three'
 
 export default function App() {
   return (
@@ -13,7 +14,7 @@ export default function App() {
         <Leva titleBar={{ title: 'lamina' }} />
       </LevaContainer>
       <Canvas dpr={[1, 2]} camera={{ fov: 50, position: [5, 5, 5] }}>
-        <color attach="background" args={['#dadada']} />
+        <color attach="background" args={[new Color('#dadada').convertLinearToSRGB()]} />
         <Suspense fallback={null}>
           <Monkey />
         </Suspense>

@@ -7,10 +7,11 @@ import {
   MeshLambertMaterialProps,
   MeshStandardMaterialProps,
 } from '@react-three/fiber'
+import { createRoot } from 'react-dom/client'
+
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
 import React, { useEffect, useMemo, useState } from 'react'
-import ReactDOM from 'react-dom'
 import mergeRefs from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { serializedLayersToJSX } from './utils/ExportUtils'
@@ -87,7 +88,7 @@ const DebugLayerMaterial = React.forwardRef<
     'Base',
     {
       Color: {
-        value: '#' + new Color(ref.current?.baseColor || props?.color || 'white').getHexString(),
+        value: '#' + new Color(ref.current?.baseColor || props?.color || 'white').convertLinearToSRGB().getHexString(),
         onChange: (v) => {
           ref.current.uniforms[`u_lamina_color`].value = getUniform(v)
           ref.current.uniformsNeedUpdate = true
@@ -179,17 +180,14 @@ const DebugLayerMaterial = React.forwardRef<
 
     if (root) {
       root.appendChild(div)
-      ReactDOM.render(
-        ReactDOM.createPortal(
-          <LevaPanel
-            titleBar={{
-              title: props.name || ref.current.name,
-            }}
-            store={store}
-          />,
-          div
-        ),
-        div
+      const levaRoot = createRoot(div)
+      levaRoot.render(
+        <LevaPanel
+          titleBar={{
+            title: props.name || ref.current.name,
+          }}
+          store={store}
+        />
       )
     }
 
