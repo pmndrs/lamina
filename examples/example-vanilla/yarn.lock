@@ -795,9 +795,9 @@ camel-case@^4.1.2:
     tslib "^2.0.3"
 
 caniuse-lite@^1.0.30001317:
-  version "1.0.30001322"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001322.tgz#2e4c09d11e1e8f852767dab287069a8d0c29d623"
-  integrity sha512-neRmrmIrCGuMnxGSoh+x7zYtQFFgnSY2jaomjU56sCkTA6JINqQrxutF459JpWcWRajvoyn95sOXq4Pqrnyjew==
+  version "1.0.30001323"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001323.tgz#a451ff80dec7033016843f532efda18f02eec011"
+  integrity sha512-e4BF2RlCVELKx8+RmklSEIVub1TWrmdhvA5kEUueummz1XyySW0DVk+3x9HyhU9MuWTa2BhqLgEuEmUwASAdCA==
 
 chalk@^4.1.0:
   version "4.1.2"
@@ -1167,9 +1167,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.4.84:
-  version "1.4.99"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.99.tgz#da97e2c116dc6de2f91a81b4ff8d1b19bf54dc1f"
-  integrity sha512-YXMzbvlo6pW12KWw0bj6cIGCJi1Moy8PLCuuzgRzg6WYIcHILK3szU+HHnHFx2b373qRv+cfmHhbmRbatyAbPA==
+  version "1.4.103"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.103.tgz#abfe376a4d70fa1e1b4b353b95df5d6dfd05da3a"
+  integrity sha512-c/uKWR1Z/W30Wy/sx3dkZoj4BijbXX85QKWu9jJfjho3LBAXNEGAEW3oWiGb+dotA6C6BzCTxL2/aLes7jlUeg==
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -2146,9 +2146,9 @@ no-case@^3.0.4:
     tslib "^2.0.3"
 
 node-forge@^1:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.0.tgz#37a874ea723855f37db091e6c186e5b67a01d4b2"
-  integrity sha512-08ARB91bUi6zNKzVmaj3QO7cr397uiDT2nJ63cHjyNtCTWIgvS47j3eT0WfzUwS9+6Z5YshRaoasFkXCKrIYbA==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
+  integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
 
 node-releases@^2.0.2:
   version "2.0.2"
@@ -2372,9 +2372,9 @@ postcss-modules-values@^4.0.0:
     icss-utils "^5.0.0"
 
 postcss-selector-parser@^6.0.2, postcss-selector-parser@^6.0.4:
-  version "6.0.9"
-  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.9.tgz#ee71c3b9ff63d9cd130838876c13a2ec1a992b2f"
-  integrity sha512-UO3SgnZOVTwu4kyLR22UQ1xZh086RyNZppb7lLAKBFK8a32ttG5i87Y/P3+2bRSjZNyJ1B7hfFNo273tKe9YxQ==
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.10.tgz#79b61e2c0d1bfc2602d549e11d0876256f8df88d"
+  integrity sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==
   dependencies:
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
@@ -2921,14 +2921,14 @@ terser@^5.10.0, terser@^5.7.2:
     source-map-support "~0.5.20"
 
 three-custom-shader-material@^3.2.11:
-  version "3.2.11"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.2.11.tgz#a60dd04223a87381e10336eecfcada1f22a0c87d"
-  integrity sha512-KtLvwr2zgluKoWRhpfMhPdPrmCv10mQLyNNiVrjrx2NTmhPVVbQxk6K+b/Uo+QQglOzqeWF8TKj+ePGNBQXxAg==
+  version "3.2.12"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.2.12.tgz#c061f1c5883e450a092dfbbd3200436698ad0bca"
+  integrity sha512-PdwhCJVrqtbc1lCgkxOr0rryYc4v3025FmEtc3lCpaXgDW0TRyjczsCep4a9/fhHte/wJFhD6zwM7m1k7VERzA==
 
-three@^0.139.0:
-  version "0.139.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.139.0.tgz#4805eeb4cde85d8a82b6048088230f8ce5b75375"
-  integrity sha512-hZ4LkCjgoEM82WLaOVptDKGpB3SkEyuJP2OHe36AFO8hS2I6CrEiNanXj7wwR3wIPT7V5wi5Y5pFnncS5SVHgQ==
+three@^0.139.1:
+  version "0.139.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.139.1.tgz#1603d6d1f33b6cef44b15b4f859c7b4ca6774efb"
+  integrity sha512-7mV5mk7k9CyNnRBXBo8VDWw0haONMh+czKfGFCaYhKq79br2z+4TxZe4JurM6/IGsLU3VaP8CydfDsifvZvg8w==
 
 through2@^0.6.3:
   version "0.6.5"
