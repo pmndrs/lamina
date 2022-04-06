@@ -1,5 +1,5 @@
 for d in ./examples/* ; do
     cd $d
-    yarn upgrade --latest
+    yarn add lamina@latest
     cd ../../
 done

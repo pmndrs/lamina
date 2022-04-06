@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@types/three": "^0.139.0",
-    "lamina": "^1.1.8",
+    "lamina": "^1.1.11",
     "three": "^0.139.1",
     "webpack": "5.70.0",
     "webpack-cli": "^4.9.2"

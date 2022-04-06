@@ -3,7 +3,7 @@ import { extend, useFrame } from '@react-three/fiber'
 import { Depth, Fresnel, Gradient, LayerMaterial } from 'lamina'
 import { useRef } from 'react'
 import { MathUtils } from 'three'
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import Roboto from './fonts/Roboto_Bold.json'
 
