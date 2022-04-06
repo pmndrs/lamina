@@ -82,6 +82,6 @@
     "glsl-token-string": "^1.0.1",
     "glsl-tokenizer": "^2.1.5",
     "leva": "^0.9.20",
-    "three-custom-shader-material": "^3.2.12"
+    "three-custom-shader-material": "^3.2.13"
   }
 }
