@@ -1,5 +1,5 @@
 import { extend, Node, useLoader } from '@react-three/fiber'
-import React, { useLayoutEffect, useMemo, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import mergeRefs from 'react-merge-refs'
 import {
   DepthProps,
@@ -13,6 +13,7 @@ import {
   DisplaceProps,
   NormalProps,
   LayerProps,
+  ShaderProps,
 } from './types'
 import * as LAYERS from './vanilla'
 import DebugLayerMaterial from './debug'
@@ -32,6 +33,7 @@ declare global {
       texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
       displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>
       normal_: Node<LAYERS.Normal, typeof LAYERS.Normal>
+      shader_: Node<LAYERS.Shader, typeof LAYERS.Shader>
     }
   }
 }
@@ -47,6 +49,7 @@ extend({
   Texture_: LAYERS.Texture,
   Displace_: LAYERS.Displace,
   Normal_: LAYERS.Normal,
+  Shader_: LAYERS.Shader,
 })
 
 const LayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWithChildren<LayerMaterialProps>>(
@@ -81,6 +84,7 @@ function getNonUniformArgs(props: any) {
       mapping: props?.mapping,
       map: props?.map,
       axes: props?.axes,
+      onParse: props?.onParse,
     },
   ] as any
 }
@@ -121,6 +125,10 @@ const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
   return <normal_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
 
+const Shader = React.forwardRef<LAYERS.Shader, ShaderProps>((props, ref) => {
+  return <shader_ ref={ref} args={getNonUniformArgs(props)} {...props} />
+}) as React.ForwardRefExoticComponent<ShaderProps & React.RefAttributes<LAYERS.Shader>>
+
 function useLamina(url: string) {
   const material = useLoader(LAYERS.LaminaLoader as any, url) as LAYERS.LayerMaterial
 
@@ -160,4 +168,5 @@ export {
   Texture,
   Displace,
   Normal,
+  Shader,
 }

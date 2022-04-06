@@ -2,7 +2,7 @@ import { extend } from '@react-three/fiber'
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
 import React, { MutableRefObject, useMemo } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import mergeRefs from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { downloadObjectAsJson, serializedLayersToJSX } from './utils/ExportUtils'
@@ -71,7 +71,7 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
       {
         'Copy JSX': button(() => {
           const serialized = ref.current.layers.map((l) => l.serialize())
-          const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
+          const jsx = serializedLayersToJSX(serialized, ref.current.serialize() as any)
           navigator.clipboard.writeText(jsx)
         }),
         'Download material': button(() => {
@@ -153,7 +153,13 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
           if (uniform) {
             uniform.value = getUniform(updatedData.value)
           } else {
-            layer.buildShaders(layer.constructor)
+            if (layer._fragment) {
+              layer.fragmentShader = layer._fragment
+              layer.vertexShader = layer._vertex
+              layer.buildShaders()
+            } else {
+              layer.buildShaders(layer.constructor)
+            }
             ref.current.refresh()
           }
         } else {
@@ -186,17 +192,14 @@ const DebugLayerMaterial = React.forwardRef<LAYERS.LayerMaterial, React.PropsWit
 
       if (root) {
         root.appendChild(div)
-        ReactDOM.render(
-          ReactDOM.createPortal(
-            <LevaPanel
-              titleBar={{
-                title: props.name || ref.current.name,
-              }}
-              store={store}
-            />,
-            div
-          ),
-          div
+        const levaRoot = createRoot(div)
+        levaRoot.render(
+          <LevaPanel
+            titleBar={{
+              title: props.name || ref.current.name,
+            }}
+            store={store}
+          />
         )
       }
 

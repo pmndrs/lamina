@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "type": "layer",
+  "constructor": "CustomLayer",
+  "properties": {
+    "uuid": "d65931c3_204a_45c9_8d01_63cc35e07c1f",
+    "name": "CustomLayer",
+    "mode": "normal",
+    "visible": true
+  },
+  "uniforms": { "abc": 1 },
+  "shaders": {
+    "fragmentShader": "\n\n  lamina_finalColor = lamina_blend_alpha(lamina_finalColor, vec4(1., 0., 1., 1.), vec4(1., 0., 1., 1.).a);",
+    "fragmentVariables": "\n  ",
+    "vertexShader": "",
+    "vertexVariables": ""
+  }
+}

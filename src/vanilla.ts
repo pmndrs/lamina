@@ -33,9 +33,11 @@ class LayerMaterial extends CustomShaderMaterial {
     this.name = name || this.name
 
     this.refresh()
+    // @ts-ignore
+    console.log(this._transmission)
   }
 
-  genShaders() {
+  private genShaders() {
     let vertexVariables = ''
     let fragmentVariables = ''
     let vertexShader = ''
@@ -114,7 +116,7 @@ class LayerMaterial extends CustomShaderMaterial {
     super.update(fragmentShader, vertexShader, uniforms)
   }
 
-  serialize(): SerializedLayer {
+  serialize(): Partial<SerializedLayer> {
     return {
       constructor: 'LayerMaterial',
       properties: {
@@ -131,9 +133,32 @@ function getExt(url: string) {
   return (url = url.substring(1 + url.lastIndexOf('/')).split('?')[0]).split('#')[0].substr(url.lastIndexOf('.'))
 }
 
+class PlaceholderLayer extends LAYERS.Abstract {}
+
 class LaminaLoader extends THREE.Loader {
   constructor(manager?: THREE.LoadingManager) {
     super(manager)
+  }
+
+  private makeLayer(l: any) {
+    // @ts-ignore
+    const layer = new LAYERS.Abstract(PlaceholderLayer)
+
+    const id = LAYERS.Abstract.genUUID()
+    for (const key in l.shaders) {
+      l.shaders[key] = l.shaders[key].replace(new RegExp(l.properties.uuid, 'g'), id)
+    }
+
+    layer.buildUniforms(undefined, { ...l.properties, uuid: id }, l.uniforms)
+    layer.fragmentShader = l.shaders.fragmentShader
+    layer.fragmentVariables = l.shaders.fragmentVariables
+    layer.vertexShader = l.shaders.vertexShader
+    layer.vertexVariables = l.shaders.vertexVariables
+
+    // Non uniforms are har coded into the shader :(
+    layer.schema = layer.schema.filter((e) => !['visible', 'mode'].includes(e.label))
+
+    return layer
   }
 
   load<T extends LayerMaterial | LAYERS.Abstract = LayerMaterial>(
@@ -164,15 +189,14 @@ class LaminaLoader extends THREE.Loader {
               const material = new LayerMaterial({
                 ...json.properties,
                 layers: json.layers.map((l) => {
-                  // @ts-ignore
-                  return new LAYERS[l.constructor](l.properties)
+                  return this.makeLayer(l)
                 }),
               })
               // @ts-ignore
               onLoad?.(material)
             } else {
               // @ts-ignore
-              onLoad?.(new LAYERS[json.constructor](json.properties) as LAYERS.Abstract)
+              onLoad?.(this.makeLayer(json))
             }
           })
           .catch((e) => _onError(e))
@@ -181,25 +205,17 @@ class LaminaLoader extends THREE.Loader {
   }
 
   async loadAsync<T extends LayerMaterial | LAYERS.Abstract = LayerMaterial>(url: string): Promise<T> {
-    const ext = getExt(url)
-    if (!['.lamina', '.json'].includes(ext)) {
-      throw new Error('Lamina Loader can only load .lamina or .json files.')
-    }
-
-    const json: LaminaMaterialFile | LaminaLayerFile = await (await fetch(url)).json()
-    if (json.type === 'material') {
-      // @ts-ignore
-      return new LayerMaterial({
-        ...json.properties,
-        layers: json.layers.map((l) => {
-          // @ts-ignore
-          return new LAYERS[l.constructor](l.properties)
-        }),
-      })
-    } else {
-      // @ts-ignore
-      return new LAYERS[json.constructor](json.properties) as LAYERS.Abstract
-    }
+    return new Promise((resolve, reject) => {
+      this.load<T>(
+        url,
+        (material) => {
+          resolve(material)
+        },
+        (err) => {
+          reject(err)
+        }
+      )
+    })
   }
 }
 

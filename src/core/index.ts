@@ -8,5 +8,6 @@ import Matcap from './Matcap'
 import Texture from './Texture'
 import Displace from './Displace'
 import Normal from './Normal'
+import Shader from './Shader'
 
-export { Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+export { Shader, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }

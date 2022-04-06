@@ -171,11 +171,27 @@ export interface TextureProps extends LayerProps {
   map?: THREE.Texture
   alpha?: number
 }
+export interface ShaderProps extends LayerProps {
+  vertex?: string
+  fragment?: string
+  alpha?: number
+  onParse?: (self: Abstract) => void
+  [name: string]: any
+}
 
 export interface SerializedLayer {
   constructor: string
   properties: {
     [name: string]: any
+  }
+  uniforms: {
+    [name: string]: any
+  }
+  shaders: {
+    fragmentShader: string
+    fragmentVariables: string
+    vertexShader: string
+    vertexVariables: string
   }
 }
 
