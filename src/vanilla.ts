@@ -16,6 +16,7 @@ import NoiseChunk from './chunks/Noise'
 import HelpersChunk from './chunks/Helpers'
 import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
 import {
+  ColorRepresentation,
   MeshBasicMaterialParameters,
   MeshLambertMaterialParameters,
   MeshPhongMaterialParameters,
@@ -36,15 +37,23 @@ type AllMaterialParams =
 class LayerMaterial extends CustomShaderMaterial {
   name: string = 'LayerMaterial'
   layers: Abstract[] = []
-  baseColor: THREE.ColorRepresentation = 'white'
-  alpha: number = 1
   lighting: ShadingType = 'basic'
 
   constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & AllMaterialParams = {}) {
     super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
 
-    this.baseColor = color || this.baseColor
-    this.alpha = alpha ?? this.alpha
+    const _baseColor = color || 'white'
+    const _alpha = alpha ?? 1
+
+    this.uniforms = {
+      u_lamina_color: {
+        value: typeof _baseColor === 'string' ? new THREE.Color(_baseColor).convertSRGBToLinear() : _baseColor,
+      },
+      u_lamina_alpha: {
+        value: _alpha,
+      },
+    }
+
     this.layers = layers || this.layers
     this.lighting = lighting || this.lighting
     this.name = name || this.name
@@ -77,18 +86,8 @@ class LayerMaterial extends CustomShaderMaterial {
 
     uniforms = {
       ...uniforms,
-      ...{
-        u_lamina_color: {
-          value:
-            typeof this.baseColor === 'string' ? new THREE.Color(this.baseColor).convertSRGBToLinear() : this.baseColor,
-        },
-        u_lamina_alpha: {
-          value: this.alpha,
-        },
-      },
+      ...this.uniforms,
     }
-
-    this.transparent = Boolean(this.alpha !== undefined && this.alpha < 1)
 
     return {
       uniforms,
@@ -137,12 +136,26 @@ class LayerMaterial extends CustomShaderMaterial {
     return {
       constructor: 'LayerMaterial',
       properties: {
-        color: this.baseColor,
+        color: this.color,
         alpha: this.alpha,
         name: this.name,
         lighting: this.lighting,
       },
     }
+  }
+
+  set color(v: ColorRepresentation) {
+    if (this.uniforms?.u_lamina_color?.value)
+      this.uniforms.u_lamina_color.value = typeof v === 'string' ? new THREE.Color(v).convertSRGBToLinear() : v
+  }
+  get color() {
+    return this.uniforms?.u_lamina_color?.value
+  }
+  set alpha(v: number) {
+    this.uniforms.u_lamina_alpha.value = v
+  }
+  get alpha() {
+    return this.uniforms.u_lamina_alpha.value
   }
 }
 

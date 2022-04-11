@@ -99,38 +99,47 @@ function getNonUniformArgs(props: any) {
 }
 
 const Depth = React.forwardRef<LAYERS.Depth, DepthProps>((props, forwardRef) => {
+  //@ts-ignore
   return <depth_ args={getNonUniformArgs(props)} ref={forwardRef} {...props} />
 }) as React.ForwardRefExoticComponent<DepthProps & React.RefAttributes<LAYERS.Depth>>
 
 const Color = React.forwardRef<LAYERS.Color, ColorProps>((props, ref) => {
+  //@ts-ignore
   return <color_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<ColorProps & React.RefAttributes<LAYERS.Color>>
 
 const Noise = React.forwardRef<LAYERS.Noise, NoiseProps>((props, ref) => {
+  //@ts-ignore
   return <noise_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NoiseProps & React.RefAttributes<LAYERS.Noise>>
 
 const Fresnel = React.forwardRef<LAYERS.Fresnel, FresnelProps>((props, ref) => {
+  //@ts-ignore
   return <fresnel_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<FresnelProps & React.RefAttributes<LAYERS.Fresnel>>
 
 const Gradient = React.forwardRef<LAYERS.Gradient, GradientProps>((props, ref) => {
+  //@ts-ignore
   return <gradient_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<GradientProps & React.RefAttributes<LAYERS.Gradient>>
 
 const Matcap = React.forwardRef<LAYERS.Matcap, MatcapProps>((props, ref) => {
+  //@ts-ignore
   return <matcap_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<MatcapProps & React.RefAttributes<LAYERS.Matcap>>
 
 const Texture = React.forwardRef<LAYERS.Texture, TextureProps>((props, ref) => {
+  //@ts-ignore
   return <texture_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<TextureProps & React.RefAttributes<LAYERS.Texture>>
 
 const Displace = React.forwardRef<LAYERS.Displace, DisplaceProps>((props, ref) => {
+  //@ts-ignore
   return <displace_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<DisplaceProps & React.RefAttributes<LAYERS.Displace>>
 
 const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
+  //@ts-ignore
   return <normal_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
 

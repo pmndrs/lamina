@@ -9,7 +9,6 @@ import { Color } from 'three'
 export default function App() {
   return (
     <>
-      <Stats />
       <LevaContainer>
         <Leva titleBar={{ title: 'lamina' }} />
       </LevaContainer>

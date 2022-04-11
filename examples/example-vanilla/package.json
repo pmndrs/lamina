@@ -15,6 +15,8 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@types/three": "^0.139.0",
     "lamina": "^1.1.11",
     "three": "^0.139.1",

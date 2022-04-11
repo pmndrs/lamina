@@ -69,7 +69,9 @@ export default function Monkey() {
       <TransformControls ref={transformControls}>
         <group scale={0.1} rotation={[0, -Math.PI / 2, Math.PI / 4]}>
           <mesh matrixAutoUpdate geometry={nodes.Suzanne.geometry} rotation-y={Math.PI / 2} scale={30}>
-            <DebugLayerMaterial {...materialProps}>{...layers}</DebugLayerMaterial>
+            <DebugLayerMaterial transparent {...materialProps}>
+              {...layers}
+            </DebugLayerMaterial>
           </mesh>
         </group>
       </TransformControls>

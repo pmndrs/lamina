@@ -88,11 +88,9 @@ const DebugLayerMaterial = React.forwardRef<
     'Base',
     {
       Color: {
-        value: '#' + new Color(ref.current?.baseColor || props?.color || 'white').convertLinearToSRGB().getHexString(),
+        value: '#' + new Color(ref.current?.color || props?.color || 'white').convertLinearToSRGB().getHexString(),
         onChange: (v) => {
-          ref.current.uniforms[`u_lamina_color`].value = getUniform(v)
-          ref.current.uniformsNeedUpdate = true
-          ref.current['baseColor'] = v
+          ref.current.color = v
         },
       },
       Alpha: {
@@ -100,11 +98,7 @@ const DebugLayerMaterial = React.forwardRef<
         min: 0,
         max: 1,
         onChange: (v) => {
-          ref.current.uniforms[`u_lamina_alpha`].value = getUniform(v)
-          ref.current.uniformsNeedUpdate = true
-          ref.current['alpha'] = v
-          ref.current.transparent = Boolean(v !== undefined && v < 1)
-          ref.current.needsUpdate = true
+          ref.current.alpha = v
         },
       },
       Lighting: {

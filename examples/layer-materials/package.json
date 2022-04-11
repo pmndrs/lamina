@@ -15,6 +15,8 @@
     "@babel/preset-react": "^7.16.7",
     "@react-three/drei": "9.0.1",
     "@react-three/fiber": "8.0.3",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@types/three": "^0.139.0",
     "babel-loader": "^8.2.4",
     "css-loader": "^6.6.0",
