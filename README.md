@@ -27,7 +27,7 @@
   <a href="https://codesandbox.io/embed/github/pmndrs/lamina/tree/main/examples/layer-materials" target="_blank"><img width="400" src="https://github.com/pmndrs/lamina/blob/main/assets/lamina.png?raw=true"  /></a>
 </p>
 <p align="middle">
-  <i>These demos are real, you can click them! They contain the full code, too. 📦</i>
+  <i>These demos are real, you can click them! They contain the full code, too. 📦</i> More examples <a href="./examples">here</a>
 </p>
 <br />
 
@@ -115,7 +115,7 @@ new Depth({
 | `name`     | `string`                                                                | `"LayerMaterial"` |
 | `color`    | `THREE.ColorRepresentation \| THREE.Color`                              | `"white"`         |
 | `alpha`    | `number`                                                                | `1`               |
-| `lighting`  | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'lambert' \| 'standard'` | `'basic'`         |
+| `lighting` | `'phong' \| 'physical' \| 'toon' \| 'basic' \| 'lambert' \| 'standard'` | `'basic'`         |
 | `layers`\* | `Abstract[]`                                                            | `[]`              |
 
 The `lighting` prop controls the shading that is applied on the material. The material then accepts all the material properties supported by ThreeJS of the material type specified by the `lighting` prop.
@@ -173,7 +173,7 @@ You can write your own layers by extending the `Abstract` class. The concept is 
 The color of each layer will be blended together using the specified blend mode. A list of all available blend modes can be found [here](#blendmode)
 
 ```ts
-import { Abstract } from "lamina/vanilla"
+import { Abstract } from 'lamina/vanilla'
 
 // Extend the Abstract layer
 class CustomLayer extends Abstract {
@@ -184,7 +184,7 @@ class CustomLayer extends Abstract {
   // Any unifroms here will automatically be set as properties on the class as setters and getters.
   // There setters and getters will update the underlying unifrom.
   static u_color = 'red' // Can be accessed as CustomLayer.color
-  static u_alpha = 1     // Can be accessed as CustomLayer.alpha
+  static u_alpha = 1 // Can be accessed as CustomLayer.alpha
 
   // Define your fragment shader just like you already do!
   // Only difference is, you must return the final color of this layer
@@ -228,7 +228,7 @@ class CustomLayer extends Abstract {
 
 👉 Note: The vertex shader must return a vec3. You do not need to set `gl_Position` or transform the model view. lamina will handle this automatically down the chain.
 
-👉 Note: You can use lamina's noise functions inside of your own layer without any additional imports: `lamina_noise_perlin()`, `lamina_noise_simplex()`,  `lamina_noise_worley()`, `lamina_noise_white()`, `lamina_noise_swirl()`.
+👉 Note: You can use lamina's noise functions inside of your own layer without any additional imports: `lamina_noise_perlin()`, `lamina_noise_simplex()`, `lamina_noise_worley()`, `lamina_noise_white()`, `lamina_noise_swirl()`.
 
 If you need a specialized or advance use-case, see the [Advanced Usage](#advanced-usage) section
 
@@ -336,10 +336,9 @@ In react...
 // ...
 <LayerMaterial>
   <customLayer
-    ref={ref} 
+    ref={ref}
     color="green"
     alpha={0.5}
-
     args={[mapping]} // Non unifrom params must be passed to the constructor using `args`
   />
 </LayerMaterial>
