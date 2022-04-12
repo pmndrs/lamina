@@ -20,6 +20,7 @@ export default function Marble({ setLoaded }: { setLoaded: any }) {
 
   return (
     <group>
+      {/* @ts-ignore */}
       <instancedMesh castShadow ref={ref} args={[undefined, undefined, number]}>
         <sphereBufferGeometry args={[0.1, 128, 128]} />
 

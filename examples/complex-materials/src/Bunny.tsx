@@ -15,6 +15,7 @@ export default function Bunny(props: any) {
 
   return (
     <group ref={group} dispose={null}>
+      {/* @ts-ignore */}
       <mesh ref={ref} scale={0.01} castShadow receiveShadow geometry={nodes.Bunny.geometry}>
         {/* @ts-ignore */}
         <LayerMaterial color={'#718EFF'} lighting={'physical'} envMapIntensity={0.3}>

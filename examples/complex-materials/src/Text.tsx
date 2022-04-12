@@ -41,6 +41,7 @@ export default function TextComponent() {
 
   return (
     <group>
+      {/* @ts-ignore */}
       <mesh ref={ref} castShadow>
         {/* @ts-ignore */}
         <textGeometry attach="geometry" args={['LAM', textOptions]} />
@@ -71,6 +72,7 @@ export default function TextComponent() {
         <textGeometry attach="geometry" args={['LAM', textOptions]} />
         <meshBasicMaterial wireframe />
       </mesh>
+      {/* @ts-ignore */}
       <mesh ref={ref2} castShadow>
         {/* @ts-ignore */}
         <textGeometry attach="geometry" args={['INA', textOptions]} />
