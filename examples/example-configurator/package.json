@@ -28,7 +28,7 @@
     "@types/styled-components": "^5.1.24",
     "@types/three": "^0.139.0",
     "framer-motion": "^6.2.8",
-    "lamina": "^1.1.12",
+    "lamina": "^1.1.13",
     "leva": "^0.9.23",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

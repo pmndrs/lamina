@@ -21,7 +21,7 @@
     "babel-loader": "^8.2.4",
     "css-loader": "^6.6.0",
     "html-webpack-plugin": "^5.5.0",
-    "lamina": "^1.1.12",
+    "lamina": "^1.1.13",
     "leva": "0.9.23",
     "react": "18.0.0",
     "react-dom": "18.0.0",

@@ -3171,10 +3171,10 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
-lamina@^1.1.12:
-  version "1.1.12"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.12.tgz#89b7b9a73236f0e34a35c17b164b4b47742a9f9d"
-  integrity sha512-7vCX29rFGdai551WJES7SPJDsy6mZHKbRxGKRxYLWf87aY/eawn5WrXQnMDPN6jd03NPbgPsfE2uoBB2pkkGmA==
+lamina@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.13.tgz#4a31092436a83de952443d08323c12c3a7a6163c"
+  integrity sha512-iiP+wqble6EbX+R1ZdMk30lCLVTcKxRBVlXZ8gIV4ivaHfhoU6bZo4HlN3b25wbeNqyYiA3JVr/iZMlVbM1bBQ==
   dependencies:
     glsl-token-descope "^1.0.2"
     glsl-token-functions "^1.0.1"

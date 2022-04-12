@@ -3197,6 +3197,18 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+lamina@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.13.tgz#4a31092436a83de952443d08323c12c3a7a6163c"
+  integrity sha512-iiP+wqble6EbX+R1ZdMk30lCLVTcKxRBVlXZ8gIV4ivaHfhoU6bZo4HlN3b25wbeNqyYiA3JVr/iZMlVbM1bBQ==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    leva "^0.9.20"
+    three-custom-shader-material "^3.3.1"
+
 leva@^0.9.20:
   version "0.9.23"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.23.tgz#5703ad3d9827c744848c8559fd121f1811ba9d77"
