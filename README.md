@@ -204,7 +204,7 @@ class CustomLayer extends Abstract {
 
   // Optionally Define a vertex shader!
   // Same rules as fragment shaders, except no blend modes.
-  // Return a non-transformed vec3 position.
+  // Return a non-projected vec3 position.
   static vertexShader = `   
     // Varyings must be prefixed by "v_"
     varying vec3 v_Position;
