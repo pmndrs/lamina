@@ -86,6 +86,10 @@ export interface LayerProps {
   mode?: BlendMode
   name?: string
   visible?: boolean
+
+  onUniformsParse?: (self: Abstract & any) => void
+  onShaderParse?: (self: Abstract & any) => void
+
   [key: string]: any
 }
 

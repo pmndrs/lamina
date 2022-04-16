@@ -135,31 +135,32 @@ const DebugLayerMaterial = React.forwardRef<
       const layer = ref.current.layers[index] as LAYERS.Abstract & {
         [key: string]: any
       }
+      console.log(property)
 
-      if (property !== 'map') {
-        layer[property] = updatedData.value
-        if (uniform) {
-          uniform.value = getUniform(updatedData.value)
-        } else {
-          layer.buildShaders(layer.constructor)
-          ref.current.refresh()
-        }
-      } else {
-        ;(async () => {
-          try {
-            if (updatedData.value) {
-              const t = await textureLoader.loadAsync(updatedData.value)
-              layer[property] = t
-              uniform.value = t
-            } else {
-              layer[property] = undefined
-              uniform.value = undefined
-            }
-          } catch (error) {
-            console.error(error)
-          }
-        })()
-      }
+      // if (property !== 'map') {
+      //   layer[property] = updatedData.value
+      //   if (uniform) {
+      //     uniform.value = getUniform(updatedData.value)
+      //   } else {
+      //     layer.buildShaders(layer.raw.constructor)
+      //     ref.current.refresh()
+      //   }
+      // } else {
+      //   ;(async () => {
+      //     try {
+      //       if (updatedData.value) {
+      //         const t = await textureLoader.loadAsync(updatedData.value)
+      //         layer[property] = t
+      //         uniform.value = t
+      //       } else {
+      //         layer[property] = undefined
+      //         uniform.value = undefined
+      //       }
+      //     } catch (error) {
+      //       console.error(error)
+      //     }
+      //   })()
+      // }
     }
   }, [path])
 
@@ -178,7 +179,7 @@ const DebugLayerMaterial = React.forwardRef<
       levaRoot.render(
         <LevaPanel
           titleBar={{
-            title: props.name || ref.current.name,
+            title: props.name || ref.current._name,
           }}
           store={store}
         />
@@ -195,7 +196,7 @@ const DebugLayerMaterial = React.forwardRef<
       {Object.entries(layers).map(([name, layers], i) => (
         <DynamicLeva key={`${name} ~${i}`} name={name} layers={layers} store={store} setUpdate={setPath} />
       ))}
-      <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
+      <layerMaterial ref={mergeRefs([ref, forwardRef])} {...otherProps}>
         {children}
       </layerMaterial>
     </>

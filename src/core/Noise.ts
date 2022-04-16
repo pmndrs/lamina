@@ -54,17 +54,14 @@ export default class Noise extends Abstract {
     }
   `
 
-  type: NoiseType = 'perlin'
-  mapping: MappingType = 'local'
+  static type: NoiseType = 'perlin'
+  static mapping: MappingType = 'local'
 
   constructor(props?: NoiseProps) {
-    super(
-      Noise,
-      {
-        name: 'noise',
-        ...props,
-      },
-      (self: Noise) => {
+    super(Noise, {
+      name: 'noise',
+      ...props,
+      onShaderParse: (self) => {
         self.schema.push({
           value: self.type,
           label: 'type',
@@ -82,8 +79,8 @@ export default class Noise extends Abstract {
 
         self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
         self.fragmentShader = self.fragmentShader.replace('lamina_noise_template', noiseFunc)
-      }
-    )
+      },
+    })
   }
 
   private static getNoiseFunction(type?: string) {

@@ -14,6 +14,7 @@ export default function Bunny(props: any) {
   const [ref] = useSphere(() => ({}))
 
   return (
+    // @ts-ignore
     <group ref={group} dispose={null}>
       {/* @ts-ignore */}
       <mesh ref={ref} scale={0.01} castShadow receiveShadow geometry={nodes.Bunny.geometry}>

@@ -1,6 +1,7 @@
 import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../utils/Functions'
 import { Color, IUniform, MathUtils, Texture, Vector3 } from 'three'
 import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../types'
+import hash from 'object-hash'
 
 // @ts-ignore
 import tokenize from 'glsl-tokenizer'
@@ -12,7 +13,7 @@ import stringify from 'glsl-token-string'
 import tokenFunctions from 'glsl-token-functions'
 
 export default class Abstract {
-  uuid: string = MathUtils.generateUUID().replace(/-/g, '_')
+  uuid: string
   name: string = 'LayerMaterial'
   mode: BlendMode = 'normal'
   visible: boolean = true
@@ -20,12 +21,30 @@ export default class Abstract {
     [key: string]: IUniform<any>
   }
 
-  onParse?: (self: Abstract & any) => void
+  onUniformsParse?: (self: Abstract & any) => {
+    [key: string]: IUniform<any>
+  } | void
+  onNonUniformsParse?: (self: Abstract & any) => {
+    [key: string]: any
+  } | void
+  onShaderParse?: (self: Abstract & any) => void
 
   fragmentShader: string
   vertexShader: string
   vertexVariables: string
   fragmentVariables: string
+
+  raw: {
+    fragment: string
+    vertex: string
+    constructor: new () => Abstract
+    uniforms: {
+      [key: string]: IUniform<any>
+    }
+    nonUniforms: {
+      [key: string]: any
+    }
+  }
 
   schema: {
     value: any
@@ -33,71 +52,37 @@ export default class Abstract {
     options?: any[]
   }[]
 
-  constructor(c: new () => Abstract, props?: LayerProps | null, onParse?: (self: Abstract & any) => void) {
-    const defaults = Object.getOwnPropertyNames(c).filter((e) => e.startsWith('u_'))
-    const uniforms: { [key: string]: any } = defaults.reduce((a, v) => {
-      let value = Object.getOwnPropertyDescriptor(c, v)?.value
+  __updateMaterial?: () => void
 
-      if (isSerializableType(value) || value instanceof Color) value = value.clone()
-
-      return {
-        ...a,
-        [v.slice(1)]: value,
-      }
-    }, {})
-
-    for (const key in uniforms) {
-      const propName = key.split('_')[1]
-      if (props?.[propName] !== undefined) uniforms[key] = props[propName]
-    }
-
-    if (props) {
-      Object.keys(props).map((key) => {
-        if (props[key] !== undefined) {
-          // @ts-ignore
-          this[key] = props[key]
-        }
-      })
-    }
-
+  constructor(c: new () => Abstract, props?: LayerProps | null) {
+    this.uuid = MathUtils.generateUUID().replace(/-/g, '_')
     this.uniforms = {}
     this.schema = []
-    const properties: PropertyDescriptorMap & ThisType<any> = {}
-    Object.keys(uniforms).map((key) => {
-      const propName = key.split('_')[1]
-
-      this.uniforms[`u_${this.uuid}_${propName}`] = {
-        value: getUniform(uniforms[key]),
-      }
-
-      this.schema.push({
-        value: uniforms[key],
-        label: propName,
-      })
-
-      properties[propName] = {
-        set: (v: any) => {
-          this.uniforms[`u_${this.uuid}_${propName}`].value = getUniform(v)
-        },
-        get: () => {
-          return this.uniforms[`u_${this.uuid}_${propName}`].value
-        },
-      }
-    })
-
-    if (props?.name) this.name = props.name
-    if (props?.mode) this.mode = props.mode
-    if (props?.visible) this.visible = props.visible
-
-    Object.defineProperties(this, properties)
-
+    this.raw = {
+      fragment: '',
+      vertex: '',
+      constructor: c,
+      uniforms: {},
+      nonUniforms: {
+        mode: 'normal',
+        visible: true,
+      },
+    }
     this.vertexShader = ''
     this.fragmentShader = ''
     this.vertexVariables = ''
     this.fragmentVariables = ''
-    this.onParse = onParse
+    this.onShaderParse = props?.onShaderParse
+    this.onUniformsParse = props?.onUniformsParse
 
-    this.buildShaders(c)
+    // if (props && typeof props === 'object') {
+    //   Object.keys(props).map((key) => {
+    //     if (props[key] !== undefined) {
+    //       // @ts-ignore
+    //       this[key] = props[key]
+    //     }
+    //   })
+    // }
 
     // Remove Name field from Debugger until a way to
     // rename Leva folders is found
@@ -105,6 +90,7 @@ export default class Abstract {
     //   value: this.name,
     //   label: 'name',
     // })
+
     this.schema.push({
       value: this.mode,
       label: 'mode',
@@ -114,25 +100,108 @@ export default class Abstract {
       value: this.visible,
       label: 'visible',
     })
+
+    this.init()
   }
 
-  buildShaders(constructor: any) {
-    const shaders = Object.getOwnPropertyNames(constructor)
-      .filter((e) => e === 'fragmentShader' || e === 'vertexShader')
-      .reduce(
-        (a, v) => ({
-          ...a,
-          [v]: Object.getOwnPropertyDescriptor(constructor, v)?.value,
-        }),
-        {}
-      ) as {
-      fragmentShader: string
-      vertexShader: string
-    }
+  init() {
+    const defaults = Object.getOwnPropertyNames(this.raw.constructor)
 
+    defaults.forEach((v) => {
+      let value = Object.getOwnPropertyDescriptor(this.raw.constructor, v)?.value
+
+      if (isSerializableType(value) || value instanceof Color) value = value.clone()
+
+      if (v.startsWith('u_')) {
+        this.raw.uniforms[v.split('u_')[1]] = value
+      } else {
+        switch (v) {
+          case 'fragmentShader':
+            this.raw.fragment = value
+            break
+          case 'vertexShader':
+            this.raw.vertex = value
+            break
+
+          default:
+            if (typeof value !== 'function' && !['prototype', 'length'].includes(v)) {
+              this.raw.nonUniforms[v] = value
+            }
+            break
+        }
+      }
+    })
+
+    this.buildUniforms()
+    this.buildNonUniforms()
+    this.buildShaders()
+  }
+
+  buildUniforms() {
+    const properties: PropertyDescriptorMap & ThisType<any> = {}
+    Object.keys(this.raw.uniforms).map((propName) => {
+      // @ts-ignore
+      if (!this[propName]) {
+        this.uniforms[`u_${this.uuid}_${propName}`] = {
+          value: getUniform(this.raw.uniforms[propName]),
+        }
+
+        this.schema.push({
+          value: this.raw.uniforms[propName],
+          label: propName,
+        })
+
+        properties[propName] = {
+          set: (v: any) => {
+            this.uniforms[`u_${this.uuid}_${propName}`].value = getUniform(v)
+          },
+          get: () => {
+            return this.uniforms[`u_${this.uuid}_${propName}`].value
+          },
+        }
+      }
+    })
+
+    const userDefinedUniforms = this.onUniformsParse?.(this) || {}
+    Object.defineProperties(this, { ...properties, ...userDefinedUniforms })
+  }
+
+  buildNonUniforms() {
+    const properties: PropertyDescriptorMap & ThisType<any> = {}
+    Object.keys(this.raw.nonUniforms).map((propName) => {
+      // @ts-ignore
+      if (!this[`_${propName}`]) {
+        this.schema.push({
+          value: this.raw.nonUniforms[propName],
+          label: propName,
+        })
+
+        //@ts-ignore
+        this[`_${propName}`] = this.raw.nonUniforms[propName]
+
+        properties[propName] = {
+          set: (v: any) => {
+            //@ts-ignore
+            this[`_${propName}`] = v
+            this.buildShaders()
+            this.__updateMaterial?.()
+          },
+          get: () => {
+            // @ts-ignore
+            return this[`_${propName}`]
+          },
+        }
+      }
+    })
+
+    const userDefinedUniforms = this.onNonUniformsParse?.(this) || {}
+    Object.defineProperties(this, { ...properties, ...userDefinedUniforms })
+  }
+
+  buildShaders() {
     const tokens = {
-      vert: tokenize(shaders.vertexShader || ''),
-      frag: tokenize(shaders.fragmentShader || ''),
+      vert: tokenize(this.raw.vertex),
+      frag: tokenize(this.raw.fragment),
     }
 
     const descoped = {
@@ -173,16 +242,16 @@ export default class Abstract {
     this.vertexVariables = variables.vert
     this.fragmentVariables = variables.frag
 
-    this.onParse?.(this)
-    this.schema = this.schema.filter((value, index) => {
-      const _value = value.label
-      return (
-        index ===
-        this.schema.findIndex((obj) => {
-          return obj.label === _value
-        })
-      )
-    })
+    this.onShaderParse?.(this)
+    // this.schema = this.schema.filter((value, index) => {
+    //   const _value = value.label
+    //   return (
+    //     index ===
+    //     this.schema.findIndex((obj) => {
+    //       return obj.label === _value
+    //     })
+    //   )
+    // })
   }
 
   renameTokens(name: string) {
@@ -248,6 +317,15 @@ export default class Abstract {
       case 'negation':
         return `lamina_blend_negation(${a}, ${b}, ${b}.a)`
     }
+  }
+
+  getHash() {
+    const nonUniformKeys = Object.keys(this.raw.nonUniforms)
+    const uniformKeys = Object.keys(this.raw.uniforms)
+    const unifiedKeys = [...nonUniformKeys, ...uniformKeys]
+    // @ts-ignore
+    const values = unifiedKeys.map((key) => serializeProp(this[key]))
+    return hash(values)
   }
 
   getSchema() {

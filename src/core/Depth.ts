@@ -46,16 +46,13 @@ export default class Depth extends Abstract {
     }
   `
 
-  mapping: 'vector' | 'world' | 'camera' = 'vector'
+  static mapping: 'vector' | 'world' | 'camera' = 'vector'
 
   constructor(props?: DepthProps) {
-    super(
-      Depth,
-      {
-        name: 'Depth',
-        ...props,
-      },
-      (self: Depth) => {
+    super(Depth, {
+      name: 'Depth',
+      ...props,
+      onShaderParse: (self) => {
         self.schema.push({
           value: self.mapping,
           label: 'mapping',
@@ -65,8 +62,8 @@ export default class Depth extends Abstract {
         const mapping = Depth.getMapping(self.uuid, self.mapping)
 
         self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
-      }
-    )
+      },
+    })
   }
 
   private static getMapping(uuid: string, type?: string) {

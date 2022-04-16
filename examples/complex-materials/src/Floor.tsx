@@ -6,7 +6,7 @@ export default function Floor(props: PlaneProps) {
     // @ts-ignore
     <mesh ref={ref} receiveShadow>
       <planeBufferGeometry args={[2000, 2000]} />
-      <shadowMaterial color="#2114db" />
+      <shadowMaterial color="#141414" opacity={0.2} />
     </mesh>
   )
 }

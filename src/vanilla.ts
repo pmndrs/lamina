@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import hash from 'object-hash'
 
 import Abstract from './core/Abstract'
 import Depth from './core/Depth'
@@ -56,7 +57,6 @@ class LayerMaterial extends CustomShaderMaterial {
 
     this.layers = layers || this.layers
     this.lighting = lighting || this.lighting
-    this.name = name || this.name
 
     this.refresh()
   }
@@ -128,7 +128,16 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 
   refresh() {
+    const hashes = this.layers.map((layer) => {
+      if (!layer.__updateMaterial) {
+        layer.__updateMaterial = this.refresh.bind(this)
+      }
+      return layer.getHash()
+    })
     const { uniforms, fragmentShader, vertexShader } = this.genShaders()
+
+    const h = hash([...hashes, this.uuid, ...Object.values(this.serialize().properties)])
+    super.uuid = h
     super.update(fragmentShader, vertexShader, uniforms)
   }
 
