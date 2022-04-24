@@ -31,7 +31,7 @@
 </p>
 <br />
 
-`lamina` let's you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
+`lamina` lets you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
 import { LayerMaterial, Depth } from 'lamina'
