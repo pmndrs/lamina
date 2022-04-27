@@ -55,7 +55,7 @@ function getJSPropsFromLayer(layer: SerializedLayer) {
     const eol = '\n\t\t';
     if (key.includes('color')) {
       const v = typeof val === "string" ? val : '#' + val.getHexString();
-      props += `${key}: new THREE.Color(${JSON.stringify(v)}),${eol}`;
+      props += `${key}: ${JSON.stringify(v)},${eol}`;
     } else {
       const defaultVal = (_constructor = constructor['u_' + key]) != null ? _constructor : instance[key];
       switch (key) {
