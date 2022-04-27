@@ -73,16 +73,16 @@ const DebugLayerMaterial = React.forwardRef<
   const [path, setPath] = React.useState(['', ''])
   const textureLoader = useMemo(() => new TextureLoader(), [])
 
-  useControls(
-    {
-      'Copy JSX': button(() => {
-        const serialized = ref.current.layers.map((l) => l.serialize())
-        const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
-        navigator.clipboard.writeText(jsx)
-      }),
-    },
-    { store }
-  )
+  // useControls(
+  //   {
+  //     'Copy JSX': button(() => {
+  //       const serialized = ref.current.layers.map((l) => l.serialize())
+  //       const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
+  //       navigator.clipboard.writeText(jsx)
+  //     }),
+  //   },
+  //   { store }
+  // )
 
   const { Lighting } = useControls(
     'Base',

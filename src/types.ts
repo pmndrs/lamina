@@ -88,6 +88,7 @@ export interface LayerProps {
   visible?: boolean
 
   onUniformsParse?: (self: Abstract & any) => void
+  onNonUniformsParse?: (self: Abstract & any) => void
   onShaderParse?: (self: Abstract & any) => void
 
   [key: string]: any
@@ -158,9 +159,25 @@ export interface TextureProps extends LayerProps {
   alpha?: number
 }
 
+export interface ShaderProps extends LayerProps {
+  vertex?: string
+  fragment?: string
+  alpha?: number
+
+  onUniformsParse?: (self: Abstract & any) => void
+  onNonUniformsParse?: (self: Abstract & any) => void
+  onShaderParse?: (self: Abstract & any) => void
+
+  [name: string]: any
+}
+
 export interface SerializedLayer {
   constructor: string
   properties: {
     [name: string]: any
+  }
+  shaders: {
+    fragment: string
+    vertex: string
   }
 }

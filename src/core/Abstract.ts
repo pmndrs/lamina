@@ -105,6 +105,7 @@ export default class Abstract {
   }
 
   init() {
+    console.log('init')
     const defaults = Object.getOwnPropertyNames(this.raw.constructor)
 
     defaults.forEach((v) => {
@@ -138,10 +139,11 @@ export default class Abstract {
   }
 
   buildUniforms() {
+    console.log('buildUniforms')
     const properties: PropertyDescriptorMap & ThisType<any> = {}
     Object.keys(this.raw.uniforms).map((propName) => {
       // @ts-ignore
-      if (!this[propName]) {
+      if (this[propName] === undefined) {
         this.uniforms[`u_${this.uuid}_${propName}`] = {
           value: getUniform(this.raw.uniforms[propName]),
         }
@@ -170,7 +172,7 @@ export default class Abstract {
     const properties: PropertyDescriptorMap & ThisType<any> = {}
     Object.keys(this.raw.nonUniforms).map((propName) => {
       // @ts-ignore
-      if (!this[`_${propName}`]) {
+      if (this[`_${propName}`] === undefined) {
         this.schema.push({
           value: this.raw.nonUniforms[propName],
           label: propName,
@@ -379,6 +381,10 @@ export default class Abstract {
       properties: {
         ...props,
         ...nonUniformProps,
+      },
+      shaders: {
+        fragment: this.raw.fragment,
+        vertex: this.raw.vertex,
       },
     }
   }

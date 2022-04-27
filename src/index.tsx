@@ -22,6 +22,7 @@ import {
   DisplaceProps,
   NormalProps,
   LayerMaterialParameters,
+  ShaderProps,
 } from './types'
 import * as LAYERS from './vanilla'
 import DebugLayerMaterial from './debug'
@@ -45,6 +46,7 @@ declare global {
       texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
       displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>
       normal_: Node<LAYERS.Normal, typeof LAYERS.Normal>
+      shader_: Node<LAYERS.Shader, typeof LAYERS.Shader>
     }
   }
 }
@@ -60,6 +62,7 @@ extend({
   Texture_: LAYERS.Texture,
   Displace_: LAYERS.Displace,
   Normal_: LAYERS.Normal,
+  Shader_: LAYERS.Shader,
 })
 
 type AllMaterialProps = MeshPhongMaterialProps & //
@@ -77,9 +80,16 @@ const LayerMaterial = React.forwardRef<
   const args = useMemo(() => [{ lighting: props.lighting }], [props.lighting]) as [Partial<LayerMaterialParameters>]
 
   useEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects
-    ref.current.refresh()
-  }, [args])
+    const layers: LAYERS.Abstract[] = (ref.current as any).__r3f.objects
+    const isSame =
+      layers.length === ref.current.layers.length &&
+      layers.every((layer, i) => layer.uuid === ref.current.layers[i].uuid)
+
+    if (!isSame) {
+      ref.current.layers = [...layers]
+      ref.current.refresh()
+    }
+  }, [children])
 
   return (
     <layerMaterial args={args} ref={mergeRefs([ref, forwardRef]) as any} {...(props as LayerMaterialParameters)}>
@@ -124,4 +134,21 @@ const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
   return <normal_ ref={ref} {...props} />
 }) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
 
-export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+const Shader = React.forwardRef<LAYERS.Shader, ShaderProps>((props, ref) => {
+  return <shader_ ref={ref} {...props} />
+}) as React.ForwardRefExoticComponent<ShaderProps & React.RefAttributes<LAYERS.Shader>>
+
+export {
+  DebugLayerMaterial,
+  LayerMaterial,
+  Depth,
+  Color,
+  Noise,
+  Fresnel,
+  Gradient,
+  Matcap,
+  Texture,
+  Displace,
+  Normal,
+  Shader,
+}

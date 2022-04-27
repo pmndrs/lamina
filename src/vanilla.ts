@@ -11,6 +11,7 @@ import Matcap from './core/Matcap'
 import Texture from './core/Texture'
 import Displace from './core/Displace'
 import Normal from './core/Normal'
+import Shader from './core/Shader'
 
 import BlendModesChunk from './chunks/BlendModes'
 import NoiseChunk from './chunks/Noise'
@@ -25,7 +26,8 @@ import {
   MeshStandardMaterialParameters,
   MeshToonMaterialParameters,
 } from 'three'
-import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+// import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+import CustomShaderMaterial from './CSM/vanilla'
 
 type AllMaterialParams =
   | MeshPhongMaterialParameters
@@ -62,6 +64,7 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 
   genShaders() {
+    console.log('genShaders')
     let vertexVariables = ''
     let fragmentVariables = ''
     let vertexShader = ''
@@ -128,6 +131,7 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 
   refresh() {
+    console.log('refresh')
     const hashes = this.layers.map((layer) => {
       if (!layer.__updateMaterial) {
         layer.__updateMaterial = this.refresh.bind(this)
@@ -135,13 +139,14 @@ class LayerMaterial extends CustomShaderMaterial {
       return layer.getHash()
     })
     const { uniforms, fragmentShader, vertexShader } = this.genShaders()
+    const h = hash([...hashes, fragmentShader, vertexShader, ...Object.values(this.serialize().properties || {})])
 
-    const h = hash([...hashes, this.uuid, ...Object.values(this.serialize().properties)])
     super.uuid = h
     super.update(fragmentShader, vertexShader, uniforms)
+    this.needsUpdate = true
   }
 
-  serialize(): SerializedLayer {
+  serialize(): Partial<SerializedLayer> {
     return {
       constructor: 'LayerMaterial',
       properties: {
@@ -168,4 +173,4 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal, Shader }

@@ -27,7 +27,7 @@ cd ../../../
 #     cd ../../
 # done
 
-cd ./examples/complex-materials
+cd ./examples/mesh-gradients
 yarn link lamina
 yarn link react
 yarn link react-dom
