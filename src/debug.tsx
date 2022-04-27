@@ -14,7 +14,7 @@ import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
 import React, { useEffect, useMemo, useState } from 'react'
 import mergeRefs from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
-import { serializedLayersToJSX } from './utils/ExportUtils'
+import { serializedLayersToJSX, serializedLayersToJS } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
 import { Color, ColorRepresentation, TextureLoader } from 'three'
 import { LayerMaterialProps, ShadingType, ShadingTypes } from './types'
@@ -79,6 +79,11 @@ const DebugLayerMaterial = React.forwardRef<
         const serialized = ref.current.layers.map((l) => l.serialize())
         const jsx = serializedLayersToJSX(serialized, ref.current.serialize())
         navigator.clipboard.writeText(jsx)
+      }),
+      'Copy JS': button(() => {
+        const serialized = ref.current.layers.map(l => l.serialize());
+        const js = serializedLayersToJS(serialized, ref.current.serialize());
+        navigator.clipboard.writeText(js);
       }),
     },
     { store }
