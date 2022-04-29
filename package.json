@@ -1,7 +1,7 @@
 {
   "name": "lamina",
   "private": true,
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "🍰 An extensable, layer based shader material for ThreeJS.",
   "main": "./index.cjs",
   "module": "./index.js",
@@ -82,8 +82,8 @@
     "glsl-token-functions": "^1.0.1",
     "glsl-token-string": "^1.0.1",
     "glsl-tokenizer": "^2.1.5",
-    "lamina": "^1.1.17",
+    "lamina": "^1.1.18",
     "leva": "^0.9.20",
-    "three-custom-shader-material": "^3.3.3"
+    "three-custom-shader-material": "^3.3.4"
   }
 }
