@@ -40,7 +40,10 @@ class LayerMaterial extends CustomShaderMaterial {
   lighting: ShadingType = 'basic'
 
   constructor({ color, alpha, lighting, layers, name, ...props }: LayerMaterialParameters & AllMaterialParams = {}) {
-    super(ShadingTypes[lighting || 'basic'], undefined, undefined, undefined, props)
+    super({
+      baseMaterial: ShadingTypes[lighting || 'basic'],
+      ...props,
+    })
 
     const _baseColor = color || 'white'
     const _alpha = alpha ?? 1
@@ -129,7 +132,7 @@ class LayerMaterial extends CustomShaderMaterial {
 
   refresh() {
     const { uniforms, fragmentShader, vertexShader } = this.genShaders()
-    super.update(fragmentShader, vertexShader, uniforms)
+    super.update({ fragmentShader, vertexShader, uniforms })
   }
 
   serialize(): SerializedLayer {
