@@ -3237,6 +3237,19 @@ lamina@^1.1.16, lamina@^1.1.17:
     leva "^0.9.20"
     three-custom-shader-material "^3.3.3"
 
+lamina@^1.1.18:
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.18.tgz#0de06c2698eba89708426f0f22e9a77a066f1bfa"
+  integrity sha512-v9xWmIqTfRSpp2VFg+Y6IpXvRtRsVlLxvdq1iLpl2yxukMvumFdp8M79QNciVgHh7UbaK3C9sOF6bUTsPwNipA==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    lamina "^1.1.17"
+    leva "^0.9.20"
+    three-custom-shader-material "^3.3.4"
+
 leva@^0.9.20:
   version "0.9.23"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.23.tgz#5703ad3d9827c744848c8559fd121f1811ba9d77"
