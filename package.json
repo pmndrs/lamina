@@ -83,6 +83,6 @@
     "glsl-tokenizer": "^2.1.5",
     "lamina": "^1.1.17",
     "leva": "^0.9.20",
-    "three-custom-shader-material": "^3.3.3"
+    "three-custom-shader-material": "^3.3.4"
   }
 }
