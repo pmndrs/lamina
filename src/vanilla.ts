@@ -26,8 +26,7 @@ import {
   MeshStandardMaterialParameters,
   MeshToonMaterialParameters,
 } from 'three'
-// import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
-import CustomShaderMaterial from './CSM/vanilla'
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
 
 type AllMaterialParams =
   | MeshPhongMaterialParameters
