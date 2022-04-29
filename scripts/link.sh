@@ -33,7 +33,6 @@ cd ../../../
 
     yarn link lamina
     yarn link react
-    yarn link react-dom
     yarn link three
     yarn link @react-three/fiber
     cd ../../
