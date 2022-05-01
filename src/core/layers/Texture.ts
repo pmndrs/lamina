@@ -1,9 +1,9 @@
-import { TextureProps } from '../types'
+import { TextureProps } from '../../types'
 import Abstract from './Abstract'
 
 export default class Texture extends Abstract {
   static u_alpha = 1
-  static u_map = undefined
+  static u_map = null
 
   static vertexShader = `
     varying vec2 v_uv;

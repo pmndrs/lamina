@@ -35,13 +35,13 @@ const getBabelOptions = ({ useESModules }) => ({
 
 export default [
   {
-    input: `./src/index.tsx`,
+    input: `./src/index.ts`,
     output: { file: `dist/index.js`, format: 'esm' },
     external,
     plugins: [babel(getBabelOptions({ useESModules: true })), resolve({ extensions })],
   },
   {
-    input: `./src/index.tsx`,
+    input: `./src/index.ts`,
     output: { file: `dist/index.cjs.js`, format: 'cjs' },
     external,
     plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
@@ -55,6 +55,18 @@ export default [
   {
     input: `./src/vanilla.ts`,
     output: { file: `dist/vanilla.cjs.js`, format: 'cjs' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
+  },
+  {
+    input: `./src/debug.ts`,
+    output: { file: `dist/debug.js`, format: 'esm' },
+    external,
+    plugins: [babel(getBabelOptions({ useESModules: true })), resolve({ extensions })],
+  },
+  {
+    input: `./src/debug.ts`,
+    output: { file: `dist/debug.cjs.js`, format: 'cjs' },
     external,
     plugins: [babel(getBabelOptions({ useESModules: false })), resolve({ extensions })],
   },

@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { DepthProps } from '../types'
+import { DepthProps } from '../../types'
 import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {
@@ -46,38 +46,35 @@ export default class Depth extends Abstract {
     }
   `
 
-  mapping: 'vector' | 'world' | 'camera' = 'vector'
+  static mapping: 'vector' | 'world' | 'camera' = 'vector'
 
   constructor(props?: DepthProps) {
-    super(
-      Depth,
-      {
-        name: 'Depth',
-        ...props,
-      },
-      (self: Depth) => {
+    super(Depth, {
+      name: 'Depth',
+      ...props,
+      onShaderParse: (self) => {
+        function getMapping(uuid: string, type?: string) {
+          switch (type) {
+            default:
+            case 'vector':
+              return `length(v_${uuid}_worldPosition - u_${uuid}_origin)`
+            case 'world':
+              return `length(v_${uuid}_position - vec3(0.))`
+            case 'camera':
+              return `length(v_${uuid}_worldPosition - cameraPosition)`
+          }
+        }
+
         self.schema.push({
           value: self.mapping,
           label: 'mapping',
           options: ['vector', 'world', 'camera'],
         })
 
-        const mapping = Depth.getMapping(self.uuid, self.mapping)
+        const mapping = getMapping(self.uuid, self.mapping)
 
         self.fragmentShader = self.fragmentShader.replace('lamina_mapping_template', mapping)
-      }
-    )
-  }
-
-  private static getMapping(uuid: string, type?: string) {
-    switch (type) {
-      default:
-      case 'vector':
-        return `length(v_${uuid}_worldPosition - u_${uuid}_origin)`
-      case 'world':
-        return `length(v_${uuid}_position - vec3(0.))`
-      case 'camera':
-        return `length(v_${uuid}_worldPosition - cameraPosition)`
-    }
+      },
+    })
   }
 }

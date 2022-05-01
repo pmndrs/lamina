@@ -3,7 +3,7 @@ import { LayerMaterialProps } from '../types'
 
 export function getUniform(value: any) {
   if (typeof value === 'string') {
-    return new Color(value).convertLinearToSRGB()
+    return new Color(value)
   }
 
   return value
@@ -43,6 +43,10 @@ export function getLayerMaterialArgs({ color, alpha, lighting, name, ...rest }: 
   ] as any
 }
 
+function roundToTwo(num: number) {
+  return +Math.round((num + Number.EPSILON) * 100) / 100
+}
+
 export function isSerializableType(prop: any) {
   return (
     prop instanceof Vector3 ||
@@ -55,12 +59,12 @@ export function isSerializableType(prop: any) {
 
 export function serializeProp(prop: any) {
   if (isSerializableType(prop)) {
-    return prop.toArray()
+    return (prop.toArray() as number[]).map((e) => roundToTwo(e))
   } else if (prop instanceof Color) {
-    return '#' + prop.clone().convertLinearToSRGB().getHexString()
+    return '#' + prop.clone().getHexString()
   } else if (prop instanceof Texture) {
     return prop.image.src
   }
 
-  return prop
+  return typeof prop === 'number' ? roundToTwo(prop) : prop
 }

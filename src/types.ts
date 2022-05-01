@@ -86,6 +86,11 @@ export interface LayerProps {
   mode?: BlendMode
   name?: string
   visible?: boolean
+
+  onUniformsParse?: (self: Abstract & any) => void
+  onNonUniformsParse?: (self: Abstract & any) => void
+  onShaderParse?: (self: Abstract & any) => void
+
   [key: string]: any
 }
 
@@ -154,9 +159,58 @@ export interface TextureProps extends LayerProps {
   alpha?: number
 }
 
+export interface ShaderProps extends LayerProps {
+  vertex?: string
+  fragment?: string
+  alpha?: number
+
+  onUniformsParse?: (self: Abstract & any) => void
+  onNonUniformsParse?: (self: Abstract & any) => void
+  onShaderParse?: (self: Abstract & any) => void
+
+  [name: string]: any
+}
+
 export interface SerializedLayer {
   constructor: string
-  properties: {
-    [name: string]: any
+  fragment: string
+  vertex: string
+  uniforms: {
+    [key: string]: any
   }
+  nonUniforms: {
+    [key: string]: any
+  }
+  currents: {
+    [key: string]: any
+  }
+  functions: {
+    onShaderParse?: string
+    onNonUniformsParse?: string
+    onUniformsParse?: string
+  }
+}
+
+export interface SerializedBase {
+  constructor: string
+  currents: {
+    [key: string]: any
+  }
+}
+
+export interface LaminaMaterialFile {
+  metadata: {
+    version: number
+    type: 'mat'
+  }
+  base: SerializedBase
+  layers: SerializedLayer[]
+}
+
+export interface LaminaLayerFile {
+  metadata: {
+    version: number
+    type: 'layer'
+  }
+  base: SerializedLayer
 }

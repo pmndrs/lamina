@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { ColorProps, DisplaceProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../types'
+import { ColorProps, DisplaceProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../../types'
 import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {
@@ -54,17 +54,14 @@ export default class Displace extends Abstract {
       }
     `
 
-  type: NoiseType = 'perlin'
-  mapping: MappingType = 'local'
+  static type: NoiseType = 'perlin'
+  static mapping: MappingType = 'local'
 
   constructor(props?: DisplaceProps) {
-    super(
-      Displace,
-      {
-        name: 'Displace',
-        ...props,
-      },
-      (self: Displace) => {
+    super(Displace, {
+      name: 'Displace',
+      ...props,
+      onShaderParse: (self) => {
         self.schema.push({
           value: self.type,
           label: 'type',
@@ -82,8 +79,8 @@ export default class Displace extends Abstract {
 
         self.vertexVariables = self.vertexVariables.replace('lamina_mapping_template', mapping)
         self.vertexVariables = self.vertexVariables.replace('lamina_noise_template', noiseFunc)
-      }
-    )
+      },
+    })
   }
 
   private static getNoiseFunction(type?: string) {

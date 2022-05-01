@@ -27,13 +27,22 @@ cd ../../../
 #     cd ../../
 # done
 
+    cd ./examples/mesh-gradients
+    rm -rf ./node_modeules ./yarn.lock
+    yarn
+
+    yarn link lamina
+    yarn link react
+    yarn link three
+    yarn link @react-three/fiber
+    cd ../../
+    
     cd ./examples/example-configurator
     rm -rf ./node_modeules ./yarn.lock
     yarn
 
     yarn link lamina
     yarn link react
-    yarn link react-dom
     yarn link three
     yarn link @react-three/fiber
     cd ../../

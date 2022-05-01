@@ -1,11 +1,6 @@
 import { Vector3 } from 'three'
-import { ColorProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../types'
+import { MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../../types'
 import Abstract from './Abstract'
-
-type AbstractExtended = Abstract & {
-  type: NoiseType
-  mapping: MappingType
-}
 
 export default class Noise extends Abstract {
   static u_colorA = '#666666'
@@ -54,63 +49,60 @@ export default class Noise extends Abstract {
     }
   `
 
-  type: NoiseType = 'perlin'
-  mapping: MappingType = 'local'
+  static type: NoiseType = 'perlin'
+  static mapping: MappingType = 'local'
 
   constructor(props?: NoiseProps) {
-    super(
-      Noise,
-      {
-        name: 'noise',
-        ...props,
-      },
-      (self: Noise) => {
+    super(Noise, {
+      name: 'noise',
+      ...props,
+      onShaderParse: (self) => {
+        function getNoiseFunction(type?: string) {
+          switch (type) {
+            default:
+            case 'perlin':
+              return `lamina_noise_perlin`
+            case 'simplex':
+              return `lamina_noise_simplex`
+            case 'cell':
+              return `lamina_noise_worley`
+            case 'white':
+              return `lamina_noise_white`
+            case 'curl':
+              return `lamina_noise_swirl`
+          }
+        }
+
+        function getMapping(type?: string) {
+          switch (type) {
+            default:
+            case 'local':
+              return `position`
+            case 'world':
+              return `(modelMatrix * vec4(position,1.0)).xyz`
+            case 'uv':
+              return `vec3(uv, 0.)`
+          }
+        }
+
         self.schema.push({
           value: self.type,
           label: 'type',
-          options: Object.values(NoiseTypes),
+          options: ['perlin', 'simplex', 'cell', 'curl', 'white'],
         })
 
         self.schema.push({
           value: self.mapping,
           label: 'mapping',
-          options: Object.values(MappingTypes),
+          options: ['local', 'world', 'uv'],
         })
 
-        const noiseFunc = Noise.getNoiseFunction(self.type)
-        const mapping = Noise.getMapping(self.mapping)
+        const noiseFunc = getNoiseFunction(self.type)
+        const mapping = getMapping(self.mapping)
 
         self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
         self.fragmentShader = self.fragmentShader.replace('lamina_noise_template', noiseFunc)
-      }
-    )
-  }
-
-  private static getNoiseFunction(type?: string) {
-    switch (type) {
-      default:
-      case 'perlin':
-        return `lamina_noise_perlin`
-      case 'simplex':
-        return `lamina_noise_simplex`
-      case 'cell':
-        return `lamina_noise_worley`
-      case 'white':
-        return `lamina_noise_white`
-      case 'curl':
-        return `lamina_noise_swirl`
-    }
-  }
-
-  private static getMapping(type?: string) {
-    switch (type) {
-      default:
-      case 'local':
-        return `position`
-      case 'world':
-        return `(modelMatrix * vec4(position,1.0)).xyz`
-      case 'uv':
-        return `vec3(uv, 0.)`
-    }
+      },
+    })
   }
 }

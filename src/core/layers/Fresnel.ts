@@ -1,4 +1,4 @@
-import { FresnelProps } from '../types'
+import { FresnelProps } from '../../types'
 import Abstract from './Abstract'
 
 export default class Fresnel extends Abstract {

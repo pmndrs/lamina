@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { GradientProps, MappingType, MappingTypes } from '../types'
+import { GradientProps, MappingType, MappingTypes } from '../../types'
 import Abstract from './Abstract'
 
 export default class Gradient extends Abstract {
@@ -39,17 +39,14 @@ export default class Gradient extends Abstract {
     }
   `
 
-  axes: 'x' | 'y' | 'z' = 'x'
-  mapping: MappingType = 'local'
+  static axes: 'x' | 'y' | 'z' = 'x'
+  static mapping: MappingType = 'local'
 
   constructor(props?: GradientProps) {
-    super(
-      Gradient,
-      {
-        name: 'Gradient',
-        ...props,
-      },
-      (self: Gradient) => {
+    super(Gradient, {
+      name: 'Gradient',
+      ...props,
+      onShaderParse: (self) => {
         self.schema.push({
           value: self.axes,
           label: 'axes',
@@ -64,10 +61,10 @@ export default class Gradient extends Abstract {
 
         const mapping = Gradient.getMapping(self.mapping)
 
-        self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping || 'local')
-        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes || 'x')
-      }
-    )
+        self.vertexShader = self.vertexShader.replace('lamina_mapping_template', mapping)
+        self.fragmentShader = self.fragmentShader.replace('axes_template', self.axes)
+      },
+    })
   }
 
   private static getMapping(type?: string) {
