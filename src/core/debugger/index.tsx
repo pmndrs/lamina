@@ -14,7 +14,7 @@ import { downloadObjectAsJson, serializedLayersToJSX } from '../../utils/ExportU
 import useExports from './useExports'
 import useAttach from './useAttach'
 
-export const DebugLayerMaterial = React.forwardRef<
+export const LaminaDebugger = React.forwardRef<
   LayerMaterialType,
   React.PropsWithChildren<LayerMaterialProps & Omit<AllMaterialProps, 'color'>>
 >(({ children, ...props }, forwardRef) => {
