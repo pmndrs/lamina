@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { ColorProps, DisplaceProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../types'
+import { ColorProps, DisplaceProps, MappingType, MappingTypes, NoiseProps, NoiseType, NoiseTypes } from '../../types'
 import Abstract from './Abstract'
 
 type AbstractExtended = Abstract & {

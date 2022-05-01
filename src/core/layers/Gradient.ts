@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { GradientProps, MappingType, MappingTypes } from '../types'
+import { GradientProps, MappingType, MappingTypes } from '../../types'
 import Abstract from './Abstract'
 
 export default class Gradient extends Abstract {

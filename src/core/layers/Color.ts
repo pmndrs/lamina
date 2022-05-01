@@ -1,4 +1,4 @@
-import { ColorProps } from '../types'
+import { ColorProps } from '../../types'
 import Abstract from './Abstract'
 
 export default class Color extends Abstract {

@@ -1,6 +1,6 @@
-import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../utils/Functions'
+import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../../utils/Functions'
 import { Color, IUniform, MathUtils, Texture, Vector3 } from 'three'
-import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../types'
+import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../../types'
 import hash from 'object-hash'
 
 // @ts-ignore
@@ -105,7 +105,6 @@ export default class Abstract {
   }
 
   init() {
-    console.log('init')
     const defaults = Object.getOwnPropertyNames(this.raw.constructor)
 
     defaults.forEach((v) => {
@@ -139,7 +138,6 @@ export default class Abstract {
   }
 
   buildUniforms() {
-    console.log('buildUniforms')
     const properties: PropertyDescriptorMap & ThisType<any> = {}
     Object.keys(this.raw.uniforms).map((propName) => {
       // @ts-ignore
@@ -347,44 +345,38 @@ export default class Abstract {
 
   serialize(): SerializedLayer {
     const name = this.constructor.name.split('$')[0]
-    let nonUniformPropKeys = Object.keys(this)
-    nonUniformPropKeys = nonUniformPropKeys.filter(
-      (e) =>
-        ![
-          'uuid',
-          'uniforms',
-          'schema',
-          'fragmentShader',
-          'vertexShader',
-          'fragmentVariables',
-          'vertexVariables',
-          'attribs',
-          'events',
-          '__r3f',
-          'onParse',
-        ].includes(e)
-    )
-    const nonUniformProps = {}
-    nonUniformPropKeys.forEach((k) => {
-      // @ts-ignore
-      nonUniformProps[k] = this[k]
+
+    const uniforms: { [key: string]: any } = {}
+    Object.entries(this.raw.uniforms).forEach(([key, value]) => {
+      uniforms[key] = serializeProp(value)
     })
 
-    const props: { [key: string]: any } = {}
-    for (const key in this.uniforms) {
-      const name = key.replace(`u_${this.uuid}_`, '')
-      props[name] = serializeProp(this.uniforms[key].value)
-    }
+    const nonUniforms: { [key: string]: any } = {}
+    Object.entries(this.raw.nonUniforms).forEach(([key, value]) => {
+      nonUniforms[key] = serializeProp(value)
+    })
+
+    const currents: { [key: string]: any } = {}
+    const allValueKeys = [...Object.keys(uniforms), ...Object.keys(nonUniforms)]
+    allValueKeys
+      // @ts-ignore
+      .map((key) => this[key])
+      .forEach((value, i) => {
+        const key = allValueKeys[i]
+        currents[key] = serializeProp(value)
+      })
 
     return {
       constructor: name,
-      properties: {
-        ...props,
-        ...nonUniformProps,
-      },
-      shaders: {
-        fragment: this.raw.fragment,
-        vertex: this.raw.vertex,
+      fragment: this.raw.fragment,
+      vertex: this.raw.vertex,
+      uniforms: uniforms,
+      nonUniforms: nonUniforms,
+      currents: currents,
+      functions: {
+        onShaderParse: this.onShaderParse?.toString(),
+        onNonUniformsParse: this.onNonUniformsParse?.toString(),
+        onUniformsParse: this.onUniformsParse?.toString(),
       },
     }
   }

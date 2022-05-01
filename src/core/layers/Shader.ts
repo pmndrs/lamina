@@ -1,5 +1,4 @@
-import { ShaderProps } from '../types'
-import { getUniform } from '../utils/Functions'
+import { ShaderProps } from '../../types'
 import Abstract from './Abstract'
 
 export default class Shader extends Abstract {

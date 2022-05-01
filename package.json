@@ -20,6 +20,11 @@
       "types": "./vanilla.d.ts",
       "require": "./vanilla.cjs.js",
       "import": "./vanilla.js"
+    },
+    "./debug": {
+      "types": "./debug.d.ts",
+      "require": "./debug.cjs.js",
+      "import": "./debug.js"
     }
   },
   "keywords": [

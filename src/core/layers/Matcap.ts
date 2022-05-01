@@ -1,11 +1,11 @@
-import { MatcapProps } from "../types";
-import Abstract from "./Abstract";
+import { MatcapProps } from '../../types'
+import Abstract from './Abstract'
 
 // Credits: https://www.clicktorelease.com/blog/creating-spherical-environment-mapping-shader/
 
 export default class Matcap extends Abstract {
-  static u_alpha = 1;
-  static u_map = undefined;
+  static u_alpha = 1
+  static u_map = undefined
 
   static vertexShader = `
     varying vec3 v_position;
@@ -15,7 +15,7 @@ export default class Matcap extends Abstract {
       v_position = normalize( vec3( modelViewMatrix * vec4( position, 1.0 ) ) );
       v_normal = normalize( normalMatrix * normal );
     }
-    `;
+    `
 
   static fragmentShader = ` 
 		uniform sampler2D u_map;  
@@ -33,12 +33,12 @@ export default class Matcap extends Abstract {
 
       return vec4(f_base, u_alpha);
     }
-  `;
+  `
 
   constructor(props?: MatcapProps) {
     super(Matcap, {
-      name: "Matcap",
+      name: 'Matcap',
       ...props,
-    });
+    })
   }
 }

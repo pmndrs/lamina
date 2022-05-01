@@ -1,5 +1,5 @@
 import { Vector3 } from 'three'
-import { NormalProps } from '../types'
+import { NormalProps } from '../../types'
 import Abstract from './Abstract'
 
 export default class Normal extends Abstract {

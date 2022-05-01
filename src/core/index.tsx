@@ -23,20 +23,14 @@ import {
   NormalProps,
   LayerMaterialParameters,
   ShaderProps,
-} from './types'
-import * as LAYERS from './vanilla'
-import DebugLayerMaterial from './debug'
-import { getLayerMaterialArgs } from './utils/Functions'
-import { ColorRepresentation } from 'three'
+} from '../types'
+import * as LAYERS from '../vanilla'
 import { useEffect } from 'react'
-import { useRef } from 'react'
-import { useLayoutEffect } from 'react'
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
       layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
-      debuglayerMaterial: Node<typeof DebugLayerMaterial, typeof DebugLayerMaterial>
       depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
       color_: Node<LAYERS.Color, typeof LAYERS.Color>
       noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
@@ -138,17 +132,4 @@ const Shader = React.forwardRef<LAYERS.Shader, ShaderProps>((props, ref) => {
   return <shader_ ref={ref} {...props} />
 }) as React.ForwardRefExoticComponent<ShaderProps & React.RefAttributes<LAYERS.Shader>>
 
-export {
-  DebugLayerMaterial,
-  LayerMaterial,
-  Depth,
-  Color,
-  Noise,
-  Fresnel,
-  Gradient,
-  Matcap,
-  Texture,
-  Displace,
-  Normal,
-  Shader,
-}
+export { LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal, Shader }
