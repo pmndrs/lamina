@@ -84,5 +84,26 @@
     "lamina": "^1.1.18",
     "leva": "^0.9.20",
     "three-custom-shader-material": "^3.3.4"
+  },
+  "peerDependencies": {
+    "@react-three/fiber": ">=8.0",
+    "react": ">=18.0",
+    "react-dom": ">=18.0",
+    "react-merge-refs": ">=1.1",
+    "three": ">=0.138"
+  },
+  "peerDependenciesMeta": {
+    "@react-three/fiber": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-merge-refs": {
+      "optional": true
+    }
   }
 }

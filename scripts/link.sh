@@ -27,7 +27,7 @@ cd ../../../
 #     cd ../../
 # done
 
-    cd ./examples/example-configurator
+    cd ./examples/example-vanilla
     rm -rf ./node_modeules ./yarn.lock
     yarn
 
