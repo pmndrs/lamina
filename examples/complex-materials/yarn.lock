@@ -6000,6 +6000,19 @@ lamina@^1.1.19:
     leva "^0.9.20"
     three-custom-shader-material "^3.3.4"
 
+lamina@^1.1.20:
+  version "1.1.20"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.20.tgz#6c9afb2f340368158e5af3b53edc4fed25209953"
+  integrity sha512-MnyUPcm+nJRwA8SoKjPHIQY6N5y5bbGiH6Ua43NHDCoMgdHpnHjCTbQfuvOsVUB5AMHMg4wAovZRZc7qX1k4Zg==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    lamina "^1.1.19"
+    leva "^0.9.20"
+    three-custom-shader-material "^3.3.4"
+
 language-subtag-registry@~0.3.2:
   version "0.3.21"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.21.tgz#04ac218bea46f04cb039084602c6da9e788dd45a"
