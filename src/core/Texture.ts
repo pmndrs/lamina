@@ -19,8 +19,8 @@ export default class Texture extends Abstract {
 		varying vec2 v_uv;
 
     void main() {
-			vec3 f_color = texture2D(u_map, v_uv).rgb;
-      return vec4(f_color, u_alpha);
+			vec4 f_color = texture2D(u_map, v_uv);
+      return vec4(f_color.rgb, f_color.a * u_alpha);
     }
   `
 

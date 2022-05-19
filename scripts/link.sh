@@ -1,6 +1,8 @@
 rm -rf ./node_modeules ./yarn.lock
 yarn
 
+yarn build
+
 cd dist
 yarn link
 cd ../
@@ -27,7 +29,7 @@ cd ../../../
 #     cd ../../
 # done
 
-    cd ./examples/example-vanilla
+    cd ./examples/example-configurator
     rm -rf ./node_modeules ./yarn.lock
     yarn
 
