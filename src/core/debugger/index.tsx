@@ -1,18 +1,14 @@
 import * as React from 'react'
-import * as THREE from 'three'
-
-import { createRoot } from 'react-dom/client'
-
-import { AllMaterialProps } from 'three-custom-shader-material/types'
-import { LaminaMaterialFile, LayerMaterialProps } from '../../types'
-
+import { AllMaterialProps } from 'three-custom-shader-material'
+import { LayerMaterialProps } from '../../types'
 import { LayerMaterial as LayerMaterialType } from '../../vanilla'
-import { button, LevaPanel, useControls, useCreateStore } from 'leva'
+import { useCreateStore } from 'leva'
 import { useRef } from 'react'
 import mergeRefs from 'react-merge-refs'
-import { downloadObjectAsJson, serializedLayersToJSX } from '../../utils/ExportUtils'
 import useExports from './useExports'
 import useAttach from './useAttach'
+import useDebugBaseMaterial from './useDebugLayers'
+import useDebugLayers from './useDebugLayers'
 
 export const LaminaDebugger = React.forwardRef<
   LayerMaterialType,
@@ -23,6 +19,8 @@ export const LaminaDebugger = React.forwardRef<
 
   useExports(ref, store)
   useAttach(ref, store)
+  // useDebugBaseMaterial(ref, store)
+  useDebugLayers(ref, store)
 
   if (!Array.isArray(children)) {
     return <>{React.cloneElement(children as React.ReactElement<any>, { ref: mergeRefs([forwardRef, ref]) })}</>

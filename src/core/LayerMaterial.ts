@@ -25,6 +25,7 @@ import {
   MeshToonMaterialParameters,
 } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+import objectHash from 'object-hash'
 
 type AllMaterialParams =
   | MeshPhongMaterialParameters
@@ -38,9 +39,12 @@ class LayerMaterial extends CustomShaderMaterial {
   layers: Abstract[] = []
   lighting: ShadingType = 'basic'
 
+  __lamina__debuggerNeedsUpdate: boolean = false
+
   constructor({ color, alpha, lighting, layers, ...props }: LayerMaterialParameters & AllMaterialParams = {}) {
     super({
       baseMaterial: ShadingTypes[lighting || 'basic'],
+      transparent: true,
       ...props,
     })
 
@@ -135,6 +139,7 @@ class LayerMaterial extends CustomShaderMaterial {
       }
       return layer.getHash()
     })
+    this.__lamina__debuggerNeedsUpdate = true
     const { uniforms, fragmentShader, vertexShader } = this.genShaders()
     super.update({ fragmentShader, vertexShader, uniforms })
   }

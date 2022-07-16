@@ -1,12 +1,46 @@
-import { Color, Matrix3, Matrix4, Texture, Vector2, Vector3, Vector4 } from 'three'
+import { Color, Matrix3, Matrix4, sRGBEncoding, Texture, TextureLoader, Vector2, Vector3, Vector4 } from 'three'
 import { LayerMaterialProps } from '../types'
 
-export function getUniform(value: any) {
-  if (typeof value === 'string') {
-    return new Color(value)
-  }
+export function isBlobUrl(url: string) {
+  return /^blob:/.test(url)
+}
 
-  return value
+export function isValidHttpUrl(url: string) {
+  return /^(http|https):\/\//.test(url)
+}
+
+export function isDataUrl(url: string) {
+  return /^data:image\//.test(url)
+}
+
+export function toDataUrl(url: string, callback: (data: string) => void) {
+  var xhr = new XMLHttpRequest()
+  xhr.onload = function () {
+    var reader = new FileReader()
+    reader.onloadend = function () {
+      callback(reader.result as string)
+    }
+    reader.readAsDataURL(xhr.response)
+  }
+  xhr.open('GET', url)
+  xhr.responseType = 'blob'
+  xhr.send()
+}
+
+export function isTextureSrc(src: string) {
+  return isValidHttpUrl(src) || isDataUrl(src) || isBlobUrl(src)
+}
+
+export function getUniform(value: any) {
+  if (isTextureSrc(value)) {
+    return new TextureLoader().load(value, (t) => {
+      t.encoding = sRGBEncoding
+    })
+  } else if (typeof value === 'string') {
+    return new Color(value)
+  } else {
+    return value
+  }
 }
 
 export function getSpecialParameters(label: string) {
@@ -63,7 +97,7 @@ export function serializeProp(prop: any) {
   } else if (prop instanceof Color) {
     return '#' + prop.clone().getHexString()
   } else if (prop instanceof Texture) {
-    return prop.image.src
+    return prop.image?.src
   }
 
   return typeof prop === 'number' ? roundToTwo(prop) : prop

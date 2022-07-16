@@ -8,7 +8,7 @@ import {
   MeshLambertMaterialProps,
   MeshStandardMaterialProps,
 } from '@react-three/fiber'
-import React, { useMemo } from 'react'
+import React, { useLayoutEffect, useMemo } from 'react'
 import mergeRefs from 'react-merge-refs'
 import {
   DepthProps,
@@ -73,7 +73,7 @@ const LayerMaterial = React.forwardRef<
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
   const args = useMemo(() => [{ lighting: props.lighting }], [props.lighting]) as [Partial<LayerMaterialParameters>]
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const layers: LAYERS.Abstract[] = (ref.current as any).__r3f.objects
     const isSame =
       layers.length === ref.current.layers.length &&

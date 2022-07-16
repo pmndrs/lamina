@@ -7,7 +7,7 @@ import { useGLTF, TransformControls, OrbitControls, useTexture } from '@react-th
 import { LaminaDebugger } from 'lamina/debug'
 import * as LAYERS from 'lamina'
 import { button, useControls } from 'leva'
-import { Texture } from 'lamina'
+import { MathUtils } from 'three'
 
 export default function Monkey() {
   const { nodes } = useGLTF('/monkey.glb') as any
@@ -24,7 +24,7 @@ export default function Monkey() {
   })
 
   const [layers, setLayers] = useState<any[]>([])
-  const InitialMaterial = LAYERS.useLamina('/Monkey w_ freckles.json')
+  const InitialMaterial = LAYERS.useLamina('/initialMaterial.json')
 
   useControls('Layers', {
     Type: {
@@ -45,20 +45,28 @@ export default function Monkey() {
       const k = get('Layers.Type')
       // @ts-ignore
       const Component = LAYERS[k]
-
-      setLayers((s) => [...s, <Component />])
+      setLayers((s) => [...s, Component])
     }),
   })
 
   const tex = useTexture('/UV.jpg')
-
   return (
     <>
       <TransformControls ref={transformControls}>
         <group scale={0.1} rotation={[0, -Math.PI / 2, Math.PI / 4]}>
           <mesh matrixAutoUpdate geometry={nodes.Suzanne.geometry} rotation-y={Math.PI / 2} scale={30}>
             <LaminaDebugger>
-              <InitialMaterial>{layers}</InitialMaterial>
+              {/* <InitialMaterial>
+                {layers.map((Layer, i) => (
+                  <Layer key={`layer-${i}`} />
+                ))}
+              </InitialMaterial> */}
+              <LAYERS.LayerMaterial>
+                <LAYERS.Texture map={tex} />
+                {layers.map((Layer, i) => (
+                  <Layer key={`layer-${i}`} />
+                ))}
+              </LAYERS.LayerMaterial>
             </LaminaDebugger>
           </mesh>
         </group>
