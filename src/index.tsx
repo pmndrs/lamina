@@ -9,7 +9,7 @@ import {
   MeshStandardMaterialProps,
 } from '@react-three/fiber'
 import React, { useMemo } from 'react'
-import mergeRefs from 'react-merge-refs'
+import { mergeRefs } from 'react-merge-refs'
 import {
   DepthProps,
   ColorProps,

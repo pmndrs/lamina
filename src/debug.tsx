@@ -12,7 +12,7 @@ import { createRoot } from 'react-dom/client'
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
 import React, { useEffect, useMemo, useState } from 'react'
-import mergeRefs from 'react-merge-refs'
+import { mergeRefs } from 'react-merge-refs'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { serializedLayersToJSX, serializedLayersToJS } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
@@ -81,9 +81,9 @@ const DebugLayerMaterial = React.forwardRef<
         navigator.clipboard.writeText(jsx)
       }),
       'Copy JS': button(() => {
-        const serialized = ref.current.layers.map(l => l.serialize());
-        const js = serializedLayersToJS(serialized, ref.current.serialize());
-        navigator.clipboard.writeText(js);
+        const serialized = ref.current.layers.map((l) => l.serialize())
+        const js = serializedLayersToJS(serialized, ref.current.serialize())
+        navigator.clipboard.writeText(js)
       }),
     },
     { store }
