@@ -81,6 +81,7 @@
     "glsl-token-functions": "^1.0.1",
     "glsl-token-string": "^1.0.1",
     "glsl-tokenizer": "^2.1.5",
+    "lamina": "^1.1.21",
     "leva": "^0.9.20",
     "three-custom-shader-material": "^4.0.0"
   },

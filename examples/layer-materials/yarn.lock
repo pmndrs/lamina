@@ -1402,11 +1402,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.23.tgz#3b41a6e643589ac6442bdbd7a4a3ded62f33f7da"
   integrity sha512-UxDxWn7dl97rKVeVS61vErvw086aCYhDLyvRQZ5Rk65rZKepaFdm53GeqXaKBuOhED4e9uWq34IC3TdSdJJ2Gw==
 
-"@types/object-hash@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@types/object-hash/-/object-hash-2.2.1.tgz#67c169f8f033e0b62abbf81df2d00f4598d540b9"
-  integrity sha512-i/rtaJFCsPljrZvP/akBqEwUP2y5cZLOmvO+JaYnz01aPknrQ+hB5MRcO7iqCUsFaYfTG8kGfKUyboA07xeDHQ==
-
 "@types/prop-types@*":
   version "15.7.4"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.4.tgz#fcf7205c25dff795ee79af1e30da2c9790808f11"
@@ -3176,69 +3171,17 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
-lamina@^1.1.16:
-  version "1.1.16"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.16.tgz#fa787fdafb48a11ef8b0a32aa183327019538a6e"
-  integrity sha512-skDe8cmI8OhTa16ujNlFviHy5AFNCUBcOiSbuhiENeVKn6mXMa+JMf13Dy3iEtZ0EmF4KkdFZvj1DEUF4CH7pQ==
+lamina@^1.1.21:
+  version "1.1.21"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.21.tgz#7014ba6e1f2169cb1b9c0a49fe6486198905028a"
+  integrity sha512-beMCDW2tYhZ+xsRRtJtXhZPhWhekfzTCtOuSx7DsDGt44TAHFXohaotmdjawVNx19yzrKNP+L+Ns2nqgVq27eg==
   dependencies:
     glsl-token-descope "^1.0.2"
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"
     glsl-tokenizer "^2.1.5"
     leva "^0.9.20"
-    three-custom-shader-material "^3.3.2"
-
-lamina@^1.1.17:
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.17.tgz#9f2141debac6b1d9e4e2b23bb08f205a8166ccd1"
-  integrity sha512-VwsS791VZ/IPH+DQ7nIqJZz9Orcwbb6KmMZeKSbKeQleKYDMVAJLvAf7yXb8D0N3hYo67anc+HkoeacGgh3e6w==
-  dependencies:
-    glsl-token-descope "^1.0.2"
-    glsl-token-functions "^1.0.1"
-    glsl-token-string "^1.0.1"
-    glsl-tokenizer "^2.1.5"
-    lamina "^1.1.16"
-    leva "^0.9.20"
-    three-custom-shader-material "^3.3.3"
-
-lamina@^1.1.18:
-  version "1.1.18"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.18.tgz#0de06c2698eba89708426f0f22e9a77a066f1bfa"
-  integrity sha512-v9xWmIqTfRSpp2VFg+Y6IpXvRtRsVlLxvdq1iLpl2yxukMvumFdp8M79QNciVgHh7UbaK3C9sOF6bUTsPwNipA==
-  dependencies:
-    glsl-token-descope "^1.0.2"
-    glsl-token-functions "^1.0.1"
-    glsl-token-string "^1.0.1"
-    glsl-tokenizer "^2.1.5"
-    lamina "^1.1.17"
-    leva "^0.9.20"
-    three-custom-shader-material "^3.3.4"
-
-lamina@^1.1.19:
-  version "1.1.19"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.19.tgz#69a92b8816489d4a0418766e4083a6d1df8da554"
-  integrity sha512-p9ZEk0r2jlOiYcB7Xs0KalTLYtKGGWt9Tz/+TyeUOFyh+h4JATN8/3yX6zNmNBz5WSA7wJ6lJuAhcnj+hPcJZg==
-  dependencies:
-    glsl-token-descope "^1.0.2"
-    glsl-token-functions "^1.0.1"
-    glsl-token-string "^1.0.1"
-    glsl-tokenizer "^2.1.5"
-    lamina "^1.1.18"
-    leva "^0.9.20"
-    three-custom-shader-material "^3.3.4"
-
-lamina@^1.1.20:
-  version "1.1.20"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.20.tgz#6c9afb2f340368158e5af3b53edc4fed25209953"
-  integrity sha512-MnyUPcm+nJRwA8SoKjPHIQY6N5y5bbGiH6Ua43NHDCoMgdHpnHjCTbQfuvOsVUB5AMHMg4wAovZRZc7qX1k4Zg==
-  dependencies:
-    glsl-token-descope "^1.0.2"
-    glsl-token-functions "^1.0.1"
-    glsl-token-string "^1.0.1"
-    glsl-tokenizer "^2.1.5"
-    lamina "^1.1.19"
-    leva "^0.9.20"
-    three-custom-shader-material "^3.3.4"
+    three-custom-shader-material "^4.0.0"
 
 leva@0.9.23, leva@^0.9.20:
   version "0.9.23"
@@ -4426,25 +4369,14 @@ terser@^5.10.0, terser@^5.7.2:
     source-map "~0.7.2"
     source-map-support "~0.5.20"
 
-three-custom-shader-material@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.3.2.tgz#071aaa7860462338c82547dfaeaa38b0051b22f0"
-  integrity sha512-4q/FD5URSzXGQFXTbU0DdlBxu49jWcfHTiyq+gE3ZPLhd31uodS3JIYSVY7g050iKo90kg+AOdTkfC+kPLJ6Lw==
-
-three-custom-shader-material@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.3.3.tgz#ccbbdf84771f2b8b99be94ed7cbb0ccf646ea31c"
-  integrity sha512-Hp6DIRVmwj9OYHkWT5AUmdzNu0Ug5FMsoxTO6RrzwBaAHBFxK1clzZDCV2ZBeAMnTZo6MbGKiTzI+bdx7j5a5w==
+three-custom-shader-material@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-4.0.0.tgz#d4f1abab7199caf110c0a94aa0df8f3cccb8a1f5"
+  integrity sha512-oMlHSANeKJdpXiLnQTQILF0tY6p2q6tgzQiR5UzMtC9oCa+EQgMXh28dvzsnqtWVnnv6FGwXRfNFgqcv+mHW7Q==
   dependencies:
-    "@types/object-hash" "^2.2.1"
-    object-hash "^3.0.0"
-
-three-custom-shader-material@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.3.4.tgz#e96e50d6d29b9647bcaa089deee65e4942b46521"
-  integrity sha512-WjdFw/eobZfr5ezzzpFWF7Jn/YHYOKshDDboF1rplfCePSKUegwlZyfkC3/Et3m7RCNb7QHmYqb542ad2+m2hw==
-  dependencies:
-    "@types/object-hash" "^2.2.1"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
     object-hash "^3.0.0"
 
 three-mesh-bvh@^0.5.7:

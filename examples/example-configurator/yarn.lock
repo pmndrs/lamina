@@ -2442,18 +2442,17 @@ ktx-parse@^0.2.1:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.2.2.tgz#b037b66044855215b332cb73104590af49e47791"
   integrity sha512-cFBc1jnGG2WlUf52NbDUXK2obJ+Mo9WUkBRvr6tP6CKxRMvZwDDFNV3JAS4cewETp5KyexByfWm9sm+O8AffiQ==
 
-lamina@^1.1.19, lamina@^1.1.20:
-  version "1.1.20"
-  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.20.tgz#6c9afb2f340368158e5af3b53edc4fed25209953"
-  integrity sha512-MnyUPcm+nJRwA8SoKjPHIQY6N5y5bbGiH6Ua43NHDCoMgdHpnHjCTbQfuvOsVUB5AMHMg4wAovZRZc7qX1k4Zg==
+lamina@^1.1.21:
+  version "1.1.21"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.21.tgz#7014ba6e1f2169cb1b9c0a49fe6486198905028a"
+  integrity sha512-beMCDW2tYhZ+xsRRtJtXhZPhWhekfzTCtOuSx7DsDGt44TAHFXohaotmdjawVNx19yzrKNP+L+Ns2nqgVq27eg==
   dependencies:
     glsl-token-descope "^1.0.2"
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"
     glsl-tokenizer "^2.1.5"
-    lamina "^1.1.19"
     leva "^0.9.20"
-    three-custom-shader-material "^3.3.4"
+    three-custom-shader-material "^4.0.0"
 
 leva@^0.9.20, leva@^0.9.23:
   version "0.9.29"
@@ -3571,10 +3570,10 @@ terser@^5.10.0, terser@^5.7.2:
     commander "^2.20.0"
     source-map-support "~0.5.20"
 
-three-custom-shader-material@^3.3.4:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-3.5.3.tgz#00b4bc0d5664560a6d3e409cbe24d033697b5952"
-  integrity sha512-AkCYGwmEhSLKR876m3xM8eZzwovQKOgIk79gG27tZevvC/d8sbeC1CbKxjWXEgZ+eLLdLrn4rnPAsLtaxSh08g==
+three-custom-shader-material@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/three-custom-shader-material/-/three-custom-shader-material-4.0.0.tgz#d4f1abab7199caf110c0a94aa0df8f3cccb8a1f5"
+  integrity sha512-oMlHSANeKJdpXiLnQTQILF0tY6p2q6tgzQiR5UzMtC9oCa+EQgMXh28dvzsnqtWVnnv6FGwXRfNFgqcv+mHW7Q==
   dependencies:
     glsl-token-functions "^1.0.1"
     glsl-token-string "^1.0.1"
