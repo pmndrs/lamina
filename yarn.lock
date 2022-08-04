@@ -3258,6 +3258,20 @@ lamina@^1.1.21:
     leva "^0.9.20"
     three-custom-shader-material "^4.0.0"
 
+lamina@^1.1.22:
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.22.tgz#3b6c288d4110943be78285de3473a8a93c255ebf"
+  integrity sha512-bwmKbqqjg9+6MO1SKf5XfDWeINq2LZBIx2PqHeWvQGJBjiqcbsUcKjTizZW2ww8QRSoCyAf4BCSONj7l7OZAfg==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    lamina "^1.1.21"
+    leva "^0.9.20"
+    react-merge-refs "^2.0.1"
+    three-custom-shader-material "^4.0.0"
+
 leva@^0.9.20:
   version "0.9.29"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.29.tgz#b23ee8df657c3cff471507c54ee36d9543f237d2"

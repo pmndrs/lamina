@@ -1826,6 +1826,20 @@ lamina@^1.1.21:
     leva "^0.9.20"
     three-custom-shader-material "^4.0.0"
 
+lamina@^1.1.22:
+  version "1.1.22"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.22.tgz#3b6c288d4110943be78285de3473a8a93c255ebf"
+  integrity sha512-bwmKbqqjg9+6MO1SKf5XfDWeINq2LZBIx2PqHeWvQGJBjiqcbsUcKjTizZW2ww8QRSoCyAf4BCSONj7l7OZAfg==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    lamina "^1.1.21"
+    leva "^0.9.20"
+    react-merge-refs "^2.0.1"
+    three-custom-shader-material "^4.0.0"
+
 leva@^0.9.20:
   version "0.9.27"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.27.tgz#9c69929bc1215022835dd5e3907e223d887de8aa"
@@ -2341,6 +2355,11 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-merge-refs@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-2.0.1.tgz#a1f8c2dadefa635333e9b91ec59f30b65228b006"
+  integrity sha512-pywF6oouJWuqL26xV3OruRSIqai31R9SdJX/I3gP2q8jLxUnA1IwXcLW8werUHLZOrp4N7YOeQNZrh/BKrHI4A==
 
 "readable-stream@>=1.0.33-1 <1.1.0-0":
   version "1.0.34"
