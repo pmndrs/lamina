@@ -82,7 +82,6 @@
     "glsl-tokenizer": "^2.1.5",
     "lamina": "^1.1.22",
     "leva": "^0.9.20",
-    "react-merge-refs": "^2.0.1",
     "three-custom-shader-material": "^4.0.0"
   },
   "peerDependencies": {
@@ -99,9 +98,6 @@
       "optional": true
     },
     "react-dom": {
-      "optional": true
-    },
-    "react-merge-refs": {
       "optional": true
     }
   }

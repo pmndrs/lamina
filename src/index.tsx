@@ -8,8 +8,7 @@ import {
   MeshLambertMaterialProps,
   MeshStandardMaterialProps,
 } from '@react-three/fiber'
-import React, { useMemo } from 'react'
-import { mergeRefs } from 'react-merge-refs'
+import React, { useMemo, useImperativeHandle } from 'react'
 import {
   DepthProps,
   ColorProps,
@@ -70,6 +69,7 @@ const LayerMaterial = React.forwardRef<
   React.PropsWithChildren<LayerMaterialProps & Omit<AllMaterialProps, 'color'>>
 >(({ children, ...props }, forwardRef) => {
   const ref = React.useRef<LAYERS.LayerMaterial>(null!)
+  useImperativeHandle(forwardRef, () => ref.current)
 
   React.useLayoutEffect(() => {
     ref.current.layers = (ref.current as any).__r3f.objects
@@ -79,7 +79,7 @@ const LayerMaterial = React.forwardRef<
   const [args, otherProps] = useMemo(() => getLayerMaterialArgs(props), [props])
 
   return (
-    <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
+    <layerMaterial args={[args]} ref={ref} {...otherProps}>
       {children}
     </layerMaterial>
   )
