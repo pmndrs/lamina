@@ -11,7 +11,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/three": "^0.143.0",
-    "lamina": "^1.1.22",
+    "lamina": "^1.1.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

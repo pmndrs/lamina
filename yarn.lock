@@ -3266,6 +3266,19 @@ lamina@^1.1.21, lamina@^1.1.22:
     react-merge-refs "^2.0.1"
     three-custom-shader-material "^4.0.0"
 
+lamina@^1.1.23:
+  version "1.1.23"
+  resolved "https://registry.yarnpkg.com/lamina/-/lamina-1.1.23.tgz#0f9e64e8901bedd39d490325fb331d46605f2aa8"
+  integrity sha512-sxcoOyws9fK73tHJFsXgZlIJho++nf+FwWzpbvAheUvayl30DyJmPd0U0Q6v/ECcJuuujb7Txcr4SLOZrdDPJA==
+  dependencies:
+    glsl-token-descope "^1.0.2"
+    glsl-token-functions "^1.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.1.5"
+    lamina "^1.1.22"
+    leva "^0.9.20"
+    three-custom-shader-material "^4.0.0"
+
 leva@^0.9.20:
   version "0.9.30"
   resolved "https://registry.yarnpkg.com/leva/-/leva-0.9.30.tgz#65805865721f2f4be7c7fb6f03bf5bea7e9db6ba"
