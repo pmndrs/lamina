@@ -51,7 +51,8 @@ function App() {
 
         <gridHelper args={[200, 100, '#1100ff', '#1100ff']} position={[0, -1.26, 0]} />
         <gridHelper args={[200, 1000, '#1100ff', '#1100ff']} position={[0, -1.27, 0]} />
-        <OrbitControls enablePan={false} minZoom={90} maxPolarAngle={Math.PI / 2 - 0.1} minPolarAngle={0} />
+        {/* <OrbitControls enablePan={false} minZoom={90} maxPolarAngle={Math.PI / 2 - 0.1} minPolarAngle={0} /> */}
+        <OrbitControls />
       </Canvas>
       {loaded && <Tag />}
 

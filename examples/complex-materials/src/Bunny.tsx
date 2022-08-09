@@ -6,9 +6,10 @@ import React, { useRef, useLayoutEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { Depth, Fresnel, LayerMaterial, Noise } from 'lamina'
 import { useSphere } from '@react-three/cannon'
+import { Group } from 'three'
 
 export default function Bunny(props: any) {
-  const group = useRef()
+  const group = useRef<Group>(null!)
   const { nodes, materials } = useGLTF('/lighting_bunny_copy.gltf') as any
 
   const [ref] = useSphere(() => ({}))
