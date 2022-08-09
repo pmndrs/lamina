@@ -11,8 +11,7 @@ import { createRoot } from 'react-dom/client'
 
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
-import React, { useEffect, useMemo, useState } from 'react'
-import { mergeRefs } from 'react-merge-refs'
+import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
 import { serializedLayersToJSX, serializedLayersToJS } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
@@ -68,6 +67,7 @@ const DebugLayerMaterial = React.forwardRef<
       [key: string]: any
     }
   >(null!)
+  useImperativeHandle(forwardRef, () => ref.current)
   const store = useCreateStore()
   const [layers, setLayers] = React.useState<{ [name: string]: any[] }>({})
   const [path, setPath] = React.useState(['', ''])
@@ -200,7 +200,7 @@ const DebugLayerMaterial = React.forwardRef<
       {Object.entries(layers).map(([name, layers], i) => (
         <DynamicLeva key={`${name} ~${i}`} name={name} layers={layers} store={store} setUpdate={setPath} />
       ))}
-      <layerMaterial args={[args]} ref={mergeRefs([ref, forwardRef])} {...otherProps}>
+      <layerMaterial args={[args]} ref={ref} {...otherProps}>
         {children}
       </layerMaterial>
     </>
