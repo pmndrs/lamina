@@ -31,6 +31,17 @@
 </p>
 <br />
 
+## Notice
+_From @farazzshaikh_: **Lamina has been archived as of April 5 2023.**
+
+This project needs maintainers and a good rewrite from scratch. Lamina does a lot of hacky processing to achieve its API goals. As time has gone by I have started to doubt if it’s worth it. These hacks make it unreliable, unpredictable and slow. Not to mentaion, quite convoluted to maintain and debug. There might be better APIs or implimentations for this kind of library but I currently do not have the bandwidth to dedicate to finding them. Perhaps in the future.
+
+Lamina is built on top of [three-custom-shader-material (CSM)](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) and any effects that are achieved by lamina can be done with CSM in a predictable and performant manner albeit at a lower level.
+
+Feel free to use Lamina, however, support will be lacking. If you'd like to resurrect this library, then feel free to reach out on [our Discord](https://discord.gg/poimandres) and tag me (Faraz#9759).
+
+---
+
 `lamina` lets you create materials with a declarative, system of layers. Layers make it incredibly easy to stack and blend effects. This approach was first made popular by the [Spline team](https://spline.design/).
 
 ```jsx
