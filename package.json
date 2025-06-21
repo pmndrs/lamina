@@ -35,7 +35,7 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc && vite build && cp ./package.json ./dist/package.json"
+    "build": "vite build && cp ./package.json ./dist/package.json"
   },
   "repository": {
     "type": "git",
