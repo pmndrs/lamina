@@ -16,7 +16,7 @@
     "./vanilla": {
       "types": "./vanilla/vanilla.d.ts",
       "require": "./vanilla/lamina.cjs.js",
-      "import": "./vanilla/lamina.js"
+      "import": "./vanilla/lamina.es.js"
     },
     ".": {
       "types": "./react.d.ts",
