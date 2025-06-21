@@ -3149,7 +3149,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.6"
     "@types/three": "npm:^0.177.0"
     "@vitejs/plugin-react": "npm:^4.5.2"
-    lamina: "npm:^1.2.0"
+    lamina: "npm:^1.2.1"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     three: "npm:^0.177.0"
@@ -4239,7 +4239,7 @@ __metadata:
     "@types/three": "npm:^0.139.0"
     "@vitejs/plugin-react": "npm:^4.5.2"
     framer-motion: "npm:^6.2.8"
-    lamina: "npm:^1.2.0"
+    lamina: "npm:^1.2.1"
     leva: "npm:^0.10.0"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
@@ -4261,7 +4261,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"lamina@npm:^1.2.0, lamina@workspace:.":
+"lamina@npm:^1.2.1, lamina@workspace:.":
   version: 0.0.0-use.local
   resolution: "lamina@workspace:."
   dependencies:
