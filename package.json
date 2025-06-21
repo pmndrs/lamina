@@ -1,6 +1,6 @@
 {
   "name": "lamina",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "🍰 An extensable, layer based shader material for ThreeJS.",
   "main": "./lamina.cjs",
   "module": "./lamina.es.js",
