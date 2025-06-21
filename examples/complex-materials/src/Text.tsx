@@ -1,6 +1,5 @@
-import { useBox } from '@react-three/cannon'
-import { extend, useFrame } from '@react-three/fiber'
 import { Text3D } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
 import { Depth, Fresnel, Gradient, LayerMaterial } from 'lamina'
 import { useRef } from 'react'
 import { MathUtils } from 'three'

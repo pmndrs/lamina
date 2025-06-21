@@ -1,9 +1,7 @@
 import { Depth, Fresnel, LayerMaterial } from 'lamina'
 import { useLayoutEffect, useState } from 'react'
 
-import { useBox, useSphere, usePlane } from '@react-three/cannon'
-import { Box, Plane } from '@react-three/drei'
-import { BackSide } from 'three'
+import { useSphere } from '@react-three/cannon'
 
 export default function Marble({ setLoaded }: { setLoaded: any }) {
   const [number] = useState(200)
@@ -21,8 +19,8 @@ export default function Marble({ setLoaded }: { setLoaded: any }) {
   return (
     <group>
       {/* @ts-ignore */}
-      <instancedMesh castShadow ref={ref} args={[undefined, undefined, number]}>
-        <sphereBufferGeometry args={[0.1, 128, 128]} />
+      <instancedMesh castShadow ref={ref} args={[undefined, undefined, number]} frustumCulled={false}>
+        <sphereGeometry args={[0.1, 128, 128]} />
 
         <LayerMaterial color={'white'} lighting={'physical'}>
           <Depth
