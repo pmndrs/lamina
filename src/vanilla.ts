@@ -1,20 +1,16 @@
 import * as THREE from 'three'
 
 import Abstract from './core/Abstract'
-import Depth from './core/Depth'
 import Color from './core/Color'
-import Noise from './core/Noise'
+import Depth from './core/Depth'
+import Displace from './core/Displace'
 import Fresnel from './core/Fresnel'
 import Gradient from './core/Gradient'
 import Matcap from './core/Matcap'
-import Texture from './core/Texture'
-import Displace from './core/Displace'
+import Noise from './core/Noise'
 import Normal from './core/Normal'
+import Texture from './core/Texture'
 
-import BlendModesChunk from './chunks/BlendModes'
-import NoiseChunk from './chunks/Noise'
-import HelpersChunk from './chunks/Helpers'
-import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
 import {
   ColorRepresentation,
   MeshBasicMaterialParameters,
@@ -25,6 +21,10 @@ import {
   MeshToonMaterialParameters,
 } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla'
+import BlendModesChunk from './chunks/BlendModes'
+import HelpersChunk from './chunks/Helpers'
+import NoiseChunk from './chunks/Noise'
+import { LayerMaterialParameters, SerializedLayer, ShadingType, ShadingTypes } from './types'
 
 type AllMaterialParams =
   | MeshPhongMaterialParameters
@@ -162,4 +162,4 @@ class LayerMaterial extends CustomShaderMaterial {
   }
 }
 
-export { LayerMaterial, Abstract, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+export { Abstract, Color, Depth, Displace, Fresnel, Gradient, LayerMaterial, Matcap, Noise, Normal, Texture }

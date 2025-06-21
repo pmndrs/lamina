@@ -1,46 +1,41 @@
+import { ElementProps, extend, ThreeElement } from '@react-three/fiber'
+import React, { useImperativeHandle, useMemo } from 'react'
 import {
-  extend,
-  Node,
-  MeshPhongMaterialProps,
-  MeshPhysicalMaterialProps,
-  MeshToonMaterialProps,
-  MeshBasicMaterialProps,
-  MeshLambertMaterialProps,
-  MeshStandardMaterialProps,
-} from '@react-three/fiber'
-import React, { useMemo, useImperativeHandle } from 'react'
+  MeshBasicMaterial,
+  MeshLambertMaterial,
+  MeshPhongMaterial,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  MeshToonMaterial,
+} from 'three'
+import DebugLayerMaterial from './debug'
 import {
-  DepthProps,
   ColorProps,
-  LayerMaterialProps,
-  NoiseProps,
+  DepthProps,
+  DisplaceProps,
   FresnelProps,
   GradientProps,
+  LayerMaterialProps,
   MatcapProps,
-  TextureProps,
-  DisplaceProps,
+  NoiseProps,
   NormalProps,
+  TextureProps,
 } from './types'
-import * as LAYERS from './vanilla'
-import DebugLayerMaterial from './debug'
 import { getLayerMaterialArgs } from './utils/Functions'
-import { ColorRepresentation } from 'three'
+import * as LAYERS from './vanilla'
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      layerMaterial: Node<LAYERS.LayerMaterial, typeof LAYERS.LayerMaterial>
-      debuglayerMaterial: Node<typeof DebugLayerMaterial, typeof DebugLayerMaterial>
-      depth_: Node<LAYERS.Depth, typeof LAYERS.Depth>
-      color_: Node<LAYERS.Color, typeof LAYERS.Color>
-      noise_: Node<LAYERS.Noise, typeof LAYERS.Noise>
-      fresnel_: Node<LAYERS.Fresnel, typeof LAYERS.Fresnel>
-      gradient_: Node<LAYERS.Gradient, typeof LAYERS.Gradient>
-      matcap_: Node<LAYERS.Matcap, typeof LAYERS.Matcap>
-      texture_: Node<LAYERS.Texture, typeof LAYERS.Texture>
-      displace_: Node<LAYERS.Displace, typeof LAYERS.Displace>
-      normal_: Node<LAYERS.Normal, typeof LAYERS.Normal>
-    }
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    layerMaterial: ThreeElement<typeof LAYERS.LayerMaterial>
+    depth_: ThreeElement<typeof LAYERS.Depth>
+    color_: ThreeElement<typeof LAYERS.Color>
+    noise_: ThreeElement<typeof LAYERS.Noise>
+    fresnel_: ThreeElement<typeof LAYERS.Fresnel>
+    gradient_: ThreeElement<typeof LAYERS.Gradient>
+    matcap_: ThreeElement<typeof LAYERS.Matcap>
+    texture_: ThreeElement<typeof LAYERS.Texture>
+    displace_: ThreeElement<typeof LAYERS.Displace>
+    normal_: ThreeElement<typeof LAYERS.Normal>
   }
 }
 
@@ -57,12 +52,12 @@ extend({
   Normal_: LAYERS.Normal,
 })
 
-type AllMaterialProps = MeshPhongMaterialProps & //
-  MeshPhysicalMaterialProps &
-  MeshToonMaterialProps &
-  MeshBasicMaterialProps &
-  MeshLambertMaterialProps &
-  MeshStandardMaterialProps
+export type AllMaterialProps = ElementProps<typeof MeshPhongMaterial> & //
+  ElementProps<typeof MeshPhysicalMaterial> &
+  ElementProps<typeof MeshToonMaterial> &
+  ElementProps<typeof MeshBasicMaterial> &
+  ElementProps<typeof MeshLambertMaterial> &
+  ElementProps<typeof MeshStandardMaterial>
 
 const LayerMaterial = React.forwardRef<
   LAYERS.LayerMaterial,
@@ -72,7 +67,7 @@ const LayerMaterial = React.forwardRef<
   useImperativeHandle(forwardRef, () => ref.current)
 
   React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects
+    ref.current.layers = (ref.current as any).__r3f.children?.map((l: any) => l.object)
     ref.current.refresh()
   }, [children])
 
@@ -143,4 +138,4 @@ const Normal = React.forwardRef<LAYERS.Normal, NormalProps>((props, ref) => {
   return <normal_ ref={ref} args={getNonUniformArgs(props)} {...props} />
 }) as React.ForwardRefExoticComponent<NormalProps & React.RefAttributes<LAYERS.Normal>>
 
-export { DebugLayerMaterial, LayerMaterial, Depth, Color, Noise, Fresnel, Gradient, Matcap, Texture, Displace, Normal }
+export { Color, DebugLayerMaterial, Depth, Displace, Fresnel, Gradient, LayerMaterial, Matcap, Noise, Normal, Texture }

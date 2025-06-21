@@ -1,22 +1,23 @@
-import {
-  extend,
-  MeshPhongMaterialProps,
-  MeshPhysicalMaterialProps,
-  MeshToonMaterialProps,
-  MeshBasicMaterialProps,
-  MeshLambertMaterialProps,
-  MeshStandardMaterialProps,
-} from '@react-three/fiber'
+import { ElementProps, extend } from '@react-three/fiber'
 import { createRoot } from 'react-dom/client'
 
 import { button, LevaPanel, useControls, useCreateStore } from 'leva'
 import { DataItem, StoreType } from 'leva/dist/declarations/src/types'
-import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react'
+import React, { useImperativeHandle, useMemo } from 'react'
+import {
+  Color,
+  MeshBasicMaterial,
+  MeshLambertMaterial,
+  MeshPhongMaterial,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  MeshToonMaterial,
+  TextureLoader,
+} from 'three'
+import { LayerMaterialProps, ShadingTypes } from './types'
+import { serializedLayersToJS, serializedLayersToJSX } from './utils/ExportUtils'
 import { getLayerMaterialArgs, getUniform } from './utils/Functions'
-import { serializedLayersToJSX, serializedLayersToJS } from './utils/ExportUtils'
 import * as LAYERS from './vanilla'
-import { Color, ColorRepresentation, TextureLoader } from 'three'
-import { LayerMaterialProps, ShadingType, ShadingTypes } from './types'
 
 extend({
   LayerMaterial: LAYERS.LayerMaterial,
@@ -51,12 +52,12 @@ function DynamicLeva({
   return null
 }
 
-type AllMaterialProps = MeshPhongMaterialProps & //
-  MeshPhysicalMaterialProps &
-  MeshToonMaterialProps &
-  MeshBasicMaterialProps &
-  MeshLambertMaterialProps &
-  MeshStandardMaterialProps
+type AllMaterialProps = ElementProps<typeof MeshPhongMaterial> & //
+  ElementProps<typeof MeshPhysicalMaterial> &
+  ElementProps<typeof MeshToonMaterial> &
+  ElementProps<typeof MeshBasicMaterial> &
+  ElementProps<typeof MeshLambertMaterial> &
+  ElementProps<typeof MeshStandardMaterial>
 
 const DebugLayerMaterial = React.forwardRef<
   LAYERS.LayerMaterial,
@@ -169,7 +170,7 @@ const DebugLayerMaterial = React.forwardRef<
   }, [path])
 
   React.useLayoutEffect(() => {
-    ref.current.layers = (ref.current as any).__r3f.objects
+    ref.current.layers = (ref.current as any).__r3f.children?.map((l: any) => l.object)
     ref.current.refresh()
   }, [children, args])
 

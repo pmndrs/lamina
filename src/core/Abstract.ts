@@ -1,6 +1,6 @@
-import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../utils/Functions'
-import { Color, IUniform, MathUtils, Texture, Vector3 } from 'three'
+import { Color, IUniform, MathUtils } from 'three'
 import { BlendMode, BlendModes, LayerProps, SerializedLayer } from '../types'
+import { getSpecialParameters, getUniform, isSerializableType, serializeProp } from '../utils/Functions'
 
 // @ts-ignore
 import tokenize from 'glsl-tokenizer'

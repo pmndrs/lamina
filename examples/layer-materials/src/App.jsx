@@ -1,8 +1,8 @@
-import * as THREE from 'three'
-import React, { useRef, Suspense } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
-import { DebugLayerMaterial, LayerMaterial, Depth, Color, Fresnel, Noise, Normal } from 'lamina'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Color, DebugLayerMaterial, Depth, Fresnel, LayerMaterial } from 'lamina'
+import { Suspense, useRef } from 'react'
+import * as THREE from 'three'
 import { Vector3 } from 'three'
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
           <meshPhysicalMaterial transmission={1} thickness={10} roughness={0.2} />
         </mesh>
         <OrbitControls />
-        <directionalLight intensity={2} castShadow shadow-mapSize-height={1024} shadow-mapSize-width={1024} />
+        <directionalLight intensity={20} castShadow shadow-mapSize-height={1024} shadow-mapSize-width={1024} />
         <ambientLight intensity={0.4} />
       </Suspense>
     </Canvas>

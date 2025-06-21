@@ -1,6 +1,6 @@
+import { Color, Depth, Fresnel, LayerMaterial } from 'lamina/vanilla'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { LayerMaterial, Color, Depth, Fresnel, Noise } from 'lamina/vanilla'
 import './style.css'
 
 const scene = new THREE.Scene()
@@ -8,8 +8,6 @@ const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerH
 camera.position.set(2, 0, 0)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true })
-renderer.outputEncoding = THREE.sRGBEncoding
-renderer.toneMapping = THREE.ACESFilmicToneMapping
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.domElement.style.width = '100%'
 renderer.domElement.style.height = '100%'
@@ -17,13 +15,13 @@ document.body.appendChild(renderer.domElement)
 
 const flowerGeometry = new THREE.TorusKnotGeometry(0.4, 0.05, 400, 32, 3, 7)
 const flowerMaterial = new LayerMaterial({
-  color: new THREE.Color('#ff4eb8').convertSRGBToLinear(),
+  color: new THREE.Color('#ff4eb8'),
   layers: [
     new Depth({
       far: 3,
       origin: [1, 1, 1],
-      colorA: new THREE.Color('#ff00e3').convertSRGBToLinear(),
-      colorB: new THREE.Color('#00ffff').convertSRGBToLinear(),
+      colorA: new THREE.Color('#ff00e3'),
+      colorB: new THREE.Color('#00ffff'),
       alpha: 0.5,
       mode: 'multiply',
       mapping: 'vector',
@@ -33,7 +31,7 @@ const flowerMaterial = new LayerMaterial({
       near: 0.25,
       far: 2,
       origin: [-0.9760456268614979, 0.48266696923176067, 0],
-      colorA: new THREE.Color('#ffe100').convertSRGBToLinear(),
+      colorA: new THREE.Color('#ffe100'),
       alpha: 0.5,
       mode: 'lighten',
       mapping: 'vector',
@@ -54,14 +52,14 @@ const material = new LayerMaterial({
   side: THREE.BackSide,
   layers: [
     new Color({
-      color: new THREE.Color('#f0aed2').convertSRGBToLinear(),
+      color: new THREE.Color('#f0aed2'),
     }),
     new Depth({
       near: 0,
       far: 300,
       origin: [10, 10, 10],
-      colorA: new THREE.Color('blue').convertSRGBToLinear(),
-      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      colorA: new THREE.Color('blue'),
+      colorB: new THREE.Color('#00aaff'),
       alpha: 0.5,
       mode: 'multiply',
     }),
@@ -69,8 +67,8 @@ const material = new LayerMaterial({
       near: 0,
       far: 300,
       origin: [100, 100, 100],
-      colorA: new THREE.Color('#ff0000').convertSRGBToLinear(),
-      colorB: new THREE.Color('#00aaff').convertSRGBToLinear(),
+      colorA: new THREE.Color('#ff0000'),
+      colorB: new THREE.Color('#00aaff'),
       alpha: 0.5,
       mode: 'multiply',
     }),
@@ -103,7 +101,7 @@ scene.add(pLight)
 
 const clock = new THREE.Clock()
 
-const depthLayer = flowerMaterial.layers.find((e) => e.name === 'MouseDepth')
+const depthLayer = flowerMaterial.layers.find((e: any) => e.name === 'MouseDepth')
 const vec = new THREE.Vector3()
 window.addEventListener('mousemove', (e) => {
   const m = new THREE.Vector2(

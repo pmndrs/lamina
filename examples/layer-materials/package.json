@@ -1,6 +1,7 @@
 {
   "name": "layer-materials",
   "version": "1.0.0",
+  "private": true,
   "description": "Shows how to form self-contained components with their own state and user interaction.",
   "keywords": [
     "layermaterial",
@@ -8,38 +9,31 @@
     "gradient",
     "lamina"
   ],
-  "main": "src/index.js",
+  "main": "src/index.jsx",
   "dependencies": {
-    "@babel/core": "^7.17.0",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.16.7",
-    "@react-three/drei": "9.0.1",
-    "@react-three/fiber": "8.0.3",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@react-three/drei": "^10.3.0",
+    "@react-three/fiber": "^9.1.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "@types/three": "^0.139.0",
-    "babel-loader": "^8.2.4",
-    "css-loader": "^6.6.0",
-    "html-webpack-plugin": "^5.5.0",
-    "lamina": "^1.1.23",
-    "leva": "0.9.23",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
-    "style-loader": "^3.3.1",
-    "three": "^0.139.1",
-    "webpack": "^5.68.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-dev-server": "^4.7.4"
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "leva": "^0.10.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "style-loader": "^4.0.0",
+    "three": "^0.177.0"
   },
-  "devDependencies": {},
   "scripts": {
-    "start": "webpack-cli serve --mode=development --env development --open --hot",
-    "build": "webpack --mode=production --env production --progress"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.2",
+    "vite": "^6.3.5"
+  }
 }
