@@ -33,7 +33,7 @@ export default function TextComponent() {
       <Text3D
         ref={ref}
         bevelSegments={6}
-        font={"/demo-2022-lamina-bunny/fonts/Roboto_Bold.json"}
+        font={"/fonts/Roboto_Bold.json"}
       >
         LAM
         {/* @ts-ignore */}
@@ -74,7 +74,7 @@ export default function TextComponent() {
       <Text3D
         position={[-4.2, -1.27, 0]}
         bevelSegments={6}
-        font={"/demo-2022-lamina-bunny/fonts/Roboto_Bold.json"}
+        font={"/fonts/Roboto_Bold.json"}
       >
         LAM
         <meshBasicMaterial wireframe />
@@ -83,7 +83,7 @@ export default function TextComponent() {
       <Text3D
         ref={ref2}
         bevelSegments={6}
-        font={"/demo-2022-lamina-bunny/fonts/Roboto_Bold.json"}
+        font={"/fonts/Roboto_Bold.json"}
       >
         INA
         {/* @ts-ignore */}
@@ -124,7 +124,7 @@ export default function TextComponent() {
       <Text3D
         position={[1.5, -1.27, 0]}
         bevelSegments={6}
-        font={"/demo-2022-lamina-bunny/fonts/Roboto_Bold.json"}
+        font={"/fonts/Roboto_Bold.json"}
       >
         INA
         <meshBasicMaterial wireframe />
